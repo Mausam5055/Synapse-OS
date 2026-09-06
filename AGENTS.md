@@ -2,9 +2,7 @@
 
 ## 1. Dual-Repository Push Protocol
 When pushing updates:
-1. **Standalone Backend Repository:**
-   - **Target:** `https://github.com/Rachit-Tiwari-7/SYNAPSE-BACKEND.git`
-   - **Contents:** ONLY the standalone backend files (`app/`, `tests/`, `requirements.txt`, `Dockerfile`, `Procfile`, etc.).
+`, `requirements.txt`, `Dockerfile`, `Procfile`, etc.).
    - **Branch:** `main`
 
 2. **Main Project Monorepo:**
