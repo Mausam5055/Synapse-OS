@@ -38,15 +38,17 @@
       "ipAddress": "::1",
       "createdAt": "2026-09-05T23:11:23.313Z",
       "expiredAt": "2026-10-05T23:11:23.313Z"
-    },
-    "sess_5e23c21981ff381b93159fa1c70e2094": {
-      "id": "sess_5e23c21981ff381b93159fa1c70e2094",
-      "userId": "usr_906b921c35f92ac2",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
-      "ipAddress": "::1",
-      "createdAt": "2026-09-05T23:13:47.139Z",
-      "expiredAt": "2026-10-05T23:13:47.139Z"
     }
   },
-  "verifications": {}
+  "verifications": {
+    "aa6c7aef-43c7-4e77-80fd-cb20df4f1ffb": {
+      "id": "aa6c7aef-43c7-4e77-80fd-cb20df4f1ffb",
+      "userId": "usr_906b921c35f92ac2",
+      "email": "rikikumkar@gmail.com",
+      "code": "865344",
+      "type": "PASSWORD_RESET",
+      "expiresAt": "2026-09-06T07:02:09.677Z",
+      "createdAt": "2026-09-06T06:32:09.677Z"
+    }
+  }
 }

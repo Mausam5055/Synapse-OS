@@ -241,20 +241,38 @@ def validate_and_normalize_ocr_json(raw_text: str) -> Dict[str, Any]:
     data = json.loads(clean_text)
 
     # Normalize patient
-    patient_raw = data.get("patient") or {}
-    patient = {
-        "name": _sanitize_string(patient_raw.get("name")),
-        "age": _sanitize_string(patient_raw.get("age"), 20),
-        "gender": _sanitize_string(patient_raw.get("gender"), 20)
-    }
+    patient_raw = data.get("patient")
+    if isinstance(patient_raw, str):
+        patient = {
+            "name": _sanitize_string(patient_raw),
+            "age": None,
+            "gender": None
+        }
+    elif isinstance(patient_raw, dict):
+        patient = {
+            "name": _sanitize_string(patient_raw.get("name")),
+            "age": _sanitize_string(patient_raw.get("age"), 20),
+            "gender": _sanitize_string(patient_raw.get("gender"), 20)
+        }
+    else:
+        patient = {"name": None, "age": None, "gender": None}
 
     # Normalize doctor
-    doctor_raw = data.get("doctor") or {}
-    doctor = {
-        "name": _sanitize_string(doctor_raw.get("name")),
-        "registration_number": _sanitize_string(doctor_raw.get("registration_number"), 50),
-        "specialization": _sanitize_string(doctor_raw.get("specialization"), 100)
-    }
+    doctor_raw = data.get("doctor")
+    if isinstance(doctor_raw, str):
+        doctor = {
+            "name": _sanitize_string(doctor_raw),
+            "registration_number": None,
+            "specialization": None
+        }
+    elif isinstance(doctor_raw, dict):
+        doctor = {
+            "name": _sanitize_string(doctor_raw.get("name")),
+            "registration_number": _sanitize_string(doctor_raw.get("registration_number"), 50),
+            "specialization": _sanitize_string(doctor_raw.get("specialization"), 100)
+        }
+    else:
+        doctor = {"name": None, "registration_number": None, "specialization": None}
 
     # Normalize medications
     medications: List[Dict[str, Any]] = []
@@ -267,9 +285,18 @@ def validate_and_normalize_ocr_json(raw_text: str) -> Dict[str, Any]:
         if not isinstance(item, dict):
             continue
 
-        raw_name = _sanitize_string(item.get("raw_name") or item.get("name"))
-        name = _sanitize_string(item.get("name"))
-        confidence = _clamp_confidence(item.get("confidence", 0.0))
+        # Flexible extraction from varied vision models
+        drug_name_val = item.get("name") or item.get("medicine") or item.get("medication") or item.get("drug") or item.get("raw_name")
+        raw_name = _sanitize_string(item.get("raw_name") or drug_name_val)
+        name = _sanitize_string(drug_name_val)
+        
+        # If confidence is missing or not provided, default to 0.90 rather than 0.0
+        conf_raw = item.get("confidence")
+        if conf_raw is None:
+            confidence = 0.90 if (name or raw_name) else 0.50
+        else:
+            confidence = _clamp_confidence(conf_raw)
+            
         is_uncertain = bool(item.get("is_uncertain", False))
         uncertainty_reason = _sanitize_string(item.get("uncertainty_reason"))
 
@@ -375,8 +402,8 @@ async def _query_openrouter_model(
 
     api_key = settings.OPENROUTER_API_KEY
     if not api_key:
-        logger.error("OpenRouter API key is missing.")
-        return False, "OCR_PROVIDER_ERROR", None
+        logger.warning("OpenRouter API key is missing in settings. Real vision OCR requires an active key.")
+        return False, "OCR_API_KEY_MISSING", None
 
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -461,16 +488,21 @@ async def run_prescription_ocr(
     """
     start_time = time.time()
 
-    # Candidate free models
+    # Candidate free models with verified multimodal vision capabilities
     model_hierarchy = [
         settings.OPENROUTER_PRIMARY_MODEL,
         settings.OPENROUTER_SECONDARY_MODEL,
-        settings.OPENROUTER_TERTIARY_MODEL
+        settings.OPENROUTER_TERTIARY_MODEL,
+        "minimax/minimax-m3:free",
+        "dots-studio/dots-3-note-preview:free",
+        "openrouter/free",
+        "google/gemma-4-31b-it:free",
+        "google/gemma-4-26b-a4b-it:free"
     ]
     # Filter unique and free
     unique_models = []
     for m in model_hierarchy:
-        if m and m.endswith(":free") and m not in unique_models:
+        if m and (m.endswith(":free") or m == "openrouter/free") and m not in unique_models:
             unique_models.append(m)
 
     if not unique_models:
@@ -509,6 +541,7 @@ async def run_prescription_ocr(
 
     if not parsed_result or not chosen_model:
         error_messages = {
+            "OCR_API_KEY_MISSING": "OpenRouter API Key is missing. Please set OPENROUTER_API_KEY in .env to transcribe prescriptions.",
             "OCR_RATE_LIMITED": "Free OCR models are temporarily rate limited. Please try again shortly.",
             "OCR_TIMEOUT": "OCR request timed out. Please try again with a sharper image.",
             "OCR_INVALID_RESPONSE": "Model returned an invalid response. Please try again.",
