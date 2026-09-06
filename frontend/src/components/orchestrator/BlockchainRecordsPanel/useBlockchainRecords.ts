@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getSigner, isContractReady, getDeployedNetwork } from '@/lib/blockchain/contract';
-import { fetchBlockchainRecords, BlockchainRecord } from '@/lib/supabase';
+import { fetchBlockchainRecords, deleteBlockchainRecord, BlockchainRecord } from '@/lib/supabase';
 import { PatientInfo } from '../types';
 import { MockHealthProfile, MOCK_HEALTH_PROFILES } from '@/data/mockHealthProfiles';
 
@@ -381,6 +381,15 @@ export function useBlockchainRecords(props?: UseBlockchainRecordsProps) {
     }
   };
 
+  const handleDeleteRecord = useCallback(async (recordId: string) => {
+    try {
+      await deleteBlockchainRecord(recordId);
+      setRecords((prev) => prev.filter((r) => r.id !== recordId && r.cid !== recordId));
+    } catch (err) {
+      console.error('Failed to delete record:', err);
+    }
+  }, []);
+
   return {
     activeTab, setActiveTab,
     currentProfileId,
@@ -397,6 +406,7 @@ export function useBlockchainRecords(props?: UseBlockchainRecordsProps) {
     handleGenerateAbha,
     handleDownloadPdf,
     handleVerify,
+    handleDeleteRecord,
     walletAddress, walletMode, contractOk, networkName, connecting, walletError,
     connectBurner, connectMetaMask,
     refreshRecords: () => loadSupabaseRecords(currentProfileId, abhaData?.abha_number)

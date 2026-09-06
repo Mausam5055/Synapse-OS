@@ -32,7 +32,24 @@ function getLocalCachedRecords(): BlockchainRecord[] {
   if (typeof window === 'undefined') return [];
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_RECORDS_KEY);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    const parsed: BlockchainRecord[] = JSON.parse(raw);
+    
+    // Purge unwanted test / accidental records
+    const cleaned = parsed.filter(r => {
+      const typeStr = (r.record_type || '').toLowerCase();
+      const idStr = (r.id || '').toLowerCase();
+      const cidStr = (r.cid || '').toLowerCase();
+      if (typeStr.includes('chat chronicles') || idStr.includes('0x46500031') || cidStr.includes('qmb4bmn3ygatbeuwfe671ljarjpngyhesjgvatrv8mkaf')) {
+        return false;
+      }
+      return true;
+    });
+
+    if (cleaned.length !== parsed.length) {
+      localStorage.setItem(LOCAL_STORAGE_RECORDS_KEY, JSON.stringify(cleaned));
+    }
+    return cleaned;
   } catch {
     return [];
   }
@@ -190,7 +207,7 @@ export async function deleteBlockchainRecord(
   id: string
 ): Promise<{ success: boolean; error?: any }> {
   const currentLocal = getLocalCachedRecords();
-  const updatedLocal = currentLocal.filter(r => r.id !== id);
+  const updatedLocal = currentLocal.filter(r => r.id !== id && r.cid !== id && r.record_type !== id);
   saveLocalCachedRecords(updatedLocal);
 
   if (supabase) {
@@ -198,7 +215,7 @@ export async function deleteBlockchainRecord(
       const { error } = await supabase
         .from('blockchain_records')
         .delete()
-        .eq('id', id);
+        .or(`id.eq.${id},cid.eq.${id}`);
 
       if (error) return { success: false, error };
       return { success: true };

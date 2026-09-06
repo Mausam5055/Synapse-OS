@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { ShieldCheck, CheckCircle2, Upload, AlertTriangle, RefreshCw, Database } from 'lucide-react';
+import { ShieldCheck, CheckCircle2, Upload, AlertTriangle, RefreshCw, Database, Trash2 } from 'lucide-react';
 import { hashFile, hashBuffer, generateRecordId } from '@/lib/blockchain/crypto';
 import { uploadFile, fetchFile } from '@/lib/blockchain/ipfs';
 import { registerRecord, getRecord, getSigner } from '@/lib/blockchain/contract';
@@ -253,6 +253,33 @@ export default function RecordsList({ state }: { state: any }) {
                       <span style={{ fontSize: '10.5px', color: '#7c3aed', background: '#f5f3ff', border: '1px solid #ddd6fe', padding: '4px 8px', borderRadius: '20px', fontWeight: 700 }}>
                         ☁️ Pinata IPFS Pinned
                       </span>
+                    )}
+                    {state.handleDeleteRecord && (
+                      <button
+                        onClick={() => {
+                          if (window.confirm(`Are you sure you want to remove record: "${r.type || r.id}"?`)) {
+                            state.handleDeleteRecord(r.id || r.cid);
+                          }
+                        }}
+                        title={translateText('Remove Record')}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          padding: '4px 9px',
+                          borderRadius: '20px',
+                          background: '#fff1f2',
+                          border: '1px solid #fecdd3',
+                          color: '#e11d48',
+                          fontSize: '10.5px',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          marginLeft: '4px'
+                        }}
+                      >
+                        <Trash2 size={11} />
+                        <span>{translateText('Remove')}</span>
+                      </button>
                     )}
                   </div>
                 </div>
