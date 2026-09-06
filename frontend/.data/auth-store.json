@@ -7,48 +7,45 @@
       "passwordHash": "6de55f2b691d12372d6cac71cfb63a743e1b1525223eb77b68d71bc3d5706e5ff0f1a42a733b0834663ee0d944e76865fe3effa3652d9f26a950ced80b25fc50",
       "salt": "29c29836f7b9900ba2108679ccb04e91",
       "isEmailVerified": true,
-      "createdAt": "2026-09-05T23:11:00.269Z",
-      "updatedAt": "2026-09-05T23:11:00.269Z",
+      "createdAt": "2026-09-06T00:00:00.000Z",
+      "updatedAt": "2026-09-06T00:00:00.000Z",
       "userPreferences": {
         "enable2FA": false,
         "emailNotification": true
       }
     },
-    "usr_906b921c35f92ac2": {
-      "id": "usr_906b921c35f92ac2",
+    "usr_9e597d7a125d8457": {
+      "id": "usr_9e597d7a125d8457",
       "name": "Mausam Kar",
       "email": "rikikumkar@gmail.com",
-      "passwordHash": "664bce634cc359b1d070d148d086081bc45ca4bcfb44b5455beacc9f1ee9a3df4b98e8901b32c16fdd8d919914311ba0e492f68359c306c9e6de4aa6350aedba",
-      "salt": "26c30d2b70eb6949a957261e9f8df15a",
+      "passwordHash": "a971638a55a6b07835cc067aaacb508aa2ef8f7d43068db439bfadbcb5b8394512645cd25959e06bb502c17e857e7c0596d93232874e596858cf8ec5d88ef39e",
+      "salt": "359e272ca87b693173fb3b916bb00a3d",
       "isEmailVerified": true,
-      "createdAt": "2026-09-05T23:11:23.311Z",
-      "updatedAt": "2026-09-05T23:12:41.798Z",
+      "createdAt": "2026-09-06T07:13:18.327Z",
+      "updatedAt": "2026-09-06T07:13:39.005Z",
       "userPreferences": {
-        "enable2FA": true,
-        "emailNotification": true,
-        "twoFactorSecret": "HJJEQZJ2NMYVCUTWPFJT4KC5OI4EG22B"
+        "enable2FA": false,
+        "emailNotification": true
       }
     }
   },
   "sessions": {
-    "sess_45cead14711c3b0eb005bcef3ff49181": {
-      "id": "sess_45cead14711c3b0eb005bcef3ff49181",
-      "userId": "usr_906b921c35f92ac2",
+    "sess_7a19067d7bc203bf966c94e1cd0e9285": {
+      "id": "sess_7a19067d7bc203bf966c94e1cd0e9285",
+      "userId": "usr_9e597d7a125d8457",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
       "ipAddress": "::1",
-      "createdAt": "2026-09-05T23:11:23.313Z",
-      "expiredAt": "2026-10-05T23:11:23.313Z"
+      "createdAt": "2026-09-06T07:13:18.329Z",
+      "expiredAt": "2026-10-06T07:13:18.329Z"
+    },
+    "sess_768a76bf7160c0064d0c2d2c850a0c51": {
+      "id": "sess_768a76bf7160c0064d0c2d2c850a0c51",
+      "userId": "usr_9e597d7a125d8457",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "ipAddress": "::1",
+      "createdAt": "2026-09-06T07:13:39.007Z",
+      "expiredAt": "2026-10-06T07:13:39.007Z"
     }
   },
-  "verifications": {
-    "aa6c7aef-43c7-4e77-80fd-cb20df4f1ffb": {
-      "id": "aa6c7aef-43c7-4e77-80fd-cb20df4f1ffb",
-      "userId": "usr_906b921c35f92ac2",
-      "email": "rikikumkar@gmail.com",
-      "code": "865344",
-      "type": "PASSWORD_RESET",
-      "expiresAt": "2026-09-06T07:02:09.677Z",
-      "createdAt": "2026-09-06T06:32:09.677Z"
-    }
-  }
+  "verifications": {}
 }

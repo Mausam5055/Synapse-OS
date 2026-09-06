@@ -9,6 +9,8 @@ export default function ForgotPasswordPage() {
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const [emailSent, setEmailSent] = useState<boolean>(true);
+  const [resetCode, setResetCode] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +34,10 @@ export default function ForgotPasswordPage() {
         return;
       }
 
+      setEmailSent(Boolean(data.emailSent));
+      if (data.devCode) {
+        setResetCode(data.devCode);
+      }
       setIsSent(true);
     } catch (err: any) {
       setIsPending(false);
@@ -44,7 +50,7 @@ export default function ForgotPasswordPage() {
       className="auth-root w-full min-h-screen flex items-center justify-center bg-[#f4f6f8] p-6"
       style={{ opacity: 1, visibility: 'visible', backgroundColor: '#f4f6f8' }}
     >
-      <div className="w-full max-w-[420px] bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+      <div className="w-full max-w-[440px] bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
         <div className="text-center mb-6">
           <span className="font-bold text-lg tracking-widest text-[#0284c7]">
             SANJEEVNI OS
@@ -53,7 +59,7 @@ export default function ForgotPasswordPage() {
             Reset Password
           </h1>
           <p className="text-sm text-gray-500 mt-1">
-            Enter your email to receive a password reset link and code via Resend.
+            Enter your email to receive a password reset link and code.
           </p>
         </div>
 
@@ -90,17 +96,39 @@ export default function ForgotPasswordPage() {
           </form>
         ) : (
           <div className="text-center py-4">
-            <MailCheckIcon size={44} className="text-emerald-500 mx-auto mb-3" />
-            <h3 className="font-bold text-gray-900 text-lg">Check your inbox</h3>
-            <p className="text-sm text-gray-500 mt-1">
-              If an account exists for <strong>{email}</strong>, we have dispatched a password reset link and code.
-            </p>
-            <div className="mt-6">
+            {emailSent ? (
+              <>
+                <MailCheckIcon size={44} className="text-emerald-500 mx-auto mb-3" />
+                <h3 className="font-bold text-gray-900 text-lg">Check your inbox</h3>
+                <p className="text-sm text-gray-500 mt-1">
+                  We have dispatched a password reset link to <strong>{email}</strong>.
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-3">
+                  <AlertCircle size={28} />
+                </div>
+                <h3 className="font-bold text-gray-900 text-lg">Reset Code Ready</h3>
+                <p className="text-xs text-amber-700 bg-amber-50 p-3 rounded-lg border border-amber-200 mt-2 text-left leading-relaxed">
+                  <strong>Notice:</strong> The Resend API key in <code>.env.local</code> is invalid, so no email could reach your inbox. However, your secure reset code was generated locally below:
+                </p>
+              </>
+            )}
+
+            {resetCode && (
+              <div className="mt-4 p-4 bg-slate-50 border border-slate-200 rounded-xl text-center">
+                <div className="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Your 6-Digit Reset Code</div>
+                <div className="font-mono font-bold text-2xl tracking-widest text-[#0284c7]">{resetCode}</div>
+              </div>
+            )}
+
+            <div className="mt-5">
               <Link
-                href={`/reset-password?email=${encodeURIComponent(email)}`}
-                className="text-sm font-semibold text-[#7e57c2] hover:underline"
+                href={`/reset-password?email=${encodeURIComponent(email)}${resetCode ? `&code=${resetCode}` : ''}`}
+                className="w-full h-11 bg-[#7e57c2] hover:bg-[#6847a3] text-white rounded-lg font-semibold transition-colors inline-flex items-center justify-center text-sm shadow-sm"
               >
-                Enter reset code &rarr;
+                Proceed to Set New Password &rarr;
               </Link>
             </div>
           </div>
