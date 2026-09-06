@@ -37,7 +37,7 @@ def detect_intent(text: str) -> str:
         return "DRUG_SAFETY"
     elif any(k in text_lower for k in ["stress", "anxious", "anxiety", "depressed", "period", "cramp", "menstrual", "sad", "hopeless"]):
         return "MENTAL_HEALTH"
-    elif any(k in text_lower for k in ["body", "organs", "twin", "vitality", "health score"]):
+    elif any(k in text_lower for k in ["digital twin", "organ twin", "vitality score", "health score", "3d twin"]):
         return "DIGITAL_TWIN"
     else:
         return "SYMPTOM_TRIAGE"
@@ -68,24 +68,34 @@ async def orchestrate_health_request(
     if not safety.is_safe:
         state.safety_cleared = False
         state.safety_message = safety.response
-        state.final_response = safety.response
+        if safety.category == "crisis":
+            state.detected_intent = "CRISIS_INTERVENTION"
+            state.final_response = safety.response
+            state.trace.append(AgentTraceStep(
+                agent_name="Deterministic Safety Gate",
+                action=f"🚨 Immediate Crisis Intercepted ({safety.category})",
+                duration_ms=int((time.time() - start_time) * 1000),
+                details={"category": safety.category}
+            ))
+            return state
+        else:
+            # Medical Emergency (chest pain, stroke, severe breathing difficulty, deep trauma)
+            state.detected_intent = "EMERGENCY_TRIAGE"
+            state.trace.append(AgentTraceStep(
+                agent_name="Deterministic Safety Gate",
+                action=f"🚨 Emergency Flag Triggered: Critical Medical Intercept Activated ({safety.category})",
+                duration_ms=int((time.time() - start_time) * 1000),
+                details={"category": safety.category}
+            ))
+            intent = "EMERGENCY_TRIAGE"
+    else:
         state.trace.append(AgentTraceStep(
             agent_name="Deterministic Safety Gate",
-            action=f"🚨 Immediate Emergency/Crisis Flag Intercepted ({safety.category})",
-            duration_ms=int((time.time() - start_time) * 1000),
-            details={"category": safety.category}
+            action="Passed safety verification protocol",
+            duration_ms=int((time.time() - start_time) * 1000)
         ))
-        return state
-
-    state.trace.append(AgentTraceStep(
-        agent_name="Deterministic Safety Gate",
-        action="Passed safety verification protocol",
-        duration_ms=int((time.time() - start_time) * 1000)
-    ))
-
-    # 2. Intent Routing
-    intent = detect_intent(message)
-    state.detected_intent = intent
+        intent = detect_intent(message)
+        state.detected_intent = intent
 
     # 3. Dynamic Multi-Agent Execution based on Intent
     if intent == "VACCINATION_SCHEDULE":
@@ -117,7 +127,7 @@ async def orchestrate_health_request(
             duration_ms=15
         ))
     else:
-        # Default Full Swarm Consultation: Triage + Drug + AI Council Verification
+        # Default Full Swarm Consultation (covers EMERGENCY_TRIAGE & SYMPTOM_TRIAGE): Triage + Drug + AI Council Verification
         await triage_agent_node(state)
         await drug_agent_node(state)
         await verification_agent_node(state)
@@ -150,12 +160,12 @@ AI Council Verification: {state.verification}
         {"role": "user", "content": f"Consolidate these specialist agent findings for the patient:\n{agent_findings_context}"}
     ]
 
-    llm_synthesis = await call_llm(messages, temperature=0.3, max_tokens=900)
+    llm_synthesis = await call_llm(messages, temperature=0.3, max_tokens=400)
 
-    if llm_synthesis:
+    if llm_synthesis and "unreachable" not in llm_synthesis.lower() and not llm_synthesis.strip().startswith('{"error":'):
         state.final_response = llm_synthesis
         state.trace.append(AgentTraceStep(
-            agent_name="Swarm Synthesis & Reasoning Engine (Groq/OpenRouter)",
+            agent_name="Swarm Synthesis & Reasoning Engine (Groq)",
             action="Synthesized multi-agent findings into comprehensive clinical guidance",
             duration_ms=int((time.time() - synth_start) * 1000)
         ))

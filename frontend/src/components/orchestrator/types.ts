@@ -15,10 +15,18 @@ export interface SynapseOSState {
   detected_intent?: string;
   triage_data?: {
     urgency_badge?: string;
+    triage_level?: string;
+    clinical_rationale?: string;
+    specialist?: string;
     recommended_action?: string;
     recommended_specialist?: string;
     actionable_steps?: string[];
+    [key: string]: any;
   };
+  vaccination_data?: Record<string, any>;
+  preventive_data?: Record<string, any>;
+  outbreak_data?: Record<string, any>;
+  logistics?: Record<string, any>;
   triage_result?: {
     urgency: 'EMERGENCY' | 'DOCTOR_CONSULT' | 'HOME_CARE';
     primary_condition: string;
@@ -30,12 +38,16 @@ export interface SynapseOSState {
     detected_medications?: string[];
     interactions_count?: number;
     interactions?: Array<{
+      drug_a?: string;
+      drug_b?: string;
       drug1?: string;
       drug2?: string;
       severity?: string;
       effect?: string;
       recommended_action?: string;
+      [key: string]: any;
     }>;
+    [key: string]: any;
   };
   drug_safety_result?: {
     safe_to_combine: boolean;

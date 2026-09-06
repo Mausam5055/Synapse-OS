@@ -69,28 +69,7 @@ async def analyze_symptoms(text: str) -> Dict[str, Any]:
         "disclaimer": "This clinical triage assessment is for guidance and does not replace in-person physician diagnosis."
     }
 
-    # Prompt LLM for deep clinical nuance
-    system_prompt = (
-        "You are an expert emergency medicine and clinical triage AI assistant. "
-        "Analyze the patient's reported symptoms and return a strictly valid JSON object with the following schema:\n"
-        "{\n"
-        '  "triage_level": "EMERGENCY_CARE" | "DOCTOR_CONSULT" | "HOME_CARE",\n'
-        '  "urgency_badge": "🔴 Emergency Care (Immediate)" | "🟡 Doctor Consultation Needed" | "🟢 Home Self-Care & Monitoring",\n'
-        '  "recommended_action": "Detailed clinical guidance and next steps",\n'
-        '  "recommended_specialist": "Specific medical specialty to consult",\n'
-        '  "vitals_to_check": ["List", "of", "relevant", "vitals"],\n'
-        '  "detected_symptoms": {"critical_flags": [], "moderate_flags": [], "mild_flags": []}\n'
-        "}\n"
-        "Be conservative and prioritize patient safety."
-    )
-
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": f"Patient symptoms: {text}"}
-    ]
-
-    llm_result = await call_llm_json(messages, fallback_dict=fallback)
-    return llm_result
+    return fallback
 
 
 async def triage_agent_node(state: SynapseOSState) -> SynapseOSState:

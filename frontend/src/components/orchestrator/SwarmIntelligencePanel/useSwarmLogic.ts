@@ -61,12 +61,63 @@ export function useSwarmLogic(patient: PatientInfo) {
     }
   ];
 
+  const getTraceMs = (keywords: string[], fallback: number) => {
+    if (!result?.trace) return fallback;
+    const match = result.trace.find(t => 
+      keywords.some(k => (t.agent_name || '').toLowerCase().includes(k.toLowerCase()))
+    );
+    return match?.duration_ms ?? fallback;
+  };
+
+  const isAgentActiveInTrace = (keywords: string[]) => {
+    if (!result) return false;
+    if (!result.trace || result.trace.length === 0) return true;
+    return result.trace.some(t => 
+      keywords.some(k => (t.agent_name || '').toLowerCase().includes(k.toLowerCase()))
+    );
+  };
+
   const dagNodes: DAGNode[] = [
-    { id: 'safety_gate', name: 'Safety Gate', role: 'Deterministic Crisis Intercept', icon: ShieldCheck, status: result ? (result.safety_cleared ? 'completed' : 'warning') : loading ? 'running' : 'idle', latencyMs: 14 },
-    { id: 'intent_router', name: 'Intent Classifier', role: 'Zero-Shot Multi-Domain Router', icon: GitBranch, status: result ? 'completed' : loading ? 'running' : 'idle', latencyMs: 38 },
-    { id: 'triage_agent', name: 'Clinical Triage', role: 'Symptom & Urgency Stratifier', icon: Activity, status: result ? 'completed' : loading ? 'running' : 'idle', latencyMs: 380 },
-    { id: 'rxnav_agent', name: 'RxNav Safety', role: 'Drug-Drug Interaction Engine', icon: Pill, status: result ? 'completed' : loading ? 'running' : 'idle', latencyMs: 184 },
-    { id: 'council_agent', name: 'AI Council', role: '80%+ Accuracy Benchmark Auditor', icon: Users, status: result ? 'completed' : loading ? 'running' : 'idle', latencyMs: 240 }
+    { 
+      id: 'safety_gate', 
+      name: 'Safety Gate', 
+      role: 'Deterministic Crisis Intercept', 
+      icon: ShieldCheck, 
+      status: result ? (result.safety_cleared ? 'completed' : 'warning') : loading ? 'running' : 'idle', 
+      latencyMs: getTraceMs(['safety gate', 'crisis', 'deterministic'], 14) 
+    },
+    { 
+      id: 'intent_router', 
+      name: 'Intent Classifier', 
+      role: 'Zero-Shot Multi-Domain Router', 
+      icon: GitBranch, 
+      status: result ? 'completed' : loading ? 'running' : 'idle', 
+      latencyMs: getTraceMs(['intent', 'classifier', 'router'], 38) 
+    },
+    { 
+      id: 'triage_agent', 
+      name: 'Clinical Triage', 
+      role: 'Symptom & Urgency Stratifier', 
+      icon: Activity, 
+      status: result ? (isAgentActiveInTrace(['triage', 'symptom', 'biobert']) ? 'completed' : 'idle') : loading ? 'running' : 'idle', 
+      latencyMs: getTraceMs(['triage', 'biobert'], 280) 
+    },
+    { 
+      id: 'rxnav_agent', 
+      name: 'RxNav Safety', 
+      role: 'Drug-Drug Interaction Engine', 
+      icon: Pill, 
+      status: result ? (isAgentActiveInTrace(['rxnav', 'drug']) ? 'completed' : 'idle') : loading ? 'running' : 'idle', 
+      latencyMs: getTraceMs(['rxnav', 'drug'], 145) 
+    },
+    { 
+      id: 'council_agent', 
+      name: 'AI Council', 
+      role: '80%+ Accuracy Benchmark Auditor', 
+      icon: Users, 
+      status: result ? (isAgentActiveInTrace(['council', 'verification']) ? 'completed' : 'idle') : loading ? 'running' : 'idle', 
+      latencyMs: getTraceMs(['council', 'verification'], 190) 
+    }
   ];
 
   const handleExecuteSwarm = async (customQuery?: string) => {
@@ -76,52 +127,29 @@ export function useSwarmLogic(patient: PatientInfo) {
     setLoading(true);
     setErrorMessage(null);
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 20000);
+
       const res = await fetch(`${API_BASE}/api/orchestrate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: q, channel: 'web', user_id: patient.name })
+        body: JSON.stringify({ message: q, channel: 'web', user_id: patient.name }),
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
+
       if (res.ok) {
         const data = await res.json();
         setResult(data);
       } else {
-        setErrorMessage(`Server returned status ${res.status}`);
+        setErrorMessage(`Swarm Orchestrator returned HTTP ${res.status}. Check backend logs.`);
       }
-    } catch {
-      setResult({
-        session_id: 'SWARM-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
-        user_id: patient.name,
-        input_text: q,
-        detected_intent: 'PHARMACOLOGY_AND_TRIAGE' as any,
-        safety_cleared: true,
-        channel: 'web',
-        final_response: `**Triage Assessment:** 🟢 Home Self-Care & Monitoring\n\nMonitor symptoms, ensure adequate hydration, rest, and follow OTC symptom relief protocols. Seek medical care if symptoms worsen.\n\n• **Recommended Care:** Primary Care Provider if symptoms persist > 5 days\n\n• **Medication Scan:** Detected warfarin\n\n✅ *No known high-risk drug-to-drug interactions detected.*\n\n• **AI Council Consensus:** 96% Agreement *(All participating AI agents agree on the clinical severity and recommended next steps.)*`,
-        suggested_actions: [
-          'Hydration & Electrolyte Repletion (2.5L daily)',
-          'Symptom Severity Diary (Log twice daily)',
-          'Consult Primary Physician if symptoms persist > 5 days',
-          'Emergency Escalation if SpO2 drops below 94%'
-        ],
-        drug_check: {
-          detected_medications: ['Warfarin'],
-          interactions: []
-        },
-        verification: {
-          consensus_confidence_score: 96,
-          agent_votes: [
-            { agent: 'Dr. Rajesh K. Varma (Pulmonology)', score: 98, status: 'Approved' },
-            { agent: 'Dr. Naresh Trehan (Cardiology)', score: 95, status: 'Approved' },
-            { agent: 'RxNav Safety Daemon (Pharmacology)', score: 99, status: 'Approved' }
-          ]
-        },
-        trace: [
-          { agent_name: 'Deterministic Safety Gate', action: 'Input screened against crisis ontology. No self-harm or acute emergency code.', duration_ms: 12 },
-          { agent_name: 'Semantic Intent Router', action: 'Classified primary intent as PHARMACOLOGY_AND_TRIAGE (Confidence: 0.98)', duration_ms: 35 },
-          { agent_name: 'BioBERT Clinical Triage Agent', action: 'Parsed symptom trajectory: acute thoracic pain with anticoagulant query.', duration_ms: 380 },
-          { agent_name: 'RxNav Drug Safety Checker', action: 'Queried NLM RxNav knowledge graph for Warfarin regimen. Safe profile confirmed.', duration_ms: 190 },
-          { agent_name: 'AI Council Verification Agent', action: '3-node consensus verified. Safety directive synthesized with 96% confidence score.', duration_ms: 220 }
-        ]
-      });
+    } catch (err: any) {
+      if (err?.name === 'AbortError') {
+        setErrorMessage('Swarm DAG execution timed out after 20 seconds. Please try again.');
+      } else {
+        setErrorMessage(`Swarm communication error: ${err?.message || 'Failed to reach API'}. Please ensure FastAPI backend is running.`);
+      }
     } finally {
       setLoading(false);
     }

@@ -29,7 +29,7 @@ export const getDefaultSessions = (patient: MockHealthProfile, lang: SupportedLa
 
 const DEFAULT_VAPI_KEY = process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY || '7709f749-ce4c-4a9f-bef2-637223f17258';
 const DEFAULT_VAPI_ID = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID || 'f92542f6-1975-4169-8459-e46684910676';
-const DEFAULT_GROQ_KEY = process.env.NEXT_PUBLIC_GROQ_API_KEY || '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';
+const DEFAULT_GROQ_KEY = process.env.NEXT_PUBLIC_GROQ_API_KEY || '';
 
 export function useAssistantLogic() {
   const [isOpen, setIsOpen] = useState(false);

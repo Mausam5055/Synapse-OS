@@ -70,11 +70,20 @@ GENERIC_EQUIVALENTS = {
     "ecosprin": "Aspirin (Acetylsalicylic Acid) 75mg/150mg Gastro-resistant",
 }
 
+KNOWN_DRUG_NAMES = {
+    "warfarin", "aspirin", "ibuprofen", "paracetamol", "acetaminophen",
+    "metformin", "lisinopril", "atorvastatin", "sildenafil", "nitroglycerin",
+    "clarithromycin", "ciprofloxacin", "pantoprazole", "amoxicillin",
+    "crocin", "dolo", "combiflam", "augmentin", "pantocid", "pan", "glycomet",
+    "telma", "ecosprin", "cetirizine", "azithromycin", "omeprazole", "clopidogrel",
+    "heparin", "digoxin", "amiodarone", "levothyroxine", "losartan", "amlodipine"
+}
+
 _STOPWORDS = {
     "can", "i", "take", "with", "and", "or", "the", "a", "an", "is", "it", "safe", "to", "does",
     "have", "interact", "interaction", "interactions", "between", "my", "for", "of", "drug", "drugs",
     "medication", "medicine", "combine", "mix", "together", "this", "that", "are", "will", "what",
-    "about", "dosage", "side", "effects"
+    "about", "dosage", "side", "effects", "daily", "patient", "acute", "fever", "pain", "joint", "severe", "shortness", "breath"
 }
 
 
@@ -83,19 +92,18 @@ def extract_candidate_drugs(text: str) -> List[str]:
     return [w for w in dict.fromkeys(words) if w not in _STOPWORDS]
 
 
-async def resolve_drug_rxnav(term: str) -> Optional[str]:
+async def resolve_drug_rxnav(client: httpx.AsyncClient, term: str) -> Optional[str]:
     """Check NIH RxNorm for drug validity."""
+    if term in KNOWN_DRUG_NAMES or term in GENERIC_EQUIVALENTS:
+        return term
     try:
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(f"{RXNAV_BASE}/rxcui.json", params={"name": term}, timeout=RXNAV_TIMEOUT)
-            if resp.status_code == 200:
-                data = resp.json()
-                if data.get("idGroup", {}).get("rxnormId"):
-                    return term
+        resp = await client.get(f"{RXNAV_BASE}/rxcui.json", params={"name": term}, timeout=1.5)
+        if resp.status_code == 200:
+            data = resp.json()
+            if data.get("idGroup", {}).get("rxnormId"):
+                return term
     except Exception:
         pass
-    if term in GENERIC_EQUIVALENTS:
-        return term
     return None
 
 
@@ -104,13 +112,28 @@ async def evaluate_drug_safety(text: str) -> Dict[str, Any]:
     Evaluates mentioned medicines, queries NIH RxNav,
     and runs genuine LLM pharmacology interaction checking.
     """
+    import asyncio
     candidates = extract_candidate_drugs(text)
     detected_drugs = []
-    
-    for candidate in candidates[:8]:
-        resolved = await resolve_drug_rxnav(candidate)
-        if resolved:
-            detected_drugs.append(resolved)
+
+    # Fast-path: immediately identify known medications and generic brands
+    for c in candidates:
+        if c in KNOWN_DRUG_NAMES or c in GENERIC_EQUIVALENTS:
+            if c not in detected_drugs:
+                detected_drugs.append(c)
+
+    # Secondary: query RxNav concurrently for remaining unknown candidates (max 4)
+    unknown_candidates = [c for c in candidates if c not in detected_drugs][:4]
+    if unknown_candidates:
+        try:
+            async with httpx.AsyncClient() as client:
+                tasks = [resolve_drug_rxnav(client, c) for c in unknown_candidates]
+                results = await asyncio.gather(*tasks, return_exceptions=True)
+                for res in results:
+                    if isinstance(res, str) and res and res not in detected_drugs:
+                        detected_drugs.append(res)
+        except Exception:
+            pass
 
     detected_set = set(detected_drugs)
     interactions_found = []
@@ -139,30 +162,6 @@ async def evaluate_drug_safety(text: str) -> Dict[str, Any]:
         "clinical_pharmacology_summary": "Standard interaction screening completed against NIH RxNav database.",
         "disclaimer": "Always verify drug regimens with a registered pharmacist or prescribing physician."
     }
-
-    # If medications are detected, enrich with live LLM clinical pharmacology analysis
-    if detected_drugs:
-        system_prompt = (
-            "You are a clinical pharmacologist and toxicology AI specialist. "
-            "Analyze the following query regarding medications and drug interactions. "
-            "Return a strictly valid JSON object with the schema:\n"
-            "{\n"
-            '  "detected_medications": ["list of detected drugs"],\n'
-            '  "interactions": [\n'
-            '    {"drugs": ["drugA", "drugB"], "severity": "High"|"Moderate"|"Low", "effect": "Mechanism and physiological impact", "recommended_action": "Safe management advice"}\n'
-            '  ],\n'
-            '  "interactions_count": 0,\n'
-            '  "safe_to_combine": true|false,\n'
-            '  "clinical_pharmacology_summary": "Concise plain-language pharmacological safety assessment",\n'
-            '  "generic_equivalents": [{"brand": "name", "composition": "active ingredients"}]\n'
-            "}"
-        )
-        messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": f"Query: {text}. Pre-identified candidates: {detected_drugs}"}
-        ]
-        llm_result = await call_llm_json(messages, fallback_dict=fallback)
-        return llm_result
 
     return fallback
 

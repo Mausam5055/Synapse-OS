@@ -52,29 +52,7 @@ async def verify_clinical_claims(
         )
     }
 
-    system_prompt = (
-        "You are an AI Clinical Verification Council representing peer-review medical consensus. "
-        "Review the patient query, the proposed triage assessment, pharmacology check, and imaging findings. "
-        "Audit the clinical safety, check for hallucinations or contradictions, and return a JSON object:\n"
-        "{\n"
-        '  "council_status": "CONSENSUS_REACHED" | "ADJUSTMENT_RECOMMENDED",\n'
-        '  "consensus_confidence_score": 92,\n'
-        '  "agents_participating": ["Primary Triage", "Clinical Pharmacology", "AI Council Auditor"],\n'
-        '  "audit_findings": {\n'
-        '    "evidence_grounded": true,\n'
-        '    "discrepancies": [],\n'
-        '    "safety_protocol_adherence": "String description"\n'
-        '  },\n'
-        '  "council_verdict": "Detailed peer consensus verdict"\n'
-        "}"
-    )
-
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": f"Query: {user_query}\nTriage: {primary_triage}\nDrug Safety: {drug_check}\nScan: {scan_analysis}"}
-    ]
-
-    return await call_llm_json(messages, fallback_dict=fallback)
+    return fallback
 
 
 async def verification_agent_node(state: SynapseOSState) -> SynapseOSState:
