@@ -1,9 +1,10 @@
 # 🏛️ SynapseOS — Official Architecture Diagrams
 
-[![Hackathon](https://img.shields.io/badge/Hackathon-SMART_VIT(SVH)_2026-FF4500?style=flat-square)](#)
+[![Initiative](https://img.shields.io/badge/Fund_My_Crazy-2026-4285F4?style=flat-square&logo=google)](https://fundmycrazy.com/)
+[![Built_With](https://img.shields.io/badge/Built_With-Google_Gemini-34A853?style=flat-square&logo=google)](https://ai.google.dev/)
 [![Figma](https://img.shields.io/badge/Figma-Architecture-F24E1E?style=flat-square&logo=figma&logoColor=white)](https://figma.com/)
 
-Official high-level system diagrams and flowcharts outlining the **SynapseOS Multi-Agent Health Platform**.
+Official high-level system diagrams and flowcharts outlining the **SynapseOS Autonomous Urban Health Grid**.
 
 ---
 
@@ -15,7 +16,7 @@ Official high-level system diagrams and flowcharts outlining the **SynapseOS Mul
 | `Architecture Diagram Light.png` | Image | High-level system architecture (Light Theme). |
 | `Flowchart dark.png` | Image | User journey and data pipeline flowchart (Dark Theme). |
 | `Flowchart Light.png` | Image | User journey and data pipeline flowchart (Light Theme). |
-| `svh.pptx.pdf` | PDF | Comprehensive presentation slide deck detailing the project scope and feasibility. |
+| `sanjeevni_executive_presentation.pdf` | PDF | Comprehensive presentation slide deck detailing the project scope, clinical validity, and urban health operating grid. |
 
 ---
 
@@ -34,6 +35,6 @@ End-to-end request pipeline outlining how patient data flows from input endpoint
 ---
 <div align="center">
 
-### 🔹 built with love by TEAM, AC-DC FOR SMART VIThackathon(SVH)-2026
+### 🌿 Built with love for Fund My Crazy 2026 — A Google Gemini Initiative
 
 </div>

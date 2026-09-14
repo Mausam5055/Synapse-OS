@@ -1,16 +1,16 @@
-# SynapseOS: Production Backend Architecture, ABDM Gateway & Hackathon Judge Guide
+# SynapseOS: Production Backend Architecture, ABDM Gateway & Technical Defense Dossier
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python)](https://python.org)
 [![Security](https://img.shields.io/badge/AES--256-GCM-red?style=flat-square)](https://nist.gov)
 [![Standards](https://img.shields.io/badge/HL7-FHIR-blue?style=flat-square)](https://hl7.org/fhir)
 
-> **Official National Hackathon Architecture & Technical Defense Dossier**  
+> **Fund My Crazy 2026 Architecture & Technical Defense Dossier (A Google Gemini Initiative)**  
 > *A comprehensive technical specification of SynapseOS: Multi-Agent Clinical Swarm, ABDM M1/M2/M3 Sandbox Gateway, Wearable Telemetry Ingestion Pipeline (Apple HealthKit & Google Health Connect), HL7 FHIR R4 Serialization, and Decentralized Health Records.*
 
 ---
 
-## 1. Executive Summary & Judge Pitch Script (How to Win the Hackathon)
+## 1. Executive Summary & Pitch Script (Fund My Crazy 2026)
 
 ### 🎙️ The 60-Second Elevator Pitch (Memorize for Judges)
 > *"Judges, in India today, over 650 million citizens are being registered under the government's **Ayushman Bharat Digital Mission (ABDM)** with a 14-digit **ABHA ID**. However, digital healthcare in India suffers from three catastrophic failures:*
@@ -468,4 +468,4 @@ All endpoints are hosted on `http://localhost:8000/api/v1` and implemented in [`
 
 ---
 
-*Authored for the SynapseOS National Hackathon Finalists.*
+*Authored for the SynapseOS Team — Fund My Crazy 2026 (A Google Gemini Initiative).*

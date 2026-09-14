@@ -1,5 +1,5 @@
 # SynapseOS — AI-Powered Multi-Agent Health Platform
-### Project Plan & Technical Documentation (Hackathon Build — 100% Free/Open Source)
+### Autonomous Urban Health Operating Grid — Fund My Crazy 2026 (A Google Gemini Initiative)
 
 > **Naming:** **SynapseOS** is the platform/project name — "OS" signals this is infrastructure (an operating system for health, running many specialized agents), not "just another chatbot." **SynapseOS** (without "OS") is the name of the voice/command assistant *inside* the platform — the thing the user talks to in Assistant Mode. Same relationship as "Windows" (the OS) and "Cortana" (the assistant inside it).
 
@@ -352,6 +352,6 @@ Pick your top 2–4, build them deeply, and lead your demo with them — that's 
 ---
 <div align="center">
 
-### 🔹 built with love by TEAM, AC-DC FOR SMART VIThackathon(SVH)-2026
+### 🌿 Built with love for Fund My Crazy 2026 — A Google Gemini Initiative
 
 </div>

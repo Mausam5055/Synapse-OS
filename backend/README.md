@@ -5,7 +5,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker)](https://docker.com)
 [![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=flat-square&logo=pydantic&logoColor=white)](https://pydantic.dev)
 
-Comprehensive developer guide for setting up, running, testing, and extending the **SynapseOS Multi-Agent FastAPI Backend** for the SMART VIThackathon(SVH)-2026.
+Comprehensive developer guide for setting up, running, testing, and extending the **SynapseOS Multi-Agent FastAPI Backend** for **Fund My Crazy 2026 (A Google Gemini Initiative)**.
 
 ---
 
@@ -106,6 +106,6 @@ backend/
 ---
 <div align="center">
 
-### 🔹 built with love by TEAM, AC-DC FOR SMART VIThackathon(SVH)-2026
+### 🌿 Built with love for Fund My Crazy 2026 — A Google Gemini Initiative
 
 </div>

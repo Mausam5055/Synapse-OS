@@ -2,6 +2,24 @@
 SynapseOS — Main FastAPI Application Entrypoint.
 """
 
+import sys
+import logging
+
+# Ensure Windows terminal standard streams output valid UTF-8 without mojibake (d??)
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
+# Configure root logging to output UTF-8 cleanly
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.app.core.config import settings

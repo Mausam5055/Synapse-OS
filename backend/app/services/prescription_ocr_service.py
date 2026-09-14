@@ -516,28 +516,47 @@ async def run_prescription_ocr(
     chosen_model = None
     parsed_result = None
 
-    # Step 1: Attempt model execution with fallback
-    for model_id in unique_models:
-        logger.info(f"Invoking OpenRouter vision model: {model_id}")
-        ok, err_code, res_payload = await _query_openrouter_model(
-            model_id=model_id,
-            image_data_url=image_data_url,
-            timeout_ms=settings.OPENROUTER_TIMEOUT_MS
-        )
-
-        if not ok:
-            last_error_code = err_code or "OCR_PROVIDER_ERROR"
-            continue
-
-        raw_content = res_payload["content"]
+    # Step 0: Priority 1 — Google Gemini Multimodal Vision Hero Layer
+    if settings.GEMINI_API_KEY:
         try:
-            parsed_result = validate_and_normalize_ocr_json(raw_content)
-            chosen_model = model_id
-            break
+            from backend.app.services.llm_service import call_gemini_vision
+            prompt = f"{OCR_SYSTEM_PROMPT}\n\n{JSON_SCHEMA_INSTRUCTION}"
+            clean_b64 = image_data_url.split(",")[-1] if "," in image_data_url else image_data_url
+            gemini_model = settings.GEMINI_MODEL or "gemini-2.0-flash"
+            logger.info(f"Invoking Google Gemini Multimodal Vision: {gemini_model}")
+            gemini_raw = await call_gemini_vision(clean_b64, prompt, model=gemini_model)
+            if gemini_raw:
+                try:
+                    parsed_result = validate_and_normalize_ocr_json(gemini_raw)
+                    chosen_model = f"google/{gemini_model}"
+                except Exception as e:
+                    logger.warning(f"Google Gemini OCR JSON parse error: {e}")
         except Exception as e:
-            logger.warning(f"Defensive JSON parsing error with model {model_id}: {e}")
-            last_error_code = "OCR_INVALID_RESPONSE"
-            continue
+            logger.warning(f"Google Gemini Vision execution error: {e}")
+
+    # Step 1: OpenRouter Fallback Hierarchy (if Gemini not configured or failed)
+    if not parsed_result:
+        for model_id in unique_models:
+            logger.info(f"Invoking fallback OpenRouter vision model: {model_id}")
+            ok, err_code, res_payload = await _query_openrouter_model(
+                model_id=model_id,
+                image_data_url=image_data_url,
+                timeout_ms=settings.OPENROUTER_TIMEOUT_MS
+            )
+
+            if not ok:
+                last_error_code = err_code or "OCR_PROVIDER_ERROR"
+                continue
+
+            raw_content = res_payload["content"]
+            try:
+                parsed_result = validate_and_normalize_ocr_json(raw_content)
+                chosen_model = model_id
+                break
+            except Exception as e:
+                logger.warning(f"Defensive JSON parsing error with model {model_id}: {e}")
+                last_error_code = "OCR_INVALID_RESPONSE"
+                continue
 
     if not parsed_result or not chosen_model:
         error_messages = {

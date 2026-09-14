@@ -61,3 +61,6 @@ venv/
 *.rar
 ngrok.exe
 *.exe
+
+# Local Data Stores
+frontend/.data/

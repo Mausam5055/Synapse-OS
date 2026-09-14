@@ -387,7 +387,20 @@ def _extract_diagnosis_condition(text: str) -> str:
         flags = _clean_card_text(m_flags.group(1))
         return f"Acute Clinical Presentation ({flags})"
 
-    return "Multi-agent clinical audit completed by AI Council."
+    # 5. Extract inferred condition from symptom keywords
+    text_lower = text.lower()
+    if any(k in text_lower for k in ["chest pain", "crushing", "angina"]):
+        return "Acute Cardiac Discomfort / Angina Symptoms (Requires Immediate Hospital ECG)"
+    elif any(k in text_lower for k in ["gala", "throat", "sore throat", "pharyngitis"]):
+        return "Acute Pharyngitis / Upper Respiratory Tract Symptoms"
+    elif any(k in text_lower for k in ["fever", "bukhar", "high temperature", "chills"]):
+        return "Acute Febrile Presentation / Viral Infection"
+    elif any(k in text_lower for k in ["headache", "sar dard", "migraine"]):
+        return "Acute Cephalea / Tension-Type Headache"
+    elif any(k in text_lower for k in ["vomiting", "diarrhea", "loose motion", "pet dard"]):
+        return "Acute Gastroenteritis / Gastrointestinal Distress"
+
+    return "Clinical Symptom Assessment — Professional Medical Review Required"
 
 def _extract_medications_guidance(text: str, is_emergency: bool) -> List[str]:
     meds: List[str] = []
@@ -562,14 +575,11 @@ def format_compact_whatsapp_card(text: str) -> str:
     condition = _truncate_clean(condition, 110)
     lines.append(f"🩺 Suspected Diagnosis: {condition}")
 
-    # Extract Council confidence
-    conf_match = (
-        re.search(r'([0-9]{1,3}%)\s*(?:Consensus|Confidence|Agreement)', text, re.IGNORECASE) or
-        re.search(r'(?:Confidence|Consensus|Agreement)[:\-]?\*?\s*([0-9]{1,3}%)', text, re.IGNORECASE) or
-        re.search(r'Confidence:\*?\s*(\w+)', text, re.IGNORECASE)
-    )
+    conf_match = re.search(r'\((\d+%\s*(?:Confidence|Consensus)?)\)', text, re.IGNORECASE) or re.search(r'(\d+%\s*(?:Confidence|Consensus))', text, re.IGNORECASE)
     if conf_match:
-        lines.append(f"📊 Council Consensus: {conf_match.group(1)} Agreement")
+        lines.append(f"📊 Council Consensus: {conf_match.group(1).strip()} (Physician review recommended)")
+    else:
+        lines.append("⚖️ Clinical Assessment: Multi-agent safety review (Physician verification required)")
 
     # 3. Immediate Actions (Max 2 concise steps)
     actions = []
@@ -630,7 +640,7 @@ def format_compact_whatsapp_card(text: str) -> str:
     lines.append("• Reply 5 to find PM-JAY doctors & book slot")
     lines.append("• Reply sos for instant emergency ambulance (108)")
     lines.append("• Reply full for the complete clinical report")
-    lines.append("\n🌿 Powered by Synapse-OS Multi-Agent Swarm")
+    lines.append("\n🌿 Powered by Sanjeevni-OS (Google Gemini Swarm)")
 
     card_str = "\n".join(lines)
     return strip_markdown_to_plain_text(card_str)
@@ -858,7 +868,10 @@ async def _dispatch_inbound_whatsapp_message(
     caption: str = ""
 ) -> Dict[str, Any]:
     session = session_manager.get_session(sender_phone)
-    user_lang = session["context"].get("lang") or detect_language_script(message_text)
+    detected_lang = detect_language_script(message_text)
+    if detected_lang != "en":
+        session["context"]["lang"] = detected_lang
+    user_lang = session["context"].get("lang") or detected_lang
 
     # 3. Handle Medical Image Upload (FractureNet YOLOv8 / MONAI / TrOCR)
     if msg_type == "image" or image_base64 or media_id:
@@ -1012,9 +1025,26 @@ async def _dispatch_inbound_whatsapp_message(
             dispatch_res = await send_whatsapp_message(to_phone=sender_phone, text=retry_msg)
             return {"status": "processed", "type": "language_retry"}
 
-    # 7. Greeting / Main Menu Trigger
-    if text_lower in ("hi", "hello", "hey", "menu", "help", "start", "guide", "synapse", "synapseos", "sanjeevni", "options"):
-        if not session["context"].get("lang"):
+    # 7. Greeting / Main Menu Trigger (supports English & Indic scripts)
+    native_greetings = (
+        "hi", "hello", "hey", "menu", "help", "start", "guide", "synapse", "synapseos", "sanjeevni", "options",
+        "नमस्ते", "नमस्कार", "வணக்கம்", "নমস্কার", "నమస్కారం", "హలో", "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ", "નમસ્તે", "നമസ്കാരം", "ନମସ୍କାର",
+        "namaste", "pranam", "vanakkam", "namaskara"
+    )
+    if text_lower in native_greetings:
+        chosen_lang = session["context"].get("lang") or detected_lang
+        if chosen_lang and chosen_lang != "en" and chosen_lang in LOCALIZED_MENUS:
+            active_menu = LOCALIZED_MENUS[chosen_lang]
+            dispatch_res = await send_whatsapp_message(to_phone=sender_phone, text=active_menu)
+            return {
+                "status": "processed",
+                "type": "menu_dispatched",
+                "language": chosen_lang,
+                "sender": sender_phone,
+                "dispatch": dispatch_res,
+                "reply_dispatched": dispatch_res
+            }
+        elif not session["context"].get("lang"):
             session_manager.set_flow(sender_phone, "LANG_SELECT")
             dispatch_res = await send_whatsapp_message(to_phone=sender_phone, text=LANGUAGE_SELECTION_MENU)
             return {
@@ -1025,7 +1055,6 @@ async def _dispatch_inbound_whatsapp_message(
                 "reply_dispatched": dispatch_res
             }
         else:
-            chosen_lang = session["context"].get("lang", "en")
             active_menu = LOCALIZED_MENUS.get(chosen_lang, LOCALIZED_MENUS["en"])
             dispatch_res = await send_whatsapp_message(to_phone=sender_phone, text=active_menu)
             return {
@@ -1146,6 +1175,15 @@ async def _dispatch_inbound_whatsapp_message(
 
             if drug_res.get("safe_alternatives"):
                 reply_parts.append(f"\n💡 Safe Alternative: {', '.join(drug_res['safe_alternatives'][:2])}")
+
+            savings_data = drug_res.get("jan_aushadhi_savings")
+            if savings_data and savings_data.get("medicines_matched_count", 0) > 0:
+                reply_parts.append(
+                    f"\n💰 Jan Aushadhi Generic Savings (PMBJP):\n"
+                    f"• Branded MRP: ₹{savings_data['total_branded_mrp_inr']:.0f} | Jan Aushadhi Generic: ₹{savings_data['total_jan_aushadhi_price_inr']:.0f}\n"
+                    f"• You Save: ₹{savings_data['total_savings_inr']:.0f} ({savings_data['overall_savings_percentage']}% Savings!)\n"
+                    f"🏪 Available at nearest Jan Aushadhi Kendra (Govt. of India)."
+                )
 
             reply_parts.append("\n━━━━━━━━━━━━━━━━━━━━\n🌿 Powered by Sanjeevni-OS")
             reply_text = "\n".join(reply_parts)
@@ -1280,10 +1318,42 @@ async def _dispatch_inbound_whatsapp_message(
             "reply_dispatched": dispatch_res
         }
 
-    # 14. Command Option 8: District Outbreak Alerts
+    # 14. Command Option 8: District Outbreak & PIN-Code Ward Heatmap
     if text_lower == "8" or text_lower.startswith("8 "):
-        district_query = message_text[2:].strip() if text_lower.startswith("8 ") else "Delhi"
-        outbreak_res = get_district_outbreak_risk(district_query or "Delhi")["data"]
+        param = message_text[2:].strip() if text_lower.startswith("8 ") else "Delhi"
+        from backend.app.agents.outbreak_agent import get_pincode_outbreak_heatmap, get_district_outbreak_risk
+        
+        # Check if user passed a 6-digit Indian PIN Code (e.g. "8 110005")
+        pin_search = re.search(r'\b\d{6}\b', param)
+        if pin_search:
+            pin_match = pin_search.group(0)
+            heatmap = get_pincode_outbreak_heatmap(pincode=pin_match)
+            wards = heatmap.get("wards", [])
+            if wards:
+                w = wards[0]
+                reply_parts = [
+                    f"🗺️ MUNICIPAL WARD SURVEILLANCE ({w['pincode']})",
+                    "━━━━━━━━━━━━━━━━━━━━",
+                    f"📍 {w['ward_name']} ({w['city']})",
+                    f"⚠️ Risk Level: {w['risk_badge']}",
+                    f"🦠 Predicted Pathogen: {w['predicted_pathogen']}",
+                    f"📊 WhatsApp Triage Signals (24h): {w['active_signals_24h']}",
+                    f"📈 Effective Reproduction Number (Rt): {w['effective_reproduction_rt']}",
+                    f"📉 7-Day Velocity: {w['trend_7d']}",
+                    f"\n📋 Municipal Directives:\n{w['containment_action']}",
+                    "━━━━━━━━━━━━━━━━━━━━\n🌿 Powered by Sanjeevni-OS (City Immune Grid)"
+                ]
+                reply_text = "\n".join(reply_parts)
+                dispatch_res = await send_whatsapp_message(to_phone=sender_phone, text=reply_text)
+                return {
+                    "status": "processed",
+                    "type": "ward_heatmap",
+                    "sender": sender_phone,
+                    "dispatch": dispatch_res,
+                    "reply_dispatched": dispatch_res
+                }
+
+        outbreak_res = get_district_outbreak_risk(param or "Delhi")["data"]
         reply_parts = [
             f"🚨 DISTRICT OUTBREAK SURVEILLANCE ({outbreak_res['district']})",
             "━━━━━━━━━━━━━━━━━━━━",
@@ -1292,7 +1362,8 @@ async def _dispatch_inbound_whatsapp_message(
             f"• Weekly Cases: {outbreak_res['weekly_cases']} ({outbreak_res['velocity_pct']})",
             f"\n📋 Advisory: {outbreak_res['preventive_advisory']}",
             f"📞 Helpdesk: {outbreak_res['helpline']}",
-            "━━━━━━━━━━━━━━━━━━━━\n🌿 Powered by Sanjeevni-OS"
+            f"\n💡 Tip: Send '8 <6-digit PIN>' (e.g. '8 110005') for ward-level micro-heatmap.",
+            "━━━━━━━━━━━━━━━━━━━━\n🌿 Powered by Sanjeevni-OS (City Immune Grid)"
         ]
         reply_text = "\n".join(reply_parts)
         dispatch_res = await send_whatsapp_message(to_phone=sender_phone, text=reply_text)
@@ -1362,7 +1433,8 @@ async def _dispatch_inbound_whatsapp_message(
         agent_result = await orchestrate_health_request(
             message=clean_text,
             channel="whatsapp",
-            user_id=sender_phone
+            user_id=sender_phone,
+            language=user_lang or "en"
         )
         session["context"]["last_full_report"] = agent_result.final_response
         response_text = format_response_for_whatsapp(agent_result.final_response, compact=True)

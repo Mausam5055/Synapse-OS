@@ -68,12 +68,12 @@ async def orchestrate_health_request(
     if not safety.is_safe:
         state.safety_cleared = False
         state.safety_message = safety.response
-        if safety.category == "crisis":
-            state.detected_intent = "CRISIS_INTERVENTION"
+        if safety.category in ("crisis", "pediatric_contraindication"):
+            state.detected_intent = "CRISIS_INTERVENTION" if safety.category == "crisis" else "PEDIATRIC_CONTRAINDICATION"
             state.final_response = safety.response
             state.trace.append(AgentTraceStep(
                 agent_name="Deterministic Safety Gate",
-                action=f"🚨 Immediate Crisis Intercepted ({safety.category})",
+                action=f"🚨 Immediate Clinical Intercept ({safety.category})",
                 duration_ms=int((time.time() - start_time) * 1000),
                 details={"category": safety.category}
             ))
@@ -132,17 +132,17 @@ async def orchestrate_health_request(
         await drug_agent_node(state)
         await verification_agent_node(state)
 
-    # 4. Synthesize Final Consolidated Response via LLM (Groq / OpenRouter)
+    # 4. Synthesize Final Consolidated Response via LLM (Google Gemini Hero Layer)
     synth_start = time.time()
     system_prompt = (
-        "You are SynapseOS AI, an intelligent, empathetic, direct medical assistant for Indian healthcare.\n\n"
-        "STRICT RULES FOR YOUR RESPONSE:\n"
-        "1. BE SHORT, SIMPLE, AND TO THE POINT (under 120-150 words). Never use corporate filler, repetitive preamble, or robotic meta-talk (like 'The primary clinical impression is that this is a general informational inquiry...').\n"
-        "2. Directly answer the user's specific query in the very first sentence:\n"
-        "   - If asking about a medicine (e.g. 'what is Calpol for'): State clearly what it is, its uses in India, typical usage (take after food), and key safety precautions (e.g. max daily dose, don't combine with same generics).\n"
-        "   - If reporting symptoms: Provide likely condition, 2-3 clear relief steps, Indian medicines & how to take them (e.g. Dolo 650 after food, Electral ORS), or safety withholding advice if emergency.\n"
-        "   - If acute emergency (chest pain, stroke, severe breathing difficulty, meningitis): Immediately instruct to call 112/108 or go to the nearest emergency room; caution against oral self-medication.\n"
-        "3. Use concise bullet points and clean structure. Keep it easy to read on mobile."
+        "You are Sanjeevni / SynapseOS AI, an intelligent, empathetic, direct medical assistant for Indian healthcare powered by Google Gemini.\n\n"
+        "STRICT CLINICAL SAFETY RULES FOR YOUR RESPONSE:\n"
+        "1. BE SHORT, SIMPLE, AND TO THE POINT (under 120-150 words). Never use corporate filler or robotic preamble.\n"
+        "2. PEDIATRIC DOSAGE GUARD: If the query involves a child, toddler, or infant, NEVER recommend adult tablets (such as Dolo 650 or adult NSAIDs). Mandate in-person pediatrician review for weight-based syrup. If Aspirin is asked for a child with fever, strictly warn of Reye's syndrome.\n"
+        "3. HIGH-RISK & UNCERTAIN CASES: State clearly: 'This system cannot safely determine an appropriate dose. Please consult a qualified healthcare professional.'\n"
+        "4. EMERGENCY NUMBERS: Always cite Indian helplines: 108 (Ambulance) and 112 (National Emergency). Never cite 911.\n"
+        "5. HUMBLE FRAMING: Present output as an 'AI-assisted assessment — physician review recommended'. Never claim fake 96% confidence or council consensus.\n"
+        "6. Use concise bullet points and clean mobile-friendly structure."
     )
     
     agent_findings_context = f"""
@@ -160,13 +160,13 @@ AI Council Verification: {state.verification}
         {"role": "user", "content": f"Consolidate these specialist agent findings for the patient:\n{agent_findings_context}"}
     ]
 
-    llm_synthesis = await call_llm(messages, temperature=0.3, max_tokens=400)
+    llm_synthesis = await call_llm(messages, temperature=0.2, max_tokens=450)
 
     if llm_synthesis and "unreachable" not in llm_synthesis.lower() and not llm_synthesis.strip().startswith('{"error":'):
         state.final_response = llm_synthesis
         state.trace.append(AgentTraceStep(
-            agent_name="Swarm Synthesis & Reasoning Engine (Groq)",
-            action="Synthesized multi-agent findings into comprehensive clinical guidance",
+            agent_name="Swarm Synthesis & Reasoning Engine (Gemini 2.0 Flash)",
+            action="Synthesized multi-agent findings into grounded clinical guidance",
             duration_ms=int((time.time() - synth_start) * 1000)
         ))
     else:
@@ -197,11 +197,30 @@ AI Council Verification: {state.verification}
             if state.triage_data.get("recommended_specialist"):
                 parts.append(f"• **Recommended Care:** {state.triage_data['recommended_specialist']}")
 
+            from backend.app.core.safety_router import is_pediatric_query
+            is_child = is_pediatric_query(message)
             t_level = state.triage_data.get("triage_level", "HOME_CARE")
-            if t_level == "EMERGENCY_CARE":
-                parts.append("\n**💊 Medications & Relief (India):**\n• ⚠️ *Strictly Withhold Self-Medication:* Do not take painkillers or anti-emetics before hospital examination (masks neurological & abdominal signs).\n• *At Hospital:* IV fluids and emergency targeted therapy will be administered.")
-            else:
-                parts.append("\n**💊 Medications & Relief (India):**\n• *Dolo 650 (Paracetamol 650mg):* 1 tablet after meals (with water) for fever/pain (max 3/day).\n• *Electral ORS:* 1 packet in 1L clean drinking water; sip throughout the day for active hydration.\n• *Pan-40 (Pantoprazole):* 1 tablet 30 minutes before breakfast on empty stomach if gastric acidity occurs.")
+
+            if is_child:
+                parts.append(
+                    "\n**👶 Pediatric Safety Guidance:**\n"
+                    "• ⚠️ *Strict Warning:* Never administer adult tablets (such as Dolo 650 or adult NSAIDs) to young children or toddlers.\n"
+                    "• *Dosage Caution:* This system cannot safely determine an appropriate pediatric dose. Children require exact weight-based pediatric drops or syrup prescribed by a pediatrician.\n"
+                    "• *Action:* Please consult a qualified pediatrician immediately."
+                )
+            elif t_level == "EMERGENCY_CARE":
+                parts.append(
+                    "\n**💊 Medications & Relief (India):**\n"
+                    "• ⚠️ *Strictly Withhold Oral Self-Medication:* Do not administer painkillers, anti-emetics, or sedatives prior to medical examination (masks acute surgical and neurological signs).\n"
+                    "• *At Hospital:* Call 108 for emergency ambulance; emergency stabilization will be administered on arrival."
+                )
+            elif any(k in message.lower() for k in ["fever", "bukhar", "pain", "headache", "body ache", "cramp"]):
+                parts.append(
+                    "\n**💊 Medications & Relief (India — Adult Reference Only):**\n"
+                    "• *Dolo 650 (Paracetamol 650mg):* 1 tablet after meals (with water) for adult fever/pain (max 3/day).\n"
+                    "• *Electral ORS:* 1 packet in 1L clean drinking water; sip throughout the day for active hydration.\n"
+                    "• *Pan-40 (Pantoprazole):* 1 tablet 30 minutes before breakfast on empty stomach if gastric acidity occurs."
+                )
 
         if state.drug_check and state.drug_check.get("detected_medications"):
             meds = ", ".join(state.drug_check["detected_medications"])
@@ -210,14 +229,15 @@ AI Council Verification: {state.verification}
                 for item in state.drug_check["interactions"]:
                     parts.append(f"⚠️ **Warning ({item.get('severity', 'Risk')}):** {item.get('effect')} — *{item.get('recommended_action')}*")
             else:
-                parts.append("✅ No known high-risk drug-to-drug interactions detected.")
+                parts.append("ℹ️ No critical interactions flagged in basic screening — physician review advised.")
 
         if state.scan_analysis:
             parts.append(f"\n**Imaging Summary:** {state.scan_analysis.get('ai_diagnosis_summary')}")
             parts.append(f"*{state.scan_analysis.get('plain_english_explanation')}*")
 
         if state.verification:
-            parts.append(f"\n**AI Council Consensus:** {state.verification.get('consensus_confidence_score', 95)}% Agreement ({state.verification.get('council_verdict')})")
+            verdict = state.verification.get("council_verdict", "Multi-agent safety review completed.")
+            parts.append(f"\n**🩺 AI-Assisted Assessment:** {verdict} (Physician review recommended)")
 
         state.final_response = "\n\n".join(parts)
 

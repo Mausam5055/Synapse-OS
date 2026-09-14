@@ -56,6 +56,30 @@ KNOWN_INTERACTIONS = [
         "effect": "Divalent/trivalent cations (aluminum, magnesium, calcium) chelate fluoroquinolones, preventing absorption.",
         "action": "Take ciprofloxacin 2 hours before or 6 hours after antacids/dairy."
     },
+    {
+        "pair": {"combiflam", "telmisartan"},
+        "severity": "High Risk — Acute Kidney Injury (AKI)",
+        "effect": "Combiflam (Ibuprofen) constricts afferent renal arterioles while Telmisartan dilates efferent arterioles, causing acute drop in glomerular filtration (AKI) and blunting BP control.",
+        "action": "Avoid combination. Use Paracetamol alone for pain or consult cardiologist for renal-sparing analgesia."
+    },
+    {
+        "pair": {"ibuprofen", "telmisartan"},
+        "severity": "High Risk — Acute Kidney Injury (AKI)",
+        "effect": "NSAIDs impair renal perfusion and blunt antihypertensive efficacy of ARBs (Telmisartan).",
+        "action": "Avoid concurrent use; monitor renal function (serum creatinine, eGFR) and blood pressure."
+    },
+    {
+        "pair": {"ibuprofen", "metformin"},
+        "severity": "High Risk — Lactic Acidosis Vulnerability",
+        "effect": "NSAID-induced acute renal impairment reduces Metformin clearance, escalating the risk of fatal Metformin-Associated Lactic Acidosis (MALA).",
+        "action": "Exercise extreme caution; ensure normal renal function before taking NSAIDs with Metformin."
+    },
+    {
+        "pair": {"combiflam", "metformin"},
+        "severity": "High Risk — Lactic Acidosis Vulnerability",
+        "effect": "Ibuprofen in Combiflam can induce acute renal strain, reducing Metformin excretion and risking lactic acidosis.",
+        "action": "Avoid self-medicating with Combiflam; consult treating diabetologist."
+    },
 ]
 
 GENERIC_EQUIVALENTS = {
@@ -70,12 +94,300 @@ GENERIC_EQUIVALENTS = {
     "ecosprin": "Aspirin (Acetylsalicylic Acid) 75mg/150mg Gastro-resistant",
 }
 
+JAN_AUSHADHI_PRICE_DATABASE = {
+    "augmentin": {
+        "brand_name": "Augmentin 625 Duo",
+        "generic_name": "Amoxicillin (500mg) + Potassium Clavulanate (125mg)",
+        "branded_mrp": 215.0,
+        "jan_aushadhi_price": 58.0,
+        "category": "Antibiotic (Broad Spectrum)",
+        "unit": "Strip of 10 Tablets"
+    },
+    "amoxicillin": {
+        "brand_name": "Novamox 500 / Mox 500",
+        "generic_name": "Amoxicillin 500mg",
+        "branded_mrp": 90.0,
+        "jan_aushadhi_price": 28.0,
+        "category": "Antibiotic",
+        "unit": "Strip of 10 Capsules"
+    },
+    "telma": {
+        "brand_name": "Telma 40",
+        "generic_name": "Telmisartan 40mg",
+        "branded_mrp": 145.0,
+        "jan_aushadhi_price": 18.0,
+        "category": "Antihypertensive (ARB)",
+        "unit": "Strip of 10 Tablets"
+    },
+    "telmisartan": {
+        "brand_name": "Telma 40 / Micardis",
+        "generic_name": "Telmisartan 40mg",
+        "branded_mrp": 145.0,
+        "jan_aushadhi_price": 18.0,
+        "category": "Antihypertensive (ARB)",
+        "unit": "Strip of 10 Tablets"
+    },
+    "glycomet": {
+        "brand_name": "Glycomet 500",
+        "generic_name": "Metformin Hydrochloride 500mg",
+        "branded_mrp": 72.0,
+        "jan_aushadhi_price": 14.0,
+        "category": "Antidiabetic (Biguanide)",
+        "unit": "Strip of 10 Tablets"
+    },
+    "metformin": {
+        "brand_name": "Glycomet 500",
+        "generic_name": "Metformin Hydrochloride 500mg",
+        "branded_mrp": 72.0,
+        "jan_aushadhi_price": 14.0,
+        "category": "Antidiabetic (Biguanide)",
+        "unit": "Strip of 10 Tablets"
+    },
+    "pan": {
+        "brand_name": "Pan 40",
+        "generic_name": "Pantoprazole 40mg Gastro-Resistant",
+        "branded_mrp": 165.0,
+        "jan_aushadhi_price": 22.0,
+        "category": "Proton Pump Inhibitor (Acidity / GERD)",
+        "unit": "Strip of 10 Tablets"
+    },
+    "pan d": {
+        "brand_name": "Pan-D",
+        "generic_name": "Pantoprazole (40mg) + Domperidone (30mg)",
+        "branded_mrp": 185.0,
+        "jan_aushadhi_price": 26.0,
+        "category": "Antacid & Antiemetic",
+        "unit": "Strip of 10 Capsules"
+    },
+    "pantocid": {
+        "brand_name": "Pantocid 40",
+        "generic_name": "Pantoprazole 40mg",
+        "branded_mrp": 160.0,
+        "jan_aushadhi_price": 22.0,
+        "category": "Proton Pump Inhibitor",
+        "unit": "Strip of 10 Tablets"
+    },
+    "pantoprazole": {
+        "brand_name": "Pan 40 / Pantocid",
+        "generic_name": "Pantoprazole 40mg",
+        "branded_mrp": 165.0,
+        "jan_aushadhi_price": 22.0,
+        "category": "Proton Pump Inhibitor",
+        "unit": "Strip of 10 Tablets"
+    },
+    "atorva": {
+        "brand_name": "Atorva 10 / Lipitor",
+        "generic_name": "Atorvastatin Calcium 10mg",
+        "branded_mrp": 120.0,
+        "jan_aushadhi_price": 16.0,
+        "category": "Lipid-Lowering Statin (Cardiovascular)",
+        "unit": "Strip of 10 Tablets"
+    },
+    "atorvastatin": {
+        "brand_name": "Atorva 10",
+        "generic_name": "Atorvastatin Calcium 10mg",
+        "branded_mrp": 120.0,
+        "jan_aushadhi_price": 16.0,
+        "category": "Lipid-Lowering Statin",
+        "unit": "Strip of 10 Tablets"
+    },
+    "thyronorm": {
+        "brand_name": "Thyronorm 100mcg",
+        "generic_name": "Thyroxine Sodium 100mcg",
+        "branded_mrp": 195.0,
+        "jan_aushadhi_price": 32.0,
+        "category": "Thyroid Hormone Replacement",
+        "unit": "Bottle of 100 Tablets"
+    },
+    "levothyroxine": {
+        "brand_name": "Thyronorm / Eltroxin",
+        "generic_name": "Thyroxine Sodium 100mcg",
+        "branded_mrp": 195.0,
+        "jan_aushadhi_price": 32.0,
+        "category": "Thyroid Hormone",
+        "unit": "Bottle of 100 Tablets"
+    },
+    "dolo": {
+        "brand_name": "Dolo 650 / Calpol 650",
+        "generic_name": "Paracetamol 650mg",
+        "branded_mrp": 34.0,
+        "jan_aushadhi_price": 12.0,
+        "category": "Analgesic & Antipyretic",
+        "unit": "Strip of 15 Tablets"
+    },
+    "crocin": {
+        "brand_name": "Crocin 650",
+        "generic_name": "Paracetamol 650mg",
+        "branded_mrp": 34.0,
+        "jan_aushadhi_price": 12.0,
+        "category": "Analgesic & Antipyretic",
+        "unit": "Strip of 15 Tablets"
+    },
+    "paracetamol": {
+        "brand_name": "Dolo 650 / Crocin",
+        "generic_name": "Paracetamol 650mg",
+        "branded_mrp": 34.0,
+        "jan_aushadhi_price": 12.0,
+        "category": "Analgesic & Antipyretic",
+        "unit": "Strip of 15 Tablets"
+    },
+    "combiflam": {
+        "brand_name": "Combiflam",
+        "generic_name": "Ibuprofen (400mg) + Paracetamol (325mg)",
+        "branded_mrp": 48.0,
+        "jan_aushadhi_price": 15.0,
+        "category": "NSAID Pain & Inflammation",
+        "unit": "Strip of 20 Tablets"
+    },
+    "ecosprin": {
+        "brand_name": "Ecosprin 75",
+        "generic_name": "Aspirin 75mg Gastro-Resistant",
+        "branded_mrp": 15.0,
+        "jan_aushadhi_price": 4.5,
+        "category": "Antiplatelet / Cardioprotective",
+        "unit": "Strip of 14 Tablets"
+    },
+    "aspirin": {
+        "brand_name": "Ecosprin 75 / Disprin",
+        "generic_name": "Aspirin (Acetylsalicylic Acid) 75mg",
+        "branded_mrp": 15.0,
+        "jan_aushadhi_price": 4.5,
+        "category": "Antiplatelet",
+        "unit": "Strip of 14 Tablets"
+    },
+    "azithral": {
+        "brand_name": "Azithral 500",
+        "generic_name": "Azithromycin 500mg",
+        "branded_mrp": 135.0,
+        "jan_aushadhi_price": 42.0,
+        "category": "Macrolide Antibiotic (Respiratory)",
+        "unit": "Strip of 5 Tablets"
+    },
+    "azithromycin": {
+        "brand_name": "Azithral 500 / Zithromax",
+        "generic_name": "Azithromycin 500mg",
+        "branded_mrp": 135.0,
+        "jan_aushadhi_price": 42.0,
+        "category": "Macrolide Antibiotic",
+        "unit": "Strip of 5 Tablets"
+    },
+    "montair": {
+        "brand_name": "Montair-LC",
+        "generic_name": "Montelukast (10mg) + Levocetirizine (5mg)",
+        "branded_mrp": 220.0,
+        "jan_aushadhi_price": 32.0,
+        "category": "Antiallergic & Bronchodilator",
+        "unit": "Strip of 10 Tablets"
+    },
+    "cetirizine": {
+        "brand_name": "Cetzine 10 / Alerid",
+        "generic_name": "Cetirizine Hydrochloride 10mg",
+        "branded_mrp": 42.0,
+        "jan_aushadhi_price": 9.0,
+        "category": "Antihistamine",
+        "unit": "Strip of 10 Tablets"
+    },
+    "amlong": {
+        "brand_name": "Amlong 5 / Norvasc",
+        "generic_name": "Amlodipine 5mg",
+        "branded_mrp": 65.0,
+        "jan_aushadhi_price": 8.0,
+        "category": "Calcium Channel Blocker (BP)",
+        "unit": "Strip of 10 Tablets"
+    },
+    "amlodipine": {
+        "brand_name": "Amlong 5",
+        "generic_name": "Amlodipine 5mg",
+        "branded_mrp": 65.0,
+        "jan_aushadhi_price": 8.0,
+        "category": "Calcium Channel Blocker",
+        "unit": "Strip of 10 Tablets"
+    },
+    "ciprofloxacin": {
+        "brand_name": "Ciprogut 500 / Ciplox 500",
+        "generic_name": "Ciprofloxacin 500mg",
+        "branded_mrp": 60.0,
+        "jan_aushadhi_price": 16.0,
+        "category": "Fluoroquinolone Antibiotic",
+        "unit": "Strip of 10 Tablets"
+    }
+}
+
+
+def calculate_jan_aushadhi_savings(items: Any) -> Dict[str, Any]:
+    """
+    Calculates direct rupee and percentage savings by switching from private branded medicines
+    to Pradhan Mantri Bhartiya Janaushadhi Pariyojana (PMBJP) generic equivalents.
+    """
+    if isinstance(items, str):
+        candidates = extract_candidate_drugs(items)
+        if "pan" in items.lower() and "d" in items.lower():
+            candidates.append("pan d")
+    elif isinstance(items, list):
+        candidates = []
+        for it in items:
+            it_str = str(it).lower().strip()
+            candidates.extend(extract_candidate_drugs(it_str))
+            if "pan d" in it_str or "pan-d" in it_str:
+                candidates.append("pan d")
+    else:
+        candidates = []
+
+    matched_items = []
+    seen = set()
+    total_branded = 0.0
+    total_jan_aushadhi = 0.0
+
+    for cand in candidates:
+        cand_key = cand.lower().strip()
+        if cand_key in JAN_AUSHADHI_PRICE_DATABASE and cand_key not in seen:
+            seen.add(cand_key)
+            record = JAN_AUSHADHI_PRICE_DATABASE[cand_key]
+            branded_mrp = record["branded_mrp"]
+            ja_price = record["jan_aushadhi_price"]
+            savings_rs = round(branded_mrp - ja_price, 2)
+            savings_pct = round((savings_rs / branded_mrp) * 100, 1)
+
+            matched_items.append({
+                "query_token": cand,
+                "brand_name": record["brand_name"],
+                "generic_composition": record["generic_name"],
+                "category": record["category"],
+                "unit": record["unit"],
+                "branded_mrp_inr": branded_mrp,
+                "jan_aushadhi_price_inr": ja_price,
+                "savings_inr": savings_rs,
+                "savings_percentage": savings_pct
+            })
+            total_branded += branded_mrp
+            total_jan_aushadhi += ja_price
+
+    total_savings = round(total_branded - total_jan_aushadhi, 2)
+    overall_pct = round((total_savings / total_branded) * 100, 1) if total_branded > 0 else 0.0
+
+    return {
+        "status": "CALCULATED",
+        "medicines_matched_count": len(matched_items),
+        "total_branded_mrp_inr": round(total_branded, 2),
+        "total_jan_aushadhi_price_inr": round(total_jan_aushadhi, 2),
+        "total_savings_inr": total_savings,
+        "overall_savings_percentage": overall_pct,
+        "itemized_savings": matched_items,
+        "affordability_verdict": f"Save ₹{int(total_savings)} ({overall_pct}%) with PMBJP Jan Aushadhi Generic Equivalents" if total_savings > 0 else "Generic equivalents available at Jan Aushadhi Kendras.",
+        "scheme_details": {
+            "program_name": "Pradhan Mantri Bhartiya Janaushadhi Pariyojana (PMBJP)",
+            "governing_body": "Pharmaceuticals & Medical Devices Bureau of India (PMBI), Ministry of Chemicals & Fertilizers",
+            "kendras_active": "10,000+ Kendras Nationwide",
+            "locator_tool": "Download 'Jan Aushadhi Sugam' Mobile App or visit http://janaushadhi.gov.in"
+        }
+    }
+
 KNOWN_DRUG_NAMES = {
     "warfarin", "aspirin", "ibuprofen", "paracetamol", "acetaminophen",
     "metformin", "lisinopril", "atorvastatin", "sildenafil", "nitroglycerin",
     "clarithromycin", "ciprofloxacin", "pantoprazole", "amoxicillin",
     "crocin", "dolo", "combiflam", "augmentin", "pantocid", "pan", "glycomet",
-    "telma", "ecosprin", "cetirizine", "azithromycin", "omeprazole", "clopidogrel",
+    "telma", "telmisartan", "ecosprin", "cetirizine", "azithromycin", "omeprazole", "clopidogrel",
     "heparin", "digoxin", "amiodarone", "levothyroxine", "losartan", "amlodipine"
 }
 
@@ -147,20 +459,42 @@ async def evaluate_drug_safety(text: str) -> Dict[str, Any]:
                 "recommended_action": item["action"]
             })
 
+    from backend.app.core.safety_router import is_pediatric_query, ASPIRIN_PATTERNS
+    is_ped = is_pediatric_query(text)
+    has_asp = any(re.search(p, (text or "").lower()) for p in ASPIRIN_PATTERNS)
+    if is_ped and has_asp:
+        interactions_found.append({
+            "drugs": ["aspirin", "pediatric_patient"],
+            "severity": "CRITICAL / CONTRAINDICATED (Reye's Syndrome Risk)",
+            "effect": "Administering aspirin to children with viral illness/fever carries severe risk of fatal Reye's Syndrome (acute encephalopathy and hepatic failure).",
+            "recommended_action": "Strictly withhold Aspirin. Consult a pediatrician for weight-based pediatric fever relief."
+        })
+
     # Generic mappings
     generic_info = []
     for d in detected_drugs:
         if d in GENERIC_EQUIVALENTS:
             generic_info.append({"brand": d, "composition": GENERIC_EQUIVALENTS[d]})
 
+    # Clinically sound safe_to_combine: NEVER give unconditional blanket approval
+    if interactions_found:
+        safe_to_combine = False
+    elif len(detected_drugs) >= 2:
+        safe_to_combine = False  # Polypharmacy always requires physician/pharmacist reconciliation
+    else:
+        safe_to_combine = None
+
+    savings = calculate_jan_aushadhi_savings(detected_drugs)
+
     fallback = {
         "detected_medications": detected_drugs,
         "interactions_count": len(interactions_found),
         "interactions": interactions_found,
         "generic_equivalents": generic_info,
-        "safe_to_combine": len(interactions_found) == 0 if len(detected_drugs) >= 2 else None,
-        "clinical_pharmacology_summary": "Standard interaction screening completed against NIH RxNav database.",
-        "disclaimer": "Always verify drug regimens with a registered pharmacist or prescribing physician."
+        "jan_aushadhi_savings": savings,
+        "safe_to_combine": safe_to_combine,
+        "clinical_pharmacology_summary": "Screening completed against NIH RxNav and clinical contraindication guidelines. Professional clinician review recommended.",
+        "disclaimer": "This system cannot safely authorize unsupervised polypharmacy. Always verify drug regimens with a registered healthcare professional."
     }
 
     return fallback
@@ -176,8 +510,8 @@ async def drug_agent_node(state: SynapseOSState) -> SynapseOSState:
     
     duration = int((time.time() - start) * 1000)
     state.trace.append(AgentTraceStep(
-        agent_name="Pharmacology & Drug Safety Agent (RxNav + LLM)",
-        action=f"Scanned {len(res.get('detected_medications', []))} medications via NIH RxNav & Groq/OpenRouter",
+        agent_name="Pharmacology & Drug Safety Agent (RxNav + Gemini)",
+        action=f"Scanned {len(res.get('detected_medications', []))} medications via NIH RxNav & Gemini Swarm",
         duration_ms=duration,
         details={"detected": res.get("detected_medications", []), "hazards": len(res.get("interactions", []))}
     ))

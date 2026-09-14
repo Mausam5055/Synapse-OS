@@ -78,37 +78,125 @@ EMERGENCY_PATTERNS = [
     r"thunderclap headache", r"poisoning", r"swallowed poison", r"overdosed",
 ]
 
+PEDIATRIC_AGE_PATTERNS = [
+    r"\b(child|children|kid|kids|toddler|toddlers|infant|infants|baby|babies|newborn|neonate)\b",
+    r"\b(\d+)\s*(-|\s)?(year|yr|month|mo|week|wk)s?\s*(old)?\b",
+    r"\b(pediatric|paediatric)\b",
+    r"\b(baccha|bacche|chota baccha|shishu)\b"
+]
+
+ASPIRIN_PATTERNS = [
+    r"\b(aspirin|disprin|ecosprin|acetylsalicylic|asa)\b"
+]
+
+VIRAL_OR_FEVER_PATTERNS = [
+    r"\b(fever|viral|flu|cold|cough|chickenpox|varicella|influenza|bukhār|bukhar)\b"
+]
+
+
+def is_pediatric_query(text: str) -> bool:
+    """Checks whether the query pertains to a child or infant."""
+    normalized = (text or "").lower()
+    for pattern in PEDIATRIC_AGE_PATTERNS:
+        match = re.search(pattern, normalized)
+        if match:
+            # If matched digit-year-old, check if <= 14 years
+            groups = match.groups()
+            if len(groups) >= 3 and groups[2] in ("year", "yr"):
+                try:
+                    age = int(groups[0])
+                    if age > 14:
+                        continue
+                except Exception:
+                    pass
+            return True
+    return False
+
+
+def check_pediatric_aspirin_risk(text: str) -> Optional[str]:
+    """
+    Checks for the lethal pediatric contraindication of Aspirin in children with viral illness / fever (Reye's Syndrome).
+    """
+    normalized = (text or "").lower()
+    has_pediatric = is_pediatric_query(normalized)
+    has_aspirin = any(re.search(p, normalized) for p in ASPIRIN_PATTERNS)
+    has_fever_or_viral = any(re.search(p, normalized) for p in VIRAL_OR_FEVER_PATTERNS)
+
+    if has_pediatric and has_aspirin:
+        return (
+            "🚨 **CRITICAL MEDICAL CONTRAINDICATION: DO NOT GIVE ASPIRIN TO CHILDREN**\n\n"
+            "• **Lethal Risk of Reye's Syndrome:** Aspirin (acetylsalicylic acid / Disprin) must **NEVER** be given to children, "
+            "toddlers, or teenagers suffering from fever or viral infections (flu, chickenpox). It triggers **Reye's Syndrome**, "
+            "a rapid, life-threatening condition causing acute brain swelling (encephalopathy) and fatal liver failure.\n\n"
+            "• **Immediate Action:**\n"
+            "  1. **Strictly Withhold Aspirin:** Do not administer any dose of Aspirin, Disprin, or Ecosprin.\n"
+            "  2. **Pediatrician Consultation:** For fever relief, pediatric formulations (such as weight-based Paracetamol drops/syrup) "
+            "must be calculated strictly by a qualified doctor based on the child's exact body weight in kilograms.\n"
+            "  3. **Emergency Care:** If Aspirin was already given and the child exhibits vomiting, extreme lethargy, confusion, or seizures, "
+            "proceed immediately to a pediatric emergency room or call **108 (Ambulance) / 112**."
+        )
+    return None
+
 
 class SafetyCheckResult:
-    def __init__(self, is_safe: bool, category: str = "safe", response: Optional[str] = None):
+    def __init__(
+        self,
+        is_safe: bool,
+        category: str = "safe",
+        response: Optional[str] = None,
+        is_pediatric: bool = False
+    ):
         self.is_safe = is_safe
-        self.category = category  # 'safe', 'crisis', 'emergency'
+        self.category = category  # 'safe', 'crisis', 'emergency', 'pediatric_contraindication'
         self.response = response
+        self.is_pediatric = is_pediatric
 
 
 def evaluate_safety(text: str, country: str = "IN") -> SafetyCheckResult:
     """
     Deterministic safety evaluation.
-    Returns SafetyCheckResult with immediate response if unsafe.
+    Evaluates:
+    1. Crisis / Self-harm patterns
+    2. Critical Pediatric Contraindications (e.g. Aspirin Reye's Syndrome)
+    3. Acute Emergency / Trauma patterns
+    4. Pediatric tagging
     """
     normalized = (text or "").lower().strip()
     if not normalized:
         return SafetyCheckResult(is_safe=True)
 
+    # 1. Immediate Crisis Check
     for pattern in CRISIS_PATTERNS:
         if re.search(pattern, normalized):
             return SafetyCheckResult(
                 is_safe=False,
                 category="crisis",
-                response=_build_crisis_response(country)
+                response=_build_crisis_response(country),
+                is_pediatric=is_pediatric_query(normalized)
             )
 
+    # 2. Critical Pediatric Contraindication (Aspirin -> Reye's Syndrome)
+    pediatric_aspirin_warning = check_pediatric_aspirin_risk(normalized)
+    if pediatric_aspirin_warning:
+        return SafetyCheckResult(
+            is_safe=False,
+            category="pediatric_contraindication",
+            response=pediatric_aspirin_warning,
+            is_pediatric=True
+        )
+
+    # 3. Acute Emergency Check
     for pattern in EMERGENCY_PATTERNS:
         if re.search(pattern, normalized):
             return SafetyCheckResult(
                 is_safe=False,
                 category="emergency",
-                response=_build_emergency_response(country)
+                response=_build_emergency_response(country),
+                is_pediatric=is_pediatric_query(normalized)
             )
 
-    return SafetyCheckResult(is_safe=True)
+    return SafetyCheckResult(
+        is_safe=True,
+        category="safe",
+        is_pediatric=is_pediatric_query(normalized)
+    )

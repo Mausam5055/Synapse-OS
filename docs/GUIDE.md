@@ -130,6 +130,6 @@ python -m pip install ultralytics
 ---
 <div align="center">
 
-### 🔹 built with love by TEAM, AC-DC FOR SMART VIThackathon(SVH)-2026
+### 🌿 Built with love for Fund My Crazy 2026 — A Google Gemini Initiative
 
 </div>

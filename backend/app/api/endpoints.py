@@ -285,6 +285,33 @@ async def prescription_interpret_endpoint(req: PrescriptionInterpretRequest):
     }
 
 
+class JanAushadhiSavingsRequest(BaseModel):
+    medicines: List[str] = Field(default=["Augmentin 625", "Telma 40", "Pan-D"], example=["Augmentin 625", "Telma 40", "Pan-D"])
+
+
+@router.post("/drug/jan-aushadhi-savings", tags=["Drug Safety & Pharmacology"])
+async def jan_aushadhi_savings_endpoint(req: JanAushadhiSavingsRequest):
+    """
+    Calculates direct rupee and percentage savings by switching to PMBJP Jan Aushadhi generic medicines.
+    Demonstrates tangible healthcare affordability for Indian households.
+    """
+    from backend.app.agents.drug_agent import calculate_jan_aushadhi_savings
+    return calculate_jan_aushadhi_savings(req.medicines)
+
+
+@router.get("/drug/jan-aushadhi-catalog", tags=["Drug Safety & Pharmacology"])
+async def jan_aushadhi_catalog_endpoint():
+    """Returns curated database of high-volume essential branded vs. Jan Aushadhi generic prices."""
+    from backend.app.agents.drug_agent import JAN_AUSHADHI_PRICE_DATABASE
+    return {
+        "status": "AVAILABLE",
+        "total_medicines": len(JAN_AUSHADHI_PRICE_DATABASE),
+        "catalog": JAN_AUSHADHI_PRICE_DATABASE,
+        "scheme": "Pradhan Mantri Bhartiya Janaushadhi Pariyojana (PMBJP)"
+    }
+
+
+
 @router.post("/scans/analyze", tags=["Vision AI"])
 async def scan_analysis_endpoint(req: ScanAnalysisRequest):
     """MONAI lesion heatmap localization & plain-language scan/prescription explanation."""
@@ -1112,6 +1139,32 @@ class OutbreakBroadcastRequest(BaseModel):
     district: str = Field(default="Delhi NCR (Central & South)", example="Delhi NCR (Central & South)")
     recipient_phone: str = Field(default="+919876543210", example="+919876543210")
     channel: str = Field(default="whatsapp", example="whatsapp | sms")
+
+
+class CommunitySignalRequest(BaseModel):
+    pincode: str = Field(default="110005", example="110005")
+    syndrome: str = Field(default="acute_febrile", example="acute_febrile | respiratory | gastrointestinal")
+    channel: str = Field(default="whatsapp", example="whatsapp | sms | web")
+
+
+@router.get("/outbreak/pincode-heatmap", tags=["IDSP Disease Surveillance"])
+async def get_pincode_heatmap_endpoint(city: Optional[str] = None, pincode: Optional[str] = None):
+    """
+    Returns granular municipal ward-level geospatial outbreak heatmaps and transmission reproduction numbers (Rt).
+    Synthesizes decentralized community WhatsApp/SMS triage signals into early-warning clusters.
+    """
+    from backend.app.agents.outbreak_agent import get_pincode_outbreak_heatmap
+    return get_pincode_outbreak_heatmap(city=city, pincode=pincode)
+
+
+@router.post("/outbreak/report-signal", tags=["IDSP Disease Surveillance"])
+async def report_community_signal_endpoint(req: CommunitySignalRequest):
+    """
+    Ingests a decentralized community symptom signal (from WhatsApp/SMS triage)
+    to update the municipal ward heatmap in real time.
+    """
+    from backend.app.agents.outbreak_agent import record_community_symptom_signal
+    return record_community_symptom_signal(pincode=req.pincode, syndrome=req.syndrome, channel=req.channel)
 
 
 @router.get("/outbreak/district-risk", tags=["IDSP Disease Surveillance"])

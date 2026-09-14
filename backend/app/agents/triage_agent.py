@@ -39,25 +39,33 @@ async def analyze_symptoms(text: str) -> Dict[str, Any]:
     detected_amber = [s for s in SYMPTOM_TAXONOMY["amber_flags"] if s in text_lower]
     detected_green = [s for s in SYMPTOM_TAXONOMY["green_flags"] if s in text_lower]
 
+    from backend.app.core.safety_router import is_pediatric_query
+    is_ped = is_pediatric_query(text)
+
     if detected_red:
         default_level = "EMERGENCY_CARE"
         default_badge = "🔴 Emergency Care (Immediate)"
-        default_action = "Please proceed immediately to the nearest Emergency Department or call 112 / 911."
-        default_specialist = "Emergency Medicine Physician / Trauma Specialist"
+        default_action = "Please proceed immediately to the nearest Emergency Department or call 108 (Ambulance) / 112."
+        default_specialist = "Pediatric Emergency Specialist" if is_ped else "Emergency Medicine Physician / Trauma Specialist"
     elif detected_amber:
         default_level = "DOCTOR_CONSULT"
         default_badge = "🟡 Doctor Consultation Needed"
         default_action = "Schedule a consultation with a physician within 24 to 48 hours for clinical evaluation and testing."
-        default_specialist = "General Physician / Internal Medicine Specialist"
+        default_specialist = "Pediatrician" if is_ped else "General Physician / Internal Medicine Specialist"
     else:
         default_level = "HOME_CARE"
         default_badge = "🟢 Home Self-Care & Monitoring"
-        default_action = "Monitor symptoms, ensure adequate hydration, rest, and follow OTC symptom relief protocols. Seek medical care if symptoms worsen."
-        default_specialist = "Primary Care Provider if symptoms persist > 5 days"
+        if is_ped:
+            default_action = "Monitor child closely (hydration, temperature, alertness). Never give adult tablets (Dolo 650). Consult a pediatrician if fever persists > 24 hours."
+            default_specialist = "Registered Pediatrician"
+        else:
+            default_action = "Monitor symptoms, ensure adequate hydration, rest, and follow OTC symptom relief protocols. Seek medical care if symptoms worsen."
+            default_specialist = "Primary Care Provider if symptoms persist > 5 days"
 
     fallback = {
         "triage_level": default_level,
         "urgency_badge": default_badge,
+        "is_pediatric": is_ped,
         "detected_symptoms": {
             "critical_flags": detected_red,
             "moderate_flags": detected_amber,
@@ -80,7 +88,7 @@ async def triage_agent_node(state: SynapseOSState) -> SynapseOSState:
     
     duration = int((time.time() - start) * 1000)
     state.trace.append(AgentTraceStep(
-        agent_name="Clinical Symptom Triage Agent (Groq/OpenRouter)",
+        agent_name="Clinical Symptom Triage Agent (Gemini / Swarm)",
         action=f"Classified symptoms -> {res.get('urgency_badge', 'Assessed')}",
         duration_ms=duration,
         details={"level": res.get("triage_level"), "specialist": res.get("recommended_specialist")}

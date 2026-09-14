@@ -2,17 +2,23 @@
 
 <img src="./frontend/public/synapseos-icon.svg" alt="SynapseOS Logo" width="80" height="80" />
 
-# AI-Driven Public Health Chatbot for Disease Awareness
+<div align="center">
 
-**SMART VIThackathon(SVH)-2026 | Problem Statement ID: SVH26006**
+<img src="./frontend/public/synapseos-icon.svg" alt="SynapseOS Logo" width="80" height="80" />
 
-> **Organization:** Government of Odisha <br/>
-> **Department:** Electronics & IT Department <br/>
-> **Category:** Software <br/>
-> **Expected Outcome:** A chatbot accessible via WhatsApp or SMS, reaching 80% accuracy in answering health queries and increasing awareness by 20% in target communities.
+# Sanjeevni / SynapseOS — Autonomous Urban Health Grid
 
-*A multilingual AI chatbot designed to educate rural and semi-urban populations about preventive healthcare, disease symptoms, and vaccination schedules. It integrates with government health databases and provides real-time alerts for outbreaks. Powered by a swarm of 13 specialized AI agents, it bridges the gap between everyday health tracking and complex clinical intelligence — with government ABDM compliance, blockchain-verified records, and multilingual accessibility for 650+ million rural citizens.*
+**Fund My Crazy 2026 | A Google Gemini Initiative**
 
+> **Category:** Our Healthcare — Rethinking the Places We Turn to for Care <br/>
+> **Initiative:** Google Gemini ₹1 Crore Innovation Fund <br/>
+> **Core Architecture:** Google Gemini 2.0 Multimodal Hero Layer + Deterministic Safety Architecture <br/>
+> **Vision:** Reimagining Indian municipal healthcare as an ambient, decentralized intelligence grid accessible to 650+ million citizens over WhatsApp without apps, downloads, or clinical friction.
+
+<!-- AI Stack -->
+[![Google Gemini](https://img.shields.io/badge/Google_Gemini-2.0_Flash_%26_Multimodal-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://deepmind.google/technologies/gemini/)
+[![Meta WhatsApp](https://img.shields.io/badge/Meta_WhatsApp-Cloud_API_v20.0-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://developers.facebook.com/)
+<br />
 <!-- Frontend -->
 [![Next.js](https://img.shields.io/badge/Next.js-16.3.1-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
@@ -23,20 +29,10 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python)](https://python.org)
 [![Redis](https://img.shields.io/badge/Redis-7.x-DC382D?style=for-the-badge&logo=redis)](https://redis.io)
-[![Groq](https://img.shields.io/badge/Groq-LLaMA_3.3_70B-FF6B35?style=for-the-badge)](https://groq.com/)
 <br />
 <!-- Infrastructure -->
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker)](https://docker.com)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-Manifests-326CE5?style=for-the-badge&logo=kubernetes)](https://kubernetes.io)
-<br />
-<!-- Blockchain -->
-[![Solidity](https://img.shields.io/badge/Solidity-0.8.20-363636?style=for-the-badge&logo=solidity)](https://soliditylang.org/)
-[![Hardhat](https://img.shields.io/badge/Hardhat-3.x-F7DF1E?style=for-the-badge&logo=ethereum)](https://hardhat.org/)
-[![IPFS](https://img.shields.io/badge/IPFS-Kubo-65C2CB?style=for-the-badge&logo=ipfs)](https://ipfs.io)
-[![Ethers.js](https://img.shields.io/badge/Ethers.js-6.x-764ABC?style=for-the-badge)](https://ethers.org/)
-<br />
-<!-- License -->
-[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg?style=for-the-badge)](./blockchain/contracts/package.json)
 
 </div>
 
@@ -44,43 +40,31 @@
 
 ## 📝 1. Executive Summary
 
-SynapseOS is an open-source, production-grade **multi-agent health operating system** built for the SMART VIThackathon(SVH)-2026. It deploys a swarm of 13 specialized autonomous AI agents — each independently testable and hot-swappable — coordinated by a central Orchestrator DAG (Directed Acyclic Graph) pipeline.
+**Sanjeevni (SynapseOS)** is an open-source, production-grade **Autonomous Urban Healthcare Operating Grid** designed for **Fund My Crazy 2026 (A Google Gemini Initiative)**. It reimagines city healthcare from an overburdened, reactive hospital system into an ambient, proactive municipal immune system powered by Google Gemini.
 
-**The platform solves India's three critical digital healthcare failures:**
+**The platform solves India's three critical urban healthcare failures:**
 
-1. **Data Fragmentation**: Hospital EHRs, smartwatch vitals (Apple/Google), and DICOM imaging exist in isolated silos. SynapseOS bridges them all through HL7 FHIR R4 serialization and LOINC medical codes.
+1. **The Prescription & Comprehension Gap**: Over 70% of Indian patients cannot decipher their physician's handwritten prescription or understand generic alternatives. Sanjeevni leverages **Google Gemini 2.0 Multimodal Vision** to transcribe blurry Indian prescriptions directly over WhatsApp, cross-referencing PM-JAY Jan Aushadhi generic availability to slash out-of-pocket medication costs by up to 80%.
 
-2. **Government Regulatory Barrier**: ABDM APIs require institutional registration. SynapseOS implements an ABDM Sandbox Gateway with ABHA ID minting and PM-JAY scheme verification.
+2. **Hospital Outpatient Triage Overload**: Municipal hospital OPD queues in Tier-1/2/3 cities are choked with routine cases while critical emergencies face deadly delays. Sanjeevni deploys an autonomous **Deterministic Clinical Safety & Triage Layer** over WhatsApp, providing immediate ESI Level 1–5 risk categorization, pediatric safety constraints, and 1-click SOS dispatch (108/112).
 
-3. **Lack of Continuous Intelligence**: Patients receive static PDF reports. SynapseOS provides a real-time **3D Digital Health Twin** projecting multi-organ vitality scores onto an anatomical avatar with 10-year trajectory simulation.
-
-The platform delivers a full clinical AI stack covering:
-- Autonomous symptom triage (ESI Level 1-5 classification)
-- FractureNet YOLOv8 bone fracture detection (trained custom weights `Final.pt`)
-- MONAI DenseNet-121 chest radiograph interpretation with Grad-CAM heatmaps
-- HL7 FHIR R4 wearable telemetry normalization (11 LOINC-coded biosignals)
-- Universal Immunization Programme (UIP) & U-WIN digital vaccine records
-- National outbreak surveillance with district-level WHO/IDSP data
-- Blockchain-anchored medical records with SHA-256 integrity + IPFS storage
-- Omnichannel delivery: Web, Voice AI, WhatsApp, and 2G SMS
+3. **Silent Disease & Outbreak Blindspots**: Epidemics are traditionally tracked days after hospital ICU admissions surge. Sanjeevni integrates anonymized community WhatsApp triage telemetry with **WHO / IDSP District Surveillance Engine** to model transmission vectors ($R_0$) and alert municipal health commissioners before ward-level outbreaks spread.
 
 ---
 
-## 🎯 Hackathon Problem Statement & Solution Mapping
+## 🎯 Fund My Crazy 2026: Theme & Solution Mapping
 
-> **Problem Statement ID**: *SVH26006* <br/>
-> **Problem Statement Title**: *AI-Driven Public Health Chatbot for Disease Awareness* <br/>
-> **Description**: Create a multilingual AI chatbot to educate rural and semi-urban populations about preventive healthcare, disease symptoms, and vaccination schedules. The chatbot should integrate with government health databases and provide real-time alerts for outbreaks.
+> **Competition**: *Fund My Crazy 2026 — Google Gemini ₹1 Crore Initiative* <br/>
+> **Theme**: *Our Healthcare — Rethink the places we turn to for care. Build healthcare for the needs of the future.* <br/>
+> **The Radical Vision**: *Transforming WhatsApp into an ambient, zero-install municipal clinical grid that decentralizes triage and diagnostic clarity to every neighborhood pharmacy and household.*
 
-| Hackathon Requirement | Target Benchmark | SynapseOS Production Implementation |
+| FMC 2026 Criterion | Strategic Priority | Sanjeevni Production Implementation |
 | :--- | :--- | :--- |
-| **Target Population** | Rural & semi-urban populations | **11 Indic language NLU** (Hindi, Bengali, Tamil, Telugu, Marathi, Gujarati, Kannada, Malayalam, Punjabi, Odia) + Low-Bandwidth ASHA field-worker offline mode |
-| **Accessibility Channels** | WhatsApp or SMS | **Meta WhatsApp Cloud API** via OpenWA Bridge, 2G GSM 160-char SMS simulator, WebRTC VAPI voice AI |
-| **Technical Feasibility** | NLP frameworks (Rasa/Dialogflow) & Cloud | **Llama 3 70B NLP Engine** via Groq, extensible API framework, fully deployable on AWS/GCP with **Docker & Kubernetes** scaling |
-| **Preventive & Clinical Care** | Symptoms, preventive care, vaccines | **13 Autonomous Clinical Agents**: Clinical Copilot, Symptom Triage (ESI L1–L5), UIP Vaccination Scheduler, Preventive Health Hub, Tele-MANAS Mental Health, Drug Safety, Outbreak EWS |
-| **Government Health Integration** | Government health databases | **ABDM Sandbox M1/M2/M3** compliance, 14-digit ABHA ID minting, HL7 FHIR R4 bundle serialization, PM-JAY eligibility mapping |
-| **Outbreak & Epidemic Alerts** | Real-time outbreak detection | **WHO & IDSP GeoJSON district surveillance** engine with real-time R₀ transmission modeling, containment advisories, proactive WhatsApp push |
-| **Expected Outcome** | >80% accuracy, +20% awareness | **98.8%** MONAI chest radiograph confidence, **99.2%** YOLOv8 FractureNet accuracy, deterministic safety gating, longitudinal digital health twin simulations |
+| **Vision (30%)** | Extraordinary conceptual leap reframing urban care | **The City as an Immune System**: Healthcare as an ambient municipal utility rather than reactive hospital waiting rooms. Decentralized triage node active across 650M citizens on WhatsApp. |
+| **Real-life Relevance (20%)** | Built for real people; solves everyday city needs | **Vernacular Prescription Decryption & Generic Relief**: Unreadable handwriting converted to Hindi/regional languages, saving families thousands on medications via Jan Aushadhi generic mapping. |
+| **Built with Gemini (20%)** | Hero multimodal intelligence layer | **Google Gemini 2.0 Flash & Gemini 1.5 Pro**: Directly powers complex handwritten OCR transcription, Indic vernacular understanding, multi-agent clinical synthesis, and compassionate patient communication. |
+| **Future Focused (15%)** | Solves tomorrow's city challenges today | **Predictive Ward-Level Outbreak Early-Warning**: Real-time IDSP geospatial transmission modeling ($R_0$) tracking dengue, malaria, and viral surges 48 hours before hospital OPD spikes. |
+| **Execution (15%)** | Practical, doable, working system | **Production FastAPI Backend & Meta WhatsApp Cloud API**: 85 passing clinical test suites, deterministic pediatric safety constraints, ABDM ABHA ID generation, and HL7 FHIR R4 interoperability. |
 
 ---
 
@@ -89,7 +73,7 @@ The platform delivers a full clinical AI stack covering:
 | Icon | Section | Description | Link |
 | :---: | :--- | :--- | :--- |
 | 📝 | **1. Executive Summary** | High-level overview of the health platform | [Go to section](#📝-1-executive-summary) |
-| 🎯 | **Hackathon Problem Statement & Solution Mapping** | Alignment with SVH26006 Problem Statement | [Go to section](#🎯-hackathon-problem-statement-solution-mapping) |
+| 🎯 | **National Competition Alignment & Impact** | Built for Fund My Crazy 2026 (A Google Gemini Initiative) | [Go to section](#-fund-my-crazy-2026--competition-alignment) |
 | 📸 | **Product & Interface Showcase** | Visual gallery of the SynapseOS platform | [Go to section](#📸-product-interface-showcase) |
 | 📖 | **2. Feature Documentation** | List of all 21 core features and capabilities | [Go to section](#📖-2-feature-documentation) |
 | 🏗️ | **3. Official Architecture Diagrams** | System flows and user journey maps | [Go to section](#🏗️-3-official-architecture-diagrams) |
@@ -186,17 +170,17 @@ The platform delivers a full clinical AI stack covering:
 
 ## 🏗️ 3. Official Architecture Diagrams
 
-The following diagrams are official project artifacts from the `SVH-2026-Docs/` directory.
+The following diagrams are official project artifacts from the `architecture-docs/` directory.
 
 ### 🏛️ System Architecture (Dark Theme)
 
-![SynapseOS Architecture Diagram](./SVH-2026-Docs/Architecture%20Diagram%20Dark.png)
+![SynapseOS Architecture Diagram](./architecture-docs/Architecture%20Diagram%20Dark.png)
 
 *Five-layer freeform architecture: 6 user channels → Channel Adapter → Orchestrator Agent → 18-agent swarm in 5 clusters → shared memory (Vector DB + Relational DB + Event Bus) + external APIs + blockchain verification.*
 
 ### 🔹 User Journey Flowchart (Light Theme)
 
-![SynapseOS Flowchart](./SVH-2026-Docs/Flowchart%20dark.png)
+![SynapseOS Flowchart](./architecture-docs/Flowchart%20dark.png)
 
 *Five-layer flow: User Channels → Channel Adapter → Orchestrator ("Sanjeevani") → Specialized Agent Swarm (18 agents, 5 clusters) → Shared State, Live Data & Verification Layer.*
 
@@ -838,7 +822,7 @@ Sanjeevni-OS/
 │   └── test/                         # Hardhat Mocha tests
 │
 ├── docs/                             # Technical documentation
-├── SVH-2026-Docs/                    # Hackathon architecture diagrams + PDF
+├── architecture-docs/                # Architecture diagrams + Executive Dossier
 ├── k8s/                              # 8 Kubernetes manifests
 ├── Preview Images/                   # 12 numbered product screenshots
 ├── docker-compose.yml                # Full local stack
@@ -1107,7 +1091,7 @@ We welcome contributions from developers, healthcare professionals, and public h
 
 The smart contract component (`blockchain/contracts/`) is licensed under **ISC**.
 
-The remainder of the repository is provided for the **SMART VIThackathon(SVH)-2026**. If you wish to use, fork, or build upon this project beyond hackathon evaluation, please open an issue to discuss licensing terms with the maintainers.
+The remainder of the repository is provided for **Fund My Crazy 2026 (A Google Gemini Initiative)**. If you wish to use, fork, or build upon this project, please open an issue to discuss licensing terms with the maintainers.
 
 ---
 
@@ -1115,10 +1099,10 @@ The remainder of the repository is provided for the **SMART VIThackathon(SVH)-20
 
 ---
 
-### 🔹 built with love by   TEAM, AC-DC FOR SMART VIThackathon(SVH)-2026
+### 🌿 Built with love for Fund My Crazy 2026 — A Google Gemini Initiative
 
-*SynapseOS — Autonomous AI Health for Every Indian*
+*Sanjeevni / Synapse-OS — Autonomous Urban Health Grid for India*
 
-*13 Agents · 11 Languages · Blockchain-Verified · ABDM-Compliant*
+*13 Agents · Google Gemini 2.0 Flash · 11 Languages · Blockchain-Verified · ABDM-Compliant*
 
 </div>

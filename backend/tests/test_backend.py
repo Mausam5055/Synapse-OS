@@ -133,3 +133,32 @@ def test_i18n_translation():
     hindi = translate_clinical_message("emergency_alert", "hi")
     assert "आपातकालीन" in hindi
 
+
+def test_pediatric_aspirin_reyes_syndrome_interception():
+    # Test Reye's syndrome safety interception for pediatric Aspirin
+    res = evaluate_safety("Can I give aspirin to my 3 year old child who has fever?")
+    assert not res.is_safe
+    assert res.category == "pediatric_contraindication"
+    assert "reye's syndrome" in res.response.lower()
+    assert "DO NOT GIVE ASPIRIN" in res.response.upper()
+
+
+@pytest.mark.asyncio
+async def test_combiflam_telmisartan_aki_detection():
+    # Combiflam (Ibuprofen + Paracetamol) + Telmisartan (ARB) causes acute kidney injury risk
+    res = await evaluate_drug_safety("Can I take Combiflam together with Telmisartan?")
+    assert res["interactions_count"] > 0
+    assert res["safe_to_combine"] is False
+    assert any("Kidney" in alert["severity"] or "AKI" in alert["severity"] or "renal" in alert["effect"].lower() for alert in res["interactions"])
+
+
+@pytest.mark.asyncio
+async def test_pediatric_query_suppresses_adult_dolo():
+    # Verify adult tablets like Dolo 650 are suppressed as treatment for toddlers/infants
+    state = await orchestrate_health_request("My 2-year-old child has high fever, can I give medicine?")
+    # Must warn never to give adult tablets or consult pediatrician
+    assert any(w in state.final_response.lower() for w in ["never give adult", "pediatrician", "weight-based", "drops", "syrup"])
+    assert "take dolo 650" not in state.final_response.lower()
+    assert "pan-40" not in state.final_response.lower()
+
+
