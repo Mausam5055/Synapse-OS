@@ -299,7 +299,13 @@ export function HeroIntroSection() {
             </a>
           </li>
           <li className="link menu-item menu-item-type-custom menu-item-object-custom menu-item-1088">
-            <a href="#contacto">{t('nav_inquiries', 'Contact')}</a>
+            <a
+              href="/orchestrator-agent"
+              data-no-swup="true"
+              style={{ color: '#059669', fontWeight: 600 }}
+            >
+              {t('nav_orchestrator', 'Orchestrator')}
+            </a>
           </li>
           <li className="no-show-scroll link menu-item menu-item-type-custom menu-item-object-custom menu-item-1089">
             <a href="#disponibilidad">{t('nav_availability', 'Availability')}</a>
