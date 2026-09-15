@@ -6,6 +6,7 @@ import { Persona, Message } from '../types';
 import ChatStream from '../components/ChatStream';
 import { SupportedLanguage } from '../types';
 import { getTranslation } from '../translations';
+import { SUPPORTED_LANGUAGES } from '../components/SettingsDrawer';
 import { 
   Sparkles, 
   Stethoscope, 
@@ -18,7 +19,13 @@ import {
   Activity, 
   ShieldCheck, 
   Plus,
-  Heart
+  Heart,
+  ChevronDown,
+  Globe,
+  Settings,
+  Minimize2,
+  X,
+  MessageCircle
 } from 'lucide-react';
 
 interface ChatCanvasProps {
@@ -39,6 +46,11 @@ interface ChatCanvasProps {
   onCopy: (id: string, text: string) => void;
   onNewChat?: () => void;
   selectedLanguage?: SupportedLanguage;
+  onLanguageChange?: (lang: SupportedLanguage) => void;
+  onOpenWhatsApp?: () => void;
+  onOpenSettings?: () => void;
+  onToggleFullscreen?: () => void;
+  onClose?: () => void;
 }
 
 export default function ChatCanvas({
@@ -58,9 +70,29 @@ export default function ChatCanvas({
   onToggleVoice,
   onCopy,
   onNewChat,
-  selectedLanguage = 'en'
+  selectedLanguage = 'en',
+  onLanguageChange,
+  onOpenWhatsApp,
+  onOpenSettings,
+  onToggleFullscreen,
+  onClose
 }: ChatCanvasProps) {
+  const [langDropdownOpen, setLangDropdownOpen] = React.useState(false);
+  const langDropdownRef = React.useRef<HTMLDivElement>(null);
+
   const t = getTranslation(selectedLanguage);
+  const currentLangObj = SUPPORTED_LANGUAGES.find(l => l.code === selectedLanguage) || SUPPORTED_LANGUAGES[0];
+
+  React.useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langDropdownRef.current && !langDropdownRef.current.contains(e.target as Node)) {
+        setLangDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const patientName = currentProfile?.patient?.name || 'Mausam Kar';
   const patientAbha = currentProfile?.patient?.abhaId || '91-7294-8102-5309';
   const heartRate = currentProfile?.vitals?.currentHeartRate || 74;
@@ -263,8 +295,9 @@ export default function ChatCanvas({
           </span>
         </div>
 
-        {/* Right: Sleek Segmented Persona Switcher + New Chat Button */}
+        {/* Right: Sleek Segmented Persona Switcher + Language Selector + Action Buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Persona Switcher Segmented Tabs */}
           <div style={{
             display: 'flex',
             background: '#f1f5f9',
@@ -306,6 +339,7 @@ export default function ChatCanvas({
             })}
           </div>
 
+          {/* New Chat Button */}
           {onNewChat && (
             <button
               onClick={onNewChat}
@@ -330,6 +364,197 @@ export default function ChatCanvas({
             >
               <Plus size={13} />
               <span>{t.newChat}</span>
+            </button>
+          )}
+
+          {/* Divider */}
+          <div style={{ width: '1px', height: '20px', background: '#e2e8f0', margin: '0 2px' }} />
+
+          {/* Multilingual Language Switcher Dropdown */}
+          <div ref={langDropdownRef} style={{ position: 'relative' }}>
+            <button
+              onClick={() => setLangDropdownOpen(prev => !prev)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                padding: '4px 9px',
+                borderRadius: '7px',
+                background: '#f0fdf4',
+                border: '1.2px solid #86efac',
+                color: '#166534',
+                fontSize: '11px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
+              }}
+              title="Switch Language / भाषा बदलें"
+            >
+              <span>{currentLangObj.flag}</span>
+              <span>{currentLangObj.native}</span>
+              <ChevronDown size={11} color="#166534" />
+            </button>
+
+            {langDropdownOpen && (
+              <div style={{
+                position: 'absolute',
+                top: '36px',
+                right: '0',
+                width: '280px',
+                background: '#ffffff',
+                borderRadius: '12px',
+                border: '1.2px solid #cbd5e1',
+                boxShadow: '0 16px 40px rgba(0,0,0,0.18)',
+                zIndex: 9999,
+                padding: '8px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '4px',
+                maxHeight: '360px',
+                overflowY: 'auto'
+              }}>
+                <div style={{ fontSize: '9.5px', fontWeight: 800, color: '#475569', textTransform: 'uppercase', padding: '4px 6px', letterSpacing: '0.04em' }}>
+                  🌐 SELECT LANGUAGE (11 INDIC LANGUAGES)
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px' }}>
+                  {SUPPORTED_LANGUAGES.map((lang) => {
+                    const isSelected = lang.code === selectedLanguage;
+                    return (
+                      <button
+                        key={lang.code}
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (onLanguageChange) {
+                            onLanguageChange(lang.code);
+                          }
+                          try {
+                            localStorage.setItem('synapseos_language', lang.code);
+                            localStorage.setItem('synapseos_lang', lang.code);
+                            window.dispatchEvent(new CustomEvent('synapseos-language-change', { detail: lang.code }));
+                          } catch (err) {}
+                          setLangDropdownOpen(false);
+                        }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          padding: '6px 8px',
+                          borderRadius: '6px',
+                          background: isSelected ? '#ecfdf5' : '#f8fafc',
+                          border: isSelected ? '1.2px solid #10b981' : '1px solid #e2e8f0',
+                          color: isSelected ? '#047857' : '#1e293b',
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          transition: 'all 0.15s ease'
+                        }}
+                      >
+                        <span style={{ fontSize: '13px' }}>{lang.flag}</span>
+                        <div style={{ overflow: 'hidden' }}>
+                          <div style={{ fontSize: '10.5px', fontWeight: 800, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                            {lang.native}
+                          </div>
+                          <div style={{ fontSize: '8.5px', color: '#64748b' }}>
+                            {lang.name}
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* WhatsApp Bridge Button */}
+          {onOpenWhatsApp && (
+            <button
+              onClick={onOpenWhatsApp}
+              style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '7px',
+                background: '#f0fdf4',
+                border: '1px solid #86efac',
+                color: '#15803d',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
+              }}
+              title="WhatsApp AI QR Bridge"
+            >
+              <MessageCircle size={14} />
+            </button>
+          )}
+
+          {/* AI Settings Button */}
+          {onOpenSettings && (
+            <button
+              onClick={onOpenSettings}
+              style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '7px',
+                background: '#f1f5f9',
+                border: '1px solid #cbd5e1',
+                color: '#334155',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
+              }}
+              title="AI Settings & API Models"
+            >
+              <Settings size={14} />
+            </button>
+          )}
+
+          {/* Fullscreen / Minimize Toggle Button */}
+          {onToggleFullscreen && (
+            <button
+              onClick={onToggleFullscreen}
+              style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '7px',
+                background: '#f1f5f9',
+                border: '1px solid #cbd5e1',
+                color: '#334155',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
+              }}
+              title="Minimize to Floating Window (Esc)"
+            >
+              <Minimize2 size={13} />
+            </button>
+          )}
+
+          {/* Close Button */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '7px',
+                background: '#fee2e2',
+                border: '1px solid #fecaca',
+                color: '#dc2626',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
+              }}
+              title="Close Assistant"
+            >
+              <X size={14} />
             </button>
           )}
         </div>

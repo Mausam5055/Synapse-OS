@@ -394,7 +394,7 @@ Verification URL: https://abdm.gov.in/verify?abha=${patient.abhaId || '91-7294-8
         zIndex: 99999,
         padding: '20px',
         overscrollBehavior: 'contain',
-        fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'
+        fontFamily: '"Times New Roman", Times, serif'
       }}
     >
       {/* Scoped Sleek Scrollbar Styles */}

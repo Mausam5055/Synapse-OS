@@ -153,7 +153,19 @@ export function useAssistantLogic() {
       }
     };
     window.addEventListener('synapseos-profile-switch', handleProfileSwitch);
-    return () => window.removeEventListener('synapseos-profile-switch', handleProfileSwitch);
+
+    // Listen to external language switch events
+    const handleGlobalLang = (e: any) => {
+      if (e.detail) {
+        setSelectedLanguage(e.detail as SupportedLanguage);
+      }
+    };
+    window.addEventListener('synapseos-language-change', handleGlobalLang);
+
+    return () => {
+      window.removeEventListener('synapseos-profile-switch', handleProfileSwitch);
+      window.removeEventListener('synapseos-language-change', handleGlobalLang);
+    };
   }, []);
 
   const handleSelectProfile = (profileId: string) => {

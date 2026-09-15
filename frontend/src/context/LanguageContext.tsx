@@ -38,7 +38,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const handleExternalLangChange = (e: any) => {
       const newLang = e.detail as LanguageCode;
       if (newLang && TRANSLATIONS[newLang]) {
-        setLanguageState(newLang);
+        setLanguageState(prev => prev === newLang ? prev : newLang);
       }
     };
     window.addEventListener('synapseos-language-change', handleExternalLangChange);
@@ -57,6 +57,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const t = (key: string, fallback?: string): string => {
+    if (!key || typeof key !== 'string') return fallback || '';
     const langDict = TRANSLATIONS[language];
     if (langDict && langDict[key]) {
       return langDict[key];
@@ -70,24 +71,25 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   // Universal dynamic medical string translator across all 11 languages
   const translateText = (text: string): string => {
-    if (!text) return text;
+    if (!text || typeof text !== 'string') return text;
     if (language === 'en') return text;
 
+    const trimmed = text.trim();
     // 1. Direct dictionary match in dynamic translations
-    const directMatch = DYNAMIC_MEDICAL_TRANSLATIONS[text.trim()];
+    const directMatch = DYNAMIC_MEDICAL_TRANSLATIONS[trimmed];
     if (directMatch && directMatch[language]) {
       return directMatch[language];
     }
 
     // 2. Direct match in standard TRANSLATIONS dictionary
     const langDict = TRANSLATIONS[language];
-    if (langDict && langDict[text.trim()]) {
-      return langDict[text.trim()];
+    if (langDict && langDict[trimmed]) {
+      return langDict[trimmed];
     }
 
     // 3. Substring & fuzzy pattern matching for common medical variations
     for (const [key, translations] of Object.entries(DYNAMIC_MEDICAL_TRANSLATIONS)) {
-      if (text.includes(key) && (translations as Record<LanguageCode, string>)[language]) {
+      if (translations && (translations as Record<LanguageCode, string>)[language] && text.includes(key)) {
         return text.replace(key, (translations as Record<LanguageCode, string>)[language]);
       }
     }

@@ -19,7 +19,7 @@ html, body {
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 /* ============================================================
@@ -201,13 +201,13 @@ body:has(.auth-root) #smooth-content {
    ========================================================================== */
 .auth-root,
 .auth-root * {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-family: "Times New Roman", Times, serif !important;
   box-sizing: border-box !important;
 }
 
 .auth-root h1 {
   all: revert !important;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-family: "Times New Roman", Times, serif !important;
   font-size: 30px !important;
   line-height: 38px !important;
   font-weight: 700 !important;
@@ -220,7 +220,7 @@ body:has(.auth-root) #smooth-content {
 
 .auth-root p {
   all: revert !important;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-family: "Times New Roman", Times, serif !important;
   font-size: 14px !important;
   line-height: 20px !important;
   color: #6b7280 !important;
@@ -238,7 +238,7 @@ body:has(.auth-root) #smooth-content {
   padding: 0 16px !important;
   font-size: 15px !important;
   line-height: 48px !important;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-family: "Times New Roman", Times, serif !important;
   color: #111827 !important;
   background-color: #f3f4f6 !important;
   border: 1px solid #e5e7eb !important;
@@ -262,7 +262,7 @@ body:has(.auth-root) #smooth-content {
   color: #9ca3af !important;
   font-size: 14px !important;
   line-height: normal !important;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-family: "Times New Roman", Times, serif !important;
 }
 
 /* Primary Action Buttons — ONLY target explicit form action buttons, not icon/dot buttons */
@@ -283,7 +283,7 @@ body:has(.auth-root) #smooth-content {
   border-radius: 8px !important;
   font-size: 15px !important;
   font-weight: 600 !important;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-family: "Times New Roman", Times, serif !important;
   cursor: pointer !important;
   text-align: center !important;
   box-shadow: 0 1px 3px rgba(126, 87, 194, 0.2) !important;
@@ -334,7 +334,7 @@ body:has(.auth-root) #smooth-content {
   color: #374151 !important;
   font-size: 14px !important;
   font-weight: 500 !important;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-family: "Times New Roman", Times, serif !important;
   cursor: pointer !important;
   box-sizing: border-box !important;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
@@ -351,7 +351,7 @@ body:has(.auth-root) #smooth-content {
 
 .auth-root a {
   all: revert !important;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-family: "Times New Roman", Times, serif !important;
   text-decoration: none !important;
   cursor: pointer !important;
 }

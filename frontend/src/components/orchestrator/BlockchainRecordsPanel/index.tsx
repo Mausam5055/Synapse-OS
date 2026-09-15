@@ -29,7 +29,7 @@ export default function BlockchainRecordsPanel({
       width: '100%',
       maxWidth: '1200px',
       margin: '0 auto',
-      fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+      fontFamily: '"Times New Roman", Times, serif'
     }}>
       
       {/* 0. Telemetry Dataset & Citizen ABHA Profile Switcher Ribbon */}

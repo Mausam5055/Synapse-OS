@@ -226,6 +226,11 @@ export default function FullScreenWorkspace({
           onCopy={onCopy}
           onNewChat={onNewChat}
           selectedLanguage={selectedLanguage}
+          onLanguageChange={onLanguageChange}
+          onOpenWhatsApp={() => setShowWhatsAppModal(true)}
+          onOpenSettings={() => setShowSettingsModal(true)}
+          onToggleFullscreen={onToggleFullscreen}
+          onClose={onClose}
         />
 
         {/* Right Column: Patient Dossier & Sub-Agents (320px) */}

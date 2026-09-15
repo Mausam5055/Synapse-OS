@@ -123,7 +123,7 @@ export default function SecuritySessionsPanel() {
       maxWidth: '1000px',
       margin: '0 auto',
       padding: '24px 16px',
-      fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      fontFamily: '"Times New Roman", Times, serif',
       color: '#0f172a',
     }}>
       {/* Header matching MERN Auth Home */}

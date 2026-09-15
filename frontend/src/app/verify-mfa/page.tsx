@@ -109,7 +109,7 @@ function VerifyMfaContent() {
   };
 
   return (
-    <div className="auth-root w-full min-h-screen flex flex-col md:flex-row bg-[#f8fafc] font-sans text-[#0f172a]" style={{ opacity: 1, visibility: 'visible' }}>
+    <div className="auth-root w-full min-h-screen flex flex-col md:flex-row bg-[#f8fafc] text-[#0f172a]" style={{ opacity: 1, visibility: 'visible' }}>
       {/* Left Panel - Hospital & Medicine Hero matching Sanjeevni OS */}
       <div className="hidden md:flex md:w-1/2 lg:w-5/12 relative p-8 flex-col justify-between overflow-hidden m-4 rounded-3xl shadow-xl bg-slate-900">
         {/* Layered Crossfade Images */}

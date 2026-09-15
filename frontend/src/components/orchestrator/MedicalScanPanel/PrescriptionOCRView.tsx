@@ -109,7 +109,7 @@ export default function PrescriptionOCRView({ state }: { state: any }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span style={{ fontSize: '11px', textTransform: 'uppercase', color: '#64748b', letterSpacing: '0.05em', fontWeight: 800, fontFamily: 'system-ui, sans-serif' }}>
+            <span style={{ fontSize: '11px', textTransform: 'uppercase', color: '#64748b', letterSpacing: '0.05em', fontWeight: 800 }}>
               {translateText('Prescription OCR Intelligence')}
             </span>
             <span style={{
@@ -118,13 +118,12 @@ export default function PrescriptionOCRView({ state }: { state: any }) {
               borderRadius: '9999px',
               background: '#f1f5f9',
               color: '#475569',
-              fontWeight: 700,
-              fontFamily: 'system-ui, sans-serif'
+              fontWeight: 700
             }}>
               OpenRouter Free Vision
             </span>
           </div>
-          <h3 style={{ margin: 0, fontSize: '18px', color: '#0f172a', fontWeight: 800, fontFamily: 'system-ui, sans-serif' }}>
+          <h3 style={{ margin: 0, fontSize: '18px', color: '#0f172a', fontWeight: 800 }}>
             {prescription.requires_human_verification && !state.isVerifiedByUser
               ? translateText('⚠ Human Verification Required')
               : translateText('Prescription Digitized & Structured')}
@@ -144,8 +143,7 @@ export default function PrescriptionOCRView({ state }: { state: any }) {
               fontWeight: 800,
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '6px',
-              fontFamily: 'system-ui, sans-serif'
+              gap: '6px'
             }}>
               <AlertTriangle size={13} />
               {translateText('Needs Verification')}
@@ -161,8 +159,7 @@ export default function PrescriptionOCRView({ state }: { state: any }) {
               fontWeight: 800,
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '6px',
-              fontFamily: 'system-ui, sans-serif'
+              gap: '6px'
             }}>
               <CheckCircle2 size={13} />
               {state.isVerifiedByUser ? translateText('Verified by User') : translateText('Confident OCR')}
@@ -201,7 +198,7 @@ export default function PrescriptionOCRView({ state }: { state: any }) {
         gap: '10px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: '11px', fontWeight: 800, color: '#3b82f6', textTransform: 'uppercase', fontFamily: 'system-ui, sans-serif' }}>
+          <span style={{ fontSize: '11px', fontWeight: 800, color: '#3b82f6', textTransform: 'uppercase' }}>
             {translateText('Document Context')}
           </span>
           <button
@@ -295,7 +292,7 @@ export default function PrescriptionOCRView({ state }: { state: any }) {
       {/* 4. Medications List with Uncertainty Highlighting & Inline Editing */}
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-          <div style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', fontFamily: 'system-ui, sans-serif' }}>
+          <div style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', textTransform: 'uppercase' }}>
             {translateText('Extracted Medications')} ({prescription.medications?.length || 0})
           </div>
           <button
@@ -643,8 +640,7 @@ export default function PrescriptionOCRView({ state }: { state: any }) {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
-            boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
-            fontFamily: 'system-ui, sans-serif'
+            boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
           }}
         >
           <Sparkles size={14} />
@@ -667,7 +663,6 @@ export default function PrescriptionOCRView({ state }: { state: any }) {
             alignItems: 'center',
             gap: '6px',
             boxShadow: state.isVerifiedByUser ? 'none' : '0 4px 12px rgba(16, 185, 129, 0.25)',
-            fontFamily: 'system-ui, sans-serif',
             transition: 'all 0.15s ease'
           }}
         >

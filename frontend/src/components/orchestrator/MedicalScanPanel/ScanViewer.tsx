@@ -9,7 +9,7 @@ export default function ScanViewer({ state }: { state: any }) {
     <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '24px', display: 'flex', flexDirection: 'column', boxShadow: '0 4px 16px rgba(0,0,0,0.02)' }}>
       {/* Canvas Toolbar */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
-        <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+        <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: state.uploadedImagePreview ? '#10b981' : '#3b82f6' }}></span>
           <span>{state.uploadedFileName ? `${translateText('Scan:')} ${state.uploadedFileName}` : translateText(state.modality === 'bone_fracture' ? 'FractureNet Orthopedic X-Ray Specimen' : state.modality === 'chest_xray' ? 'Standard PA Chest Radiograph' : state.modality === 'prescription' ? 'Digital Prescription Specimen' : 'Clinical Metabolic Specimen')}</span>
         </div>
@@ -27,8 +27,7 @@ export default function ScanViewer({ state }: { state: any }) {
                 color: state.showGradCam ? '#ef4444' : '#64748b',
                 border: '1px solid ' + (state.showGradCam ? '#fecaca' : '#e2e8f0'),
                 cursor: 'pointer',
-                fontWeight: 700,
-                fontFamily: 'system-ui, -apple-system, sans-serif'
+                fontWeight: 700
               }}
             >
               {state.showGradCam ? translateText('🔥 Grad-CAM ON') : translateText('🔥 Grad-CAM Heatmap')}
@@ -45,8 +44,7 @@ export default function ScanViewer({ state }: { state: any }) {
               color: state.showOverlays ? '#3b82f6' : '#64748b',
               border: '1px solid ' + (state.showOverlays ? '#bfdbfe' : '#e2e8f0'),
               cursor: 'pointer',
-              fontWeight: 700,
-              fontFamily: 'system-ui, -apple-system, sans-serif'
+              fontWeight: 700
             }}
           >
             {state.showOverlays ? translateText('👁️ Overlays ON') : translateText('👁️ Overlays OFF')}
@@ -62,8 +60,7 @@ export default function ScanViewer({ state }: { state: any }) {
               color: '#64748b',
               border: '1px solid #e2e8f0',
               cursor: 'pointer',
-              fontWeight: 700,
-              fontFamily: 'system-ui, -apple-system, sans-serif'
+              fontWeight: 700
             }}
             title="Cycle contrast windowing"
           >
@@ -207,7 +204,7 @@ export default function ScanViewer({ state }: { state: any }) {
             {/* Clinic Header */}
             <div style={{ borderBottom: '2px solid #db2777', paddingBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexShrink: 0 }}>
               <div>
-                <div style={{ fontWeight: 800, fontSize: '16px', color: '#db2777', fontFamily: 'system-ui, -apple-system, sans-serif' }}>AIIMS CENTRAL CLINICAL NODE</div>
+                <div style={{ fontWeight: 800, fontSize: '16px', color: '#db2777' }}>AIIMS CENTRAL CLINICAL NODE</div>
                 <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>Dr. Rajesh K. Varma, MD • Registration: MCI-84920</div>
               </div>
               <div style={{ fontSize: '12px', color: '#64748b', textAlign: 'right' }}>
@@ -217,7 +214,7 @@ export default function ScanViewer({ state }: { state: any }) {
             </div>
 
             {/* Rx Symbol */}
-            <div style={{ fontSize: '28px', fontWeight: 800, color: '#db2777', margin: '12px 0 8px 0', fontFamily: 'system-ui, -apple-system, sans-serif', flexShrink: 0 }}>℞</div>
+            <div style={{ fontSize: '28px', fontWeight: 800, color: '#db2777', margin: '12px 0 8px 0', flexShrink: 0 }}>℞</div>
 
             {/* Prescription Lines */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', padding: '4px 8px', marginBottom: '20px' }}>
@@ -250,7 +247,7 @@ export default function ScanViewer({ state }: { state: any }) {
           <div style={{ width: '100%', height: '100%', overflowY: 'auto', background: '#ffffff', color: '#0f172a', padding: '32px', borderRadius: '16px', display: 'flex', flexDirection: 'column', boxSizing: 'border-box' }}>
             <div style={{ borderBottom: '2px solid #10b981', paddingBottom: '12px', marginBottom: '16px', display: 'flex', justifyContent: 'space-between', flexShrink: 0 }}>
               <div>
-                <div style={{ fontWeight: 800, fontSize: '16px', color: '#10b981', fontFamily: 'system-ui, -apple-system, sans-serif' }}>METABOLIC PATHOLOGY PANEL</div>
+                <div style={{ fontWeight: 800, fontSize: '16px', color: '#10b981' }}>METABOLIC PATHOLOGY PANEL</div>
                 <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>NABL Accredited Clinical Bio-Analysis</div>
               </div>
               <div style={{ fontSize: '12px', color: '#64748b', textAlign: 'right' }}>
@@ -260,7 +257,7 @@ export default function ScanViewer({ state }: { state: any }) {
 
             <table style={{ width: '100%', fontSize: '12px', borderCollapse: 'collapse', marginBottom: '16px' }}>
               <thead>
-                <tr style={{ background: '#f1f5f9', textAlign: 'left', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+                <tr style={{ background: '#f1f5f9', textAlign: 'left' }}>
                   <th style={{ padding: '8px 10px' }}>Test Parameter</th>
                   <th style={{ padding: '8px 10px' }}>Patient Value</th>
                   <th style={{ padding: '8px 10px' }}>Reference Range</th>
@@ -272,25 +269,25 @@ export default function ScanViewer({ state }: { state: any }) {
                   <td style={{ padding: '6px' }}>Hemoglobin</td>
                   <td style={{ padding: '6px', fontWeight: 600 }}>13.8 g/dL</td>
                   <td style={{ padding: '6px', color: '#64748b' }}>12.0 - 16.0 g/dL</td>
-                  <td style={{ padding: '6px', color: '#10b981', fontWeight: 700, fontFamily: 'system-ui, -apple-system, sans-serif' }}>NORMAL</td>
+                  <td style={{ padding: '6px', color: '#10b981', fontWeight: 700 }}>NORMAL</td>
                 </tr>
                 <tr style={{ borderBottom: '1px solid #e2e8f0', background: '#fffbeb' }}>
                   <td style={{ padding: '6px' }}>Fasting Blood Glucose</td>
                   <td style={{ padding: '6px', fontWeight: 700, color: '#d97706' }}>104 mg/dL</td>
                   <td style={{ padding: '6px', color: '#64748b' }}>70 - 99 mg/dL</td>
-                  <td style={{ padding: '6px', color: '#d97706', fontWeight: 700, fontFamily: 'system-ui, -apple-system, sans-serif' }}>ELEVATED</td>
+                  <td style={{ padding: '6px', color: '#d97706', fontWeight: 700 }}>ELEVATED</td>
                 </tr>
                 <tr style={{ borderBottom: '1px solid #e2e8f0', background: '#fffbeb' }}>
                   <td style={{ padding: '6px' }}>Total Cholesterol</td>
                   <td style={{ padding: '6px', fontWeight: 700, color: '#d97706' }}>215 mg/dL</td>
                   <td style={{ padding: '6px', color: '#64748b' }}>&lt; 200 mg/dL</td>
-                  <td style={{ padding: '6px', color: '#d97706', fontWeight: 700, fontFamily: 'system-ui, -apple-system, sans-serif' }}>BORDERLINE</td>
+                  <td style={{ padding: '6px', color: '#d97706', fontWeight: 700 }}>BORDERLINE</td>
                 </tr>
                 <tr>
                   <td style={{ padding: '6px' }}>Serum Creatinine</td>
                   <td style={{ padding: '6px', fontWeight: 600 }}>0.95 mg/dL</td>
                   <td style={{ padding: '6px', color: '#64748b' }}>0.7 - 1.2 mg/dL</td>
-                  <td style={{ padding: '6px', color: '#10b981', fontWeight: 700, fontFamily: 'system-ui, -apple-system, sans-serif' }}>NORMAL</td>
+                  <td style={{ padding: '6px', color: '#10b981', fontWeight: 700 }}>NORMAL</td>
                 </tr>
               </tbody>
             </table>
@@ -334,8 +331,7 @@ export default function ScanViewer({ state }: { state: any }) {
                 borderRadius: '4px',
                 whiteSpace: 'nowrap',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.6)',
-                pointerEvents: 'none',
-                fontFamily: 'system-ui, -apple-system, sans-serif'
+                pointerEvents: 'none'
               }}>
                 {translateText(box.label)} ({Math.round(box.confidence * 100)}%)
               </div>
@@ -356,8 +352,7 @@ export default function ScanViewer({ state }: { state: any }) {
             color: '#db2777',
             fontSize: '13px',
             fontWeight: 800,
-            gap: '10px',
-            fontFamily: 'system-ui, -apple-system, sans-serif'
+            gap: '10px'
           }}>
             <div style={{ width: '32px', height: '32px', border: '3px solid #db2777', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
             <div>{t('scan_running_engine', 'Running AI Detection Engine...')}</div>
@@ -384,7 +379,6 @@ export default function ScanViewer({ state }: { state: any }) {
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
-            fontFamily: 'system-ui, -apple-system, sans-serif',
             boxShadow: '0 4px 12px rgba(59, 130, 246, 0.2)'
           }}
         >
@@ -408,8 +402,7 @@ export default function ScanViewer({ state }: { state: any }) {
               fontWeight: 800,
               fontSize: '12px',
               border: '1px solid #e2e8f0',
-              cursor: 'pointer',
-              fontFamily: 'system-ui, -apple-system, sans-serif'
+              cursor: 'pointer'
             }}
           >
             {t('scan_reset', 'Reset')}

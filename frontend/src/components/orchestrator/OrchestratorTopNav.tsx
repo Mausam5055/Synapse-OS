@@ -115,32 +115,32 @@ export default function OrchestratorTopNav({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '8px 16px',
+      padding: '10px 20px',
       background: '#ffffff',
-      borderBottom: '1px solid #bae6fd',
+      borderBottom: '1px solid #e2e8f0',
       position: 'sticky',
       top: 0,
       zIndex: 100,
-      boxShadow: '0 4px 20px -4px rgba(2, 132, 199, 0.08)',
+      boxShadow: '0 1px 3px rgba(0,0,0,0.02), 0 4px 12px rgba(0,0,0,0.03)',
       width: '100%',
       boxSizing: 'border-box',
       overflow: 'visible',
-      fontFamily: '"Times New Roman", Times, serif'
+      fontFamily: 'inherit'
     }}>
 
-      {/* Center Navigation Pills Outer Frame (Shrinkable & Centered) */}
+      {/* Center Navigation Segmented Control */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        background: '#f0f9ff',
+        background: '#f1f5f9',
         padding: '3px 4px',
-        borderRadius: '9999px',
-        border: '1px solid #bae6fd',
-        gap: '3px',
+        borderRadius: '12px',
+        border: '1px solid #e2e8f0',
+        gap: '2px',
         flex: '1 1 auto',
         minWidth: 0,
-        marginRight: '12px',
-        boxShadow: 'inset 0 1px 3px rgba(2, 132, 199, 0.06)',
+        maxWidth: 'calc(100% - 460px)',
+        marginRight: '16px',
         position: 'relative'
       }}>
         {/* Left Scroll Button */}
@@ -149,25 +149,25 @@ export default function OrchestratorTopNav({
             onClick={() => scrollBy(-150)}
             title="Scroll left"
             style={{
-              width: '22px',
-              height: '22px',
-              borderRadius: '50%',
+              width: '24px',
+              height: '24px',
+              borderRadius: '8px',
               background: '#ffffff',
-              border: '1px solid #bae6fd',
-              color: '#0284c7',
+              border: '1px solid #cbd5e1',
+              color: '#334155',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
               flexShrink: 0,
-              boxShadow: '0 1px 3px rgba(2,132,199,0.15)'
+              boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
             }}
           >
-            <ChevronLeft size={12} />
+            <ChevronLeft size={13} />
           </button>
         )}
 
-        {/* Scrollable Pills Track (Hidden Scrollbars) */}
+        {/* Scrollable Pills Track */}
         <div
           ref={trackRef}
           onScroll={checkScroll}
@@ -180,7 +180,7 @@ export default function OrchestratorTopNav({
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '3px',
+            gap: '2px',
             overflowX: 'auto',
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
@@ -199,38 +199,34 @@ export default function OrchestratorTopNav({
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '5px',
-                  padding: '5px 11px',
-                  borderRadius: '9999px',
-                  border: isActive ? '1px solid #0284c7' : '1px solid transparent',
-                  fontSize: '11px',
+                  gap: '6px',
+                  padding: '6px 12px',
+                  borderRadius: '9px',
+                  border: 'none',
+                  fontSize: '11.5px',
                   whiteSpace: 'nowrap',
-                  fontWeight: isActive ? 800 : 700,
-                  background: isActive 
-                    ? 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)' 
-                    : 'transparent',
-                  color: isActive ? '#ffffff' : '#0f172a',
+                  fontWeight: isActive ? 600 : 500,
+                  background: isActive ? '#ffffff' : 'transparent',
+                  color: isActive ? '#0f172a' : '#64748b',
                   cursor: 'pointer',
-                  boxShadow: isActive ? '0 3px 10px rgba(2, 132, 199, 0.35)' : 'none',
+                  boxShadow: isActive ? '0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)' : 'none',
                   transition: 'all 0.15s ease',
                   flexShrink: 0
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive) {
-                    e.currentTarget.style.background = '#ffffff';
-                    e.currentTarget.style.color = '#0284c7';
-                    e.currentTarget.style.boxShadow = '0 2px 6px rgba(2, 132, 199, 0.12)';
+                    e.currentTarget.style.color = '#0f172a';
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.6)';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive) {
+                    e.currentTarget.style.color = '#64748b';
                     e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = '#0f172a';
-                    e.currentTarget.style.boxShadow = 'none';
                   }
                 }}
               >
-                <Icon size={12} color={isActive ? '#ffffff' : '#0284c7'} />
+                <Icon size={13} color={isActive ? '#0284c7' : '#94a3b8'} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -243,21 +239,21 @@ export default function OrchestratorTopNav({
             onClick={() => scrollBy(150)}
             title="Scroll right"
             style={{
-              width: '22px',
-              height: '22px',
-              borderRadius: '50%',
+              width: '24px',
+              height: '24px',
+              borderRadius: '8px',
               background: '#ffffff',
-              border: '1px solid #bae6fd',
-              color: '#0284c7',
+              border: '1px solid #cbd5e1',
+              color: '#334155',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
               flexShrink: 0,
-              boxShadow: '0 1px 3px rgba(2,132,199,0.15)'
+              boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
             }}
           >
-            <ChevronRight size={12} />
+            <ChevronRight size={13} />
           </button>
         )}
 
@@ -269,21 +265,20 @@ export default function OrchestratorTopNav({
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '3px',
-              padding: '4px 8px',
-              borderRadius: '9999px',
-              background: isMoreOpen ? '#e0f2fe' : '#ffffff',
-              border: '1px solid #bae6fd',
-              color: '#0284c7',
-              fontSize: '10.5px',
-              fontWeight: 800,
+              justifyContent: 'center',
+              width: '24px',
+              height: '24px',
+              borderRadius: '8px',
+              background: isMoreOpen ? '#ffffff' : 'transparent',
+              border: isMoreOpen ? '1px solid #cbd5e1' : '1px solid transparent',
+              color: '#64748b',
               cursor: 'pointer',
-              boxShadow: '0 1px 3px rgba(2, 132, 199, 0.1)',
+              boxShadow: isMoreOpen ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
               transition: 'all 0.15s ease'
             }}
           >
             <ChevronDown 
-              size={12} 
+              size={13} 
               style={{ 
                 transform: isMoreOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                 transition: 'transform 0.2s ease'
@@ -299,9 +294,9 @@ export default function OrchestratorTopNav({
               right: 0,
               width: '230px',
               background: '#ffffff',
-              borderRadius: '16px',
-              border: '1px solid #bae6fd',
-              boxShadow: '0 12px 32px rgba(2, 132, 199, 0.18), 0 4px 12px rgba(0,0,0,0.06)',
+              borderRadius: '14px',
+              border: '1px solid #e2e8f0',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.05)',
               zIndex: 9999,
               padding: '6px',
               display: 'flex',
@@ -310,10 +305,11 @@ export default function OrchestratorTopNav({
             }}>
               <div style={{
                 padding: '6px 10px',
-                fontSize: '9.5px',
-                fontWeight: 800,
-                color: '#64748b',
+                fontSize: '10px',
+                fontWeight: 700,
+                color: '#94a3b8',
                 textTransform: 'uppercase',
+                letterSpacing: '0.04em',
                 borderBottom: '1px solid #f1f5f9'
               }}>
                 Orchestrator Workspaces
@@ -332,14 +328,13 @@ export default function OrchestratorTopNav({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      padding: '7px 10px',
+                      padding: '8px 10px',
                       borderRadius: '8px',
                       cursor: 'pointer',
                       background: isActive ? '#f0f9ff' : 'transparent',
-                      border: isActive ? '1px solid #bae6fd' : '1px solid transparent',
                       color: isActive ? '#0284c7' : '#0f172a',
-                      fontSize: '11px',
-                      fontWeight: isActive ? 800 : 600,
+                      fontSize: '12px',
+                      fontWeight: isActive ? 600 : 500,
                       transition: 'all 0.1s ease'
                     }}
                     onMouseEnter={(e) => {
@@ -350,10 +345,10 @@ export default function OrchestratorTopNav({
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Icon size={13} color={isActive ? '#0284c7' : '#64748b'} />
+                      <Icon size={14} color={isActive ? '#0284c7' : '#64748b'} />
                       <span>{tab.label}</span>
                     </div>
-                    {isActive && <Check size={13} color="#0284c7" />}
+                    {isActive && <Check size={14} color="#0284c7" />}
                   </div>
                 );
               })}
@@ -362,11 +357,11 @@ export default function OrchestratorTopNav({
         </div>
       </div>
 
-      {/* Right Controls & Patient Avatar (ALWAYS FULLY VISIBLE) */}
+      {/* Right Controls & Patient Avatar */}
       <div style={{ 
         display: 'flex', 
         alignItems: 'center', 
-        gap: '8px', 
+        gap: '10px', 
         flexShrink: 0,
         marginLeft: 'auto'
       }}>
@@ -382,57 +377,58 @@ export default function OrchestratorTopNav({
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '5px',
-            padding: '5px 11px',
-            height: '32px',
+            gap: '6px',
+            padding: '6px 13px',
+            height: '34px',
             background: '#ffffff',
-            border: '1px solid #bae6fd',
-            borderRadius: '9999px',
-            fontSize: '11px',
-            fontWeight: 800,
+            border: '1px solid #e2e8f0',
+            borderRadius: '10px',
+            fontSize: '11.5px',
+            fontWeight: 600,
             color: '#0f172a',
             cursor: 'pointer',
             whiteSpace: 'nowrap',
             flexShrink: 0,
-            boxShadow: '0 2px 6px rgba(2, 132, 199, 0.08)',
+            boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
             transition: 'all 0.15s ease'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#f0f9ff';
-            e.currentTarget.style.borderColor = '#0284c7';
+            e.currentTarget.style.background = '#f8fafc';
+            e.currentTarget.style.borderColor = '#cbd5e1';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = '#ffffff';
-            e.currentTarget.style.borderColor = '#bae6fd';
+            e.currentTarget.style.borderColor = '#e2e8f0';
           }}
         >
-          <Download size={12} color="#0284c7" />
+          <Download size={13} color="#0284c7" />
           <span style={{ whiteSpace: 'nowrap' }}>{t('btn_export_hub', 'Export Hub')}</span>
         </button>
 
         {/* Notification Bell */}
         <div style={{
-          width: '32px',
-          minWidth: '32px',
-          height: '32px',
-          minHeight: '32px',
-          borderRadius: '50%',
-          background: '#f0f9ff',
-          border: '1px solid #bae6fd',
+          width: '34px',
+          minWidth: '34px',
+          height: '34px',
+          minHeight: '34px',
+          borderRadius: '10px',
+          background: '#f8fafc',
+          border: '1px solid #e2e8f0',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: '#0284c7',
+          color: '#64748b',
           cursor: 'pointer',
           position: 'relative',
           flexShrink: 0,
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
+          transition: 'all 0.15s ease'
         }}>
-          <Bell size={14} />
+          <Bell size={15} />
           <span style={{
             position: 'absolute',
-            top: '5px',
-            right: '5px',
+            top: '7px',
+            right: '7px',
             width: '6px',
             height: '6px',
             borderRadius: '50%',
@@ -440,12 +436,12 @@ export default function OrchestratorTopNav({
           }} />
         </div>
 
-        {/* Patient Profile Widget (ALWAYS 100% VISIBLE) */}
+        {/* Patient Profile Widget */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
-          paddingLeft: '8px',
+          gap: '9px',
+          paddingLeft: '10px',
           borderLeft: '1px solid #e2e8f0',
           flexShrink: 0
         }}>
@@ -458,7 +454,7 @@ export default function OrchestratorTopNav({
                 height: '32px',
                 borderRadius: '50%',
                 objectFit: 'cover',
-                border: '2px solid #bae6fd',
+                border: '1.5px solid #e2e8f0',
                 flexShrink: 0
               }}
             />
@@ -474,8 +470,8 @@ export default function OrchestratorTopNav({
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '11px',
-                fontWeight: 900,
-                border: '2px solid #bae6fd',
+                fontWeight: 700,
+                border: '1.5px solid #bae6fd',
                 flexShrink: 0
               }}
             >
@@ -483,11 +479,11 @@ export default function OrchestratorTopNav({
             </div>
           )}
           <div style={{ whiteSpace: 'nowrap' }}>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#0f172a', lineHeight: 1.2 }}>
+            <div style={{ fontSize: '12px', fontWeight: 600, color: '#0f172a', lineHeight: 1.2 }}>
               {user?.name || patient.name}
             </div>
-            <div style={{ fontSize: '9px', color: '#64748b', lineHeight: 1.2 }}>
-              ABHA: <span style={{ fontWeight: 800, color: '#0284c7' }}>{patient.abhaId}</span>
+            <div style={{ fontSize: '10px', color: '#64748b', lineHeight: 1.2 }}>
+              ABHA: <span style={{ fontWeight: 600, color: '#0284c7' }}>{patient.abhaId}</span>
             </div>
           </div>
         </div>
@@ -501,20 +497,20 @@ export default function OrchestratorTopNav({
             display: 'flex',
             alignItems: 'center',
             gap: '5px',
-            padding: '5px 12px',
-            height: '32px',
+            padding: '6px 12px',
+            height: '34px',
             background: '#fef2f2',
             border: '1px solid #fecaca',
-            borderRadius: '9999px',
-            fontSize: '11px',
-            fontWeight: 800,
+            borderRadius: '10px',
+            fontSize: '11.5px',
+            fontWeight: 600,
             color: '#dc2626',
             cursor: isLoggingOut ? 'not-allowed' : 'pointer',
             whiteSpace: 'nowrap',
             flexShrink: 0,
-            boxShadow: '0 2px 6px rgba(220, 38, 38, 0.08)',
+            boxShadow: '0 1px 2px rgba(220, 38, 38, 0.04)',
             transition: 'all 0.15s ease',
-            marginLeft: '4px'
+            marginLeft: '2px'
           }}
           onMouseEnter={(e) => {
             if (!isLoggingOut) {
@@ -529,7 +525,7 @@ export default function OrchestratorTopNav({
             }
           }}
         >
-          <LogOut size={12} color="#dc2626" />
+          <LogOut size={13} color="#dc2626" />
           <span>{isLoggingOut ? 'Signing Out...' : 'Sign Out'}</span>
         </button>
       </div>

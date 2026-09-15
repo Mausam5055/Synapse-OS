@@ -31,11 +31,12 @@ SYMPTOM_TAXONOMY = {
 async def analyze_symptoms(text: str) -> Dict[str, Any]:
     """
     Evaluates clinical symptoms using live LLM inference (Groq/OpenRouter),
-    with deterministic safety taxonomy verification.
+    with deterministic safety taxonomy verification as fallback.
     """
     text_lower = (text or "").lower()
-    
-    detected_red = [s for s in SYMPTOM_TAXONOMY["red_flags"] if s in text_lower]
+
+    # ── Step 1: Deterministic pre-screen (always runs, used as fallback) ──────
+    detected_red   = [s for s in SYMPTOM_TAXONOMY["red_flags"]   if s in text_lower]
     detected_amber = [s for s in SYMPTOM_TAXONOMY["amber_flags"] if s in text_lower]
     detected_green = [s for s in SYMPTOM_TAXONOMY["green_flags"] if s in text_lower]
 
@@ -71,13 +72,63 @@ async def analyze_symptoms(text: str) -> Dict[str, Any]:
             "moderate_flags": detected_amber,
             "mild_flags": detected_green
         },
+        "primary_clinical_impression": "Based on reported symptoms — clinical evaluation recommended.",
         "recommended_action": default_action,
         "recommended_specialist": default_specialist,
         "vitals_to_check": ["Body Temperature", "Blood Pressure", "SpO2 (Oxygen Saturation)", "Pulse Rate"],
+        "indian_home_remedies_or_otc": None,
         "disclaimer": "This clinical triage assessment is for guidance and does not replace in-person physician diagnosis."
     }
 
-    return fallback
+    # ── Step 2: LLM Clinical Reasoning (Groq / OpenRouter) ───────────────────
+    system_prompt = (
+        "You are a senior clinical triage AI for SynapseOS, an Indian public healthcare platform.\n"
+        "Analyze the patient's reported symptoms and produce a structured JSON triage assessment.\n\n"
+        "Return ONLY a valid JSON object with exactly these keys:\n"
+        "{\n"
+        '  "triage_level": "EMERGENCY_CARE" | "DOCTOR_CONSULT" | "HOME_CARE",\n'
+        '  "urgency_badge": "short human-readable badge string with emoji",\n'
+        '  "primary_clinical_impression": "1-2 sentence most likely diagnosis or differential",\n'
+        '  "recommended_action": "clear, specific next-step instruction for the patient",\n'
+        '  "recommended_specialist": "specialist type or department",\n'
+        '  "vitals_to_check": ["list", "of", "vitals"],\n'
+        '  "indian_home_remedies_or_otc": "OTC/home care advice using Indian brands (Dolo 650, Electral ORS, Pan-40) if HOME_CARE — null for emergencies",\n'
+        '  "disclaimer": "standard medical disclaimer"\n'
+        "}\n\n"
+        "Rules:\n"
+        "- If ANY red-flag symptom is present (chest pain, stroke signs, severe breathing difficulty, "
+        "anaphylaxis, heavy bleeding, seizure, unconsciousness) → ALWAYS return EMERGENCY_CARE.\n"
+        "- Use Indian clinical context: mention Dolo 650, Electral ORS, Pan-40, Cetirizine etc. for home care.\n"
+        "- Be concise and clinically accurate. No markdown. Pure JSON only."
+    )
+
+    user_prompt = (
+        f"Patient Symptom Report: {text}\n\n"
+        f"Deterministic pre-screen detected:\n"
+        f"  Critical flags: {detected_red or 'None'}\n"
+        f"  Moderate flags: {detected_amber or 'None'}\n"
+        f"  Mild flags:     {detected_green or 'None'}\n\n"
+        "Provide your full structured clinical triage assessment as JSON."
+    )
+
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user",   "content": user_prompt}
+    ]
+
+    llm_result = await call_llm_json(messages=messages, fallback_dict=fallback, temperature=0.1)
+
+    # ── Step 3: Safety override — LLM must never downgrade a red-flag case ───
+    if detected_red and llm_result.get("triage_level") != "EMERGENCY_CARE":
+        llm_result["triage_level"]    = "EMERGENCY_CARE"
+        llm_result["urgency_badge"]   = "🔴 Emergency Care (Immediate)"
+        llm_result["recommended_action"] = default_action
+
+    # Ensure detected_symptoms is always present for downstream agents
+    if "detected_symptoms" not in llm_result:
+        llm_result["detected_symptoms"] = fallback["detected_symptoms"]
+
+    return llm_result
 
 
 async def triage_agent_node(state: SynapseOSState) -> SynapseOSState:
@@ -85,7 +136,7 @@ async def triage_agent_node(state: SynapseOSState) -> SynapseOSState:
     start = time.time()
     res = await analyze_symptoms(state.input_text)
     state.triage_data = res
-    
+
     duration = int((time.time() - start) * 1000)
     state.trace.append(AgentTraceStep(
         agent_name="Clinical Symptom Triage Agent (Gemini / Swarm)",

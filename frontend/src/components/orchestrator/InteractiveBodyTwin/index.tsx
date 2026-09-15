@@ -84,7 +84,7 @@ export default function InteractiveBodyTwin({
         flexDirection: 'column',
         gap: '20px',
         height: 'calc(100vh - 130px)',
-        fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+        fontFamily: '"Times New Roman", Times, serif'
       }}
     >
       {/* 1. Main 3D Anatomy Digital Twin Canvas Card */}
@@ -94,7 +94,7 @@ export default function InteractiveBodyTwin({
           background: '#ffffff',
           borderRadius: '24px',
           border: '1px solid #e2e8f0',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.03)',
           position: 'relative',
           overflow: 'hidden',
           display: 'flex',
@@ -105,25 +105,26 @@ export default function InteractiveBodyTwin({
         {/* Top Floating Controls Bar */}
         <div style={{
           position: 'absolute',
-          top: '18px',
-          left: '20px',
-          right: '20px',
+          top: '16px',
+          left: '18px',
+          right: '18px',
           zIndex: 20,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          gap: '10px'
         }}>
           {/* Layer Mode Switcher */}
           <div style={{
             display: 'flex',
-            gap: '4px',
-            background: 'rgba(255,255,255,0.94)',
-            backdropFilter: 'blur(12px)',
+            gap: '3px',
+            background: 'rgba(255,255,255,0.96)',
+            backdropFilter: 'blur(10px)',
             padding: '4px',
-            borderRadius: '9999px',
+            borderRadius: '12px',
             border: '1px solid #e2e8f0',
-            boxShadow: '0 4px 14px rgba(0,0,0,0.05)',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
             pointerEvents: 'auto'
           }}>
             {(['all', 'muscular', 'skeletal', 'vascular'] as const).map((layer) => (
@@ -131,17 +132,17 @@ export default function InteractiveBodyTwin({
                 key={layer}
                 onClick={() => setActiveLayer(layer)}
                 style={{
-                  padding: '6px 14px',
-                  borderRadius: '9999px',
+                  padding: '5px 12px',
+                  borderRadius: '8px',
                   border: 'none',
-                  fontSize: '11px',
+                  fontSize: '11.5px',
                   fontWeight: 700,
                   textTransform: 'capitalize',
-                  background: activeLayer === layer ? '#db2777' : 'transparent',
+                  background: activeLayer === layer ? '#0284c7' : 'transparent',
                   color: activeLayer === layer ? '#ffffff' : '#64748b',
                   cursor: 'pointer',
-                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                  boxShadow: activeLayer === layer ? '0 2px 8px rgba(219, 39, 119,0.35)' : 'none'
+                  transition: 'all 0.15s ease',
+                  boxShadow: activeLayer === layer ? '0 2px 6px rgba(2, 132, 199, 0.25)' : 'none'
                 }}
               >
                 {translateText(layer === 'all' ? 'All' : layer.charAt(0).toUpperCase() + layer.slice(1))}
@@ -156,14 +157,14 @@ export default function InteractiveBodyTwin({
               alignItems: 'center',
               gap: '6px',
               padding: '6px 12px',
-              borderRadius: '9999px',
+              borderRadius: '10px',
               background: '#ecfdf5',
               border: '1px solid #a7f3d0',
               color: '#065f46',
-              fontSize: '10.5px',
-              fontWeight: 800,
+              fontSize: '11px',
+              fontWeight: 700,
               pointerEvents: 'auto',
-              boxShadow: '0 2px 6px rgba(16, 185, 129, 0.1)'
+              boxShadow: '0 1px 3px rgba(16, 185, 129, 0.08)'
             }}>
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} />
               <span>{translateText('Watch Calibrated (HRV 58ms • VO2 Max 44.5)')}</span>
@@ -173,16 +174,15 @@ export default function InteractiveBodyTwin({
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '7px 16px',
-              borderRadius: '9999px',
-              background: 'rgba(253, 242, 248, 0.95)',
-              border: '1px solid #fbcfe8',
-              color: '#db2777',
+              padding: '6px 14px',
+              borderRadius: '10px',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              color: '#0284c7',
               fontSize: '11px',
-              fontWeight: 800,
+              fontWeight: 700,
               pointerEvents: 'auto',
-              backdropFilter: 'blur(10px)',
-              boxShadow: '0 2px 8px rgba(219, 39, 119,0.08)'
+              boxShadow: '0 1px 4px rgba(0,0,0,0.04)'
             }}>
               <Sparkles size={13} />
               <span>{translateText(currentLayer.badge)}</span>
@@ -519,51 +519,52 @@ export default function InteractiveBodyTwin({
         </div>
       </div>
 
-      {/* 2. Dedicated Full-Width Swarm DAG Banner Below Skeleton/Twin */}
+      {/* 2. Dedicated Swarm DAG Banner Below Twin */}
       {onNavigateToSwarmTab && (
         <button
           onClick={onNavigateToSwarmTab}
           style={{
             width: '100%',
-            background: 'linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #e0e7ff 100%)',
-            borderRadius: '20px',
-            padding: '16px 22px',
-            border: '1.5px solid #fbcfe8',
-            color: '#9d174d',
+            background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdfa 100%)',
+            borderRadius: '16px',
+            padding: '14px 20px',
+            border: '1px solid #bae6fd',
+            color: '#0f172a',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             cursor: 'pointer',
-            boxShadow: '0 4px 16px rgba(219, 39, 119,0.08)',
-            transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
+            boxShadow: '0 2px 8px rgba(2, 132, 199, 0.06)',
+            transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+            fontFamily: 'inherit'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 8px 24px rgba(219, 39, 119,0.16)';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.boxShadow = '0 4px 14px rgba(2, 132, 199, 0.12)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 4px 16px rgba(219, 39, 119,0.08)';
+            e.currentTarget.style.boxShadow = '0 2px 8px rgba(2, 132, 199, 0.06)';
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '12px',
+              width: '38px',
+              height: '38px',
+              borderRadius: '10px',
               background: '#ffffff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 3px 10px rgba(219, 39, 119,0.18)'
+              boxShadow: '0 2px 6px rgba(2, 132, 199, 0.12)'
             }}>
-              <Zap size={22} color="#db2777" />
+              <Zap size={20} color="#0284c7" />
             </div>
             <div style={{ textAlign: 'left' }}>
-              <div style={{ fontSize: '14px', fontWeight: 800, color: '#831843', letterSpacing: '-0.01em' }}>
+              <div style={{ fontSize: '13.5px', fontWeight: 700, color: '#0369a1', letterSpacing: '-0.01em' }}>
                 {translateText('Run Agent Swarm DAG')}
               </div>
-              <div style={{ fontSize: '11px', color: '#ec4899', fontWeight: 600, marginTop: '2px' }}>
+              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 500, marginTop: '1px' }}>
                 {translateText('Execute cross-agent diagnostic & clinical consensus protocol')}
               </div>
             </div>
@@ -572,17 +573,17 @@ export default function InteractiveBodyTwin({
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '6px',
-            background: '#db2777',
+            gap: '5px',
+            background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
             color: '#ffffff',
-            padding: '8px 16px',
-            borderRadius: '10px',
-            fontSize: '12px',
-            fontWeight: 800,
-            boxShadow: '0 2px 8px rgba(219, 39, 119,0.3)'
+            padding: '7px 14px',
+            borderRadius: '8px',
+            fontSize: '11.5px',
+            fontWeight: 700,
+            boxShadow: '0 2px 6px rgba(2, 132, 199, 0.25)'
           }}>
             <span>{translateText('Launch Swarm')}</span>
-            <ChevronRight size={15} />
+            <ChevronRight size={14} />
           </div>
         </button>
       )}

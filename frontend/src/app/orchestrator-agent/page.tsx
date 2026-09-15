@@ -392,7 +392,7 @@ export default function OrchestratorAgentPage() {
               flex: 1,
               overflowY: 'auto',
               overflowX: 'auto',
-              padding: '24px 28px',
+              padding: '20px 24px',
               display: 'flex',
               flexDirection: 'column',
               cursor: isDragging ? 'grabbing' : 'default'
@@ -404,7 +404,7 @@ export default function OrchestratorAgentPage() {
                 className="orch-main-grid"
                 style={{
                   display: 'flex',
-                  gap: '20px',
+                  gap: '24px',
                   alignItems: 'flex-start',
                   width: '100%'
                 }}

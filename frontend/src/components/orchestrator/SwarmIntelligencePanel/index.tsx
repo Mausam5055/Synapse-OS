@@ -356,8 +356,8 @@ export default function SwarmIntelligencePanel({
         {/* Pipeline Title */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <GitBranch size={16} color="#db2777" />
-            <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#0f172a', margin: 0, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+            <GitBranch size={16} color="#0284c7" />
+            <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#0f172a', margin: 0 }}>
               {translateText('Orchestrator DAG Execution Pipeline')}
             </h3>
           </div>
@@ -383,10 +383,10 @@ export default function SwarmIntelligencePanel({
               <div
                 key={node.id}
                 style={{
-                  background: isCompleted ? 'rgba(240, 253, 244, 0.85)' : isRunning ? 'rgba(253, 242, 248, 0.85)' : isWarning ? 'rgba(255, 251, 235, 0.85)' : 'rgba(248, 250, 252, 0.85)',
+                  background: isCompleted ? 'rgba(240, 253, 244, 0.9)' : isRunning ? 'rgba(240, 249, 255, 0.9)' : isWarning ? 'rgba(255, 251, 235, 0.9)' : 'rgba(248, 250, 252, 0.9)',
                   backdropFilter: 'blur(8px)',
                   border: '1.5px solid',
-                  borderColor: isCompleted ? '#86efac' : isRunning ? '#f9a8d4' : isWarning ? '#fde68a' : '#e2e8f0',
+                  borderColor: isCompleted ? '#86efac' : isRunning ? '#bae6fd' : isWarning ? '#fde68a' : '#e2e8f0',
                   borderRadius: '16px',
                   padding: '14px',
                   display: 'flex',
@@ -394,7 +394,7 @@ export default function SwarmIntelligencePanel({
                   gap: '8px',
                   position: 'relative',
                   transition: 'all 0.2s ease',
-                  boxShadow: isRunning ? '0 0 16px rgba(219, 39, 119,0.15)' : 'none'
+                  boxShadow: isRunning ? '0 0 16px rgba(2, 132, 199, 0.15)' : 'none'
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -402,7 +402,7 @@ export default function SwarmIntelligencePanel({
                     width: '32px',
                     height: '32px',
                     borderRadius: '10px',
-                    background: isCompleted ? '#22c55e' : isRunning ? '#db2777' : isWarning ? '#f59e0b' : '#cbd5e1',
+                    background: isCompleted ? '#16a34a' : isRunning ? '#0284c7' : isWarning ? '#f59e0b' : '#cbd5e1',
                     color: '#ffffff',
                     display: 'flex',
                     alignItems: 'center',
@@ -411,36 +411,34 @@ export default function SwarmIntelligencePanel({
                     <Icon size={16} />
                   </div>
                   <span style={{
-                    fontSize: '9px',
+                    fontSize: '9.5px',
                     fontWeight: 800,
                     padding: '2px 6px',
                     borderRadius: '4px',
-                    background: isCompleted ? '#dcfce7' : isRunning ? '#fce7f3' : isWarning ? '#fef3c7' : '#e2e8f0',
-                    color: isCompleted ? '#15803d' : isRunning ? '#be185d' : isWarning ? '#b45309' : '#64748b',
-                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                    background: isCompleted ? '#dcfce7' : isRunning ? '#e0f2fe' : isWarning ? '#fef3c7' : '#e2e8f0',
+                    color: isCompleted ? '#15803d' : isRunning ? '#0369a1' : isWarning ? '#b45309' : '#64748b'
                   }}>
                     {isCompleted ? `✓ ${translateText('200 OK')}` : isRunning ? `⚡ ${translateText('Running')}` : isWarning ? `⚠ ${translateText('Alert')}` : translateText('Standby')}
                   </span>
                 </div>
 
                 <div>
-                  <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a' }}>
                     {translateText(node.name)}
                   </div>
-                  <div style={{ fontSize: '10px', color: '#64748b', marginTop: '2px' }}>
+                  <div style={{ fontSize: '10.5px', color: '#64748b', marginTop: '2px' }}>
                     {translateText(node.role)}
                   </div>
                 </div>
 
                 <div style={{
-                  fontSize: '10px',
+                  fontSize: '10.5px',
                   fontWeight: 700,
                   color: isCompleted ? '#16a34a' : '#94a3b8',
                   borderTop: '1px solid rgba(0,0,0,0.06)',
                   paddingTop: '6px',
                   display: 'flex',
-                  justifyContent: 'space-between',
-                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                  justifyContent: 'space-between'
                 }}>
                   <span>{translateText('Latency:')}</span>
                   <span>{isCompleted ? `${node.latencyMs} ms` : '--'}</span>

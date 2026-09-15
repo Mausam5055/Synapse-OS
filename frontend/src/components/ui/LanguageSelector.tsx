@@ -129,7 +129,11 @@ export default function LanguageSelector({ variant = 'header' }: LanguageSelecto
               return (
                 <button
                   key={lang.code}
-                  onClick={() => handleSelect(lang.code)}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelect(lang.code);
+                  }}
                   style={{
                     width: '100%',
                     display: 'flex',

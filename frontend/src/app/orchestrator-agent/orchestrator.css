@@ -40,7 +40,7 @@
 }
 
 .orch-root {
-  font-family: 'Times New Roman', Times, serif !important;
+  font-family: "Times New Roman", Times, serif !important;
   color: var(--orch-text-primary) !important;
   background-color: var(--orch-bg) !important;
   -webkit-font-smoothing: antialiased;
@@ -73,7 +73,7 @@
 .orch-root p,
 .orch-root span {
   box-sizing: border-box;
-  font-family: 'Times New Roman', Times, serif !important;
+  font-family: "Times New Roman", Times, serif !important;
 }
 
 /* Custom Scrollbars */

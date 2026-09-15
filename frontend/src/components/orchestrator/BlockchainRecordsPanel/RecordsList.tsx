@@ -138,7 +138,7 @@ export default function RecordsList({ state }: { state: any }) {
       {/* Tab 3: Blockchain */}
       {state.activeTab === 'blockchain' && (
         <div>
-          <h2 style={{ fontSize: '20px', marginBottom: '8px', color: '#0f172a', fontWeight: 800, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+          <h2 style={{ fontSize: '20px', marginBottom: '8px', color: '#0f172a', fontWeight: 800 }}>
             {translateText('On-Chain Medical Record Registry (Hardhat + IPFS)')}
           </h2>
           <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '28px', lineHeight: 1.5 }}>
@@ -147,7 +147,7 @@ export default function RecordsList({ state }: { state: any }) {
 
           {/* Upload UI matching SynapseOS Style */}
           <div style={{ background: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '14px', padding: '24px', marginBottom: '32px', display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-start' }}>
-            <h3 style={{ fontSize: '16px', margin: 0, color: '#0f172a', fontWeight: 700, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+            <h3 style={{ fontSize: '16px', margin: 0, color: '#0f172a', fontWeight: 700 }}>
               {translateText('Register New Record')}
             </h3>
             
@@ -165,7 +165,6 @@ export default function RecordsList({ state }: { state: any }) {
                   cursor: (!file || uploading || !state.walletAddress) ? 'not-allowed' : 'pointer',
                   fontWeight: 800,
                   fontSize: '14px',
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px'
@@ -237,9 +236,9 @@ export default function RecordsList({ state }: { state: any }) {
             {state.records.map((r: any, i: number) => (
               <div key={i} style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '10px' }}>
-                  <span style={{ fontWeight: 800, color: '#db2777', fontSize: '15px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>{translateText(r.type)}</span>
+                  <span style={{ fontWeight: 800, color: '#db2777', fontSize: '15px' }}>{translateText(r.type)}</span>
                   <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: '11px', color: '#059669', background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '4px 10px', borderRadius: '20px', fontWeight: 700, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+                    <span style={{ fontSize: '11px', color: '#059669', background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '4px 10px', borderRadius: '20px', fontWeight: 700 }}>
                       ✓ {translateText('On-Chain Verified')}
                     </span>
                     <span style={{ fontSize: '10.5px', color: '#2563eb', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '4px 8px', borderRadius: '20px', fontWeight: 700 }}>
@@ -305,7 +304,7 @@ export default function RecordsList({ state }: { state: any }) {
       {/* Tab 4: Verify */}
       {state.activeTab === 'verify' && (
         <div>
-          <h2 style={{ fontSize: '20px', marginBottom: '8px', color: '#0f172a', fontWeight: 800, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+          <h2 style={{ fontSize: '20px', marginBottom: '8px', color: '#0f172a', fontWeight: 800 }}>
             {translateText('Verify Record Cryptographic Authenticity')}
           </h2>
           <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '24px', lineHeight: 1.5 }}>
@@ -332,7 +331,6 @@ export default function RecordsList({ state }: { state: any }) {
                 cursor: (verifying || !verifyId.trim()) ? 'not-allowed' : 'pointer', 
                 fontWeight: 800,
                 fontSize: '14px',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
                 boxShadow: '0 4px 14px rgba(16, 185, 129, 0.25)',
                 display: 'flex',
                 alignItems: 'center',
@@ -346,7 +344,7 @@ export default function RecordsList({ state }: { state: any }) {
 
           {verifyError && (
              <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '14px', padding: '24px', marginBottom: '24px' }}>
-                <h4 style={{ margin: '0 0 12px 0', color: '#ef4444', fontSize: '16px', fontWeight: 800, fontFamily: 'system-ui, -apple-system, sans-serif', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <h4 style={{ margin: '0 0 12px 0', color: '#ef4444', fontSize: '16px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <AlertTriangle size={18} />
                   Verification Error
                 </h4>
@@ -356,7 +354,7 @@ export default function RecordsList({ state }: { state: any }) {
 
           {verifyResult && (
             <div style={{ background: verifyResult.match ? '#ecfdf5' : '#fef2f2', border: `1px solid ${verifyResult.match ? '#34d399' : '#fecaca'}`, borderRadius: '14px', padding: '24px' }}>
-              <h4 style={{ margin: '0 0 12px 0', color: verifyResult.match ? '#059669' : '#ef4444', fontSize: '16px', fontWeight: 800, fontFamily: 'system-ui, -apple-system, sans-serif', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h4 style={{ margin: '0 0 12px 0', color: verifyResult.match ? '#059669' : '#ef4444', fontSize: '16px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {verifyResult.match ? <CheckCircle2 size={18} /> : <AlertTriangle size={18} />}
                 {verifyResult.match ? 'Integrity Verified: Document Untampered' : 'Integrity Check Failed'}
               </h4>

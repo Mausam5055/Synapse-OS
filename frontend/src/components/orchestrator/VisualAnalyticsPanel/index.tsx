@@ -1217,8 +1217,7 @@ export default function VisualAnalyticsPanel({
                     justifyContent: 'center',
                     letterSpacing: '0.5px',
                     boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-                    flexShrink: 0,
-                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                    flexShrink: 0
                   }}>
                     {initials}
                   </div>

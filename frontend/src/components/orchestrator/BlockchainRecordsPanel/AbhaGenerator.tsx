@@ -22,7 +22,7 @@ export default function AbhaGenerator({ state }: { state: any }) {
       <div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
           <div>
-            <h2 style={{ fontSize: '20px', margin: 0, color: '#0f172a', fontWeight: 800, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+            <h2 style={{ fontSize: '20px', margin: 0, color: '#0f172a', fontWeight: 800 }}>
               {translateText('Ayushman Bharat Health Account (ABHA) Generator & Registry')}
             </h2>
             <p style={{ color: '#64748b', fontSize: '13.5px', margin: '4px 0 0 0', lineHeight: 1.5 }}>
@@ -40,8 +40,7 @@ export default function AbhaGenerator({ state }: { state: any }) {
             color: '#059669',
             border: '1px solid #a7f3d0',
             fontSize: '11px',
-            fontWeight: 800,
-            fontFamily: 'system-ui, -apple-system, sans-serif'
+            fontWeight: 800
           }}>
             <ShieldCheck size={14} />
             {translateText('ABDM Sandbox Active')}
@@ -76,7 +75,7 @@ export default function AbhaGenerator({ state }: { state: any }) {
             <Sparkles size={16} />
           </div>
           <div>
-            <div style={{ fontSize: '12px', fontWeight: 800, color: '#0369a1', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+            <div style={{ fontSize: '12px', fontWeight: 800, color: '#0369a1' }}>
               {translateText('Auto-Synced with Active Citizen Profile')}
             </div>
             <div style={{ fontSize: '11.5px', color: '#475569' }}>
@@ -110,7 +109,7 @@ export default function AbhaGenerator({ state }: { state: any }) {
         border: '1px solid #e2e8f0'
       }}>
         <div>
-          <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+          <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
             <User size={13} color="#0284c7" />
             {translateText('Citizen Full Name')}
           </label>
@@ -124,7 +123,7 @@ export default function AbhaGenerator({ state }: { state: any }) {
         </div>
 
         <div>
-          <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+          <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
             <Calendar size={13} color="#0284c7" />
             {translateText('Year of Birth (YOB)')}
           </label>
@@ -150,7 +149,6 @@ export default function AbhaGenerator({ state }: { state: any }) {
               cursor: 'pointer', 
               fontWeight: 800,
               fontSize: '13.5px',
-              fontFamily: 'system-ui, -apple-system, sans-serif',
               boxShadow: '0 4px 14px rgba(16, 185, 129, 0.3)',
               display: 'flex',
               alignItems: 'center',
@@ -207,20 +205,20 @@ export default function AbhaGenerator({ state }: { state: any }) {
                 <Fingerprint size={26} />
               </div>
               <div>
-                <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#db2777', fontWeight: 800, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+                <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#db2777', fontWeight: 800 }}>
                   {translateText('Government of India • National Health Authority')}
                 </span>
-                <h4 style={{ margin: '2px 0 0 0', fontSize: '15px', color: '#0f172a', fontWeight: 800, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+                <h4 style={{ margin: '2px 0 0 0', fontSize: '15px', color: '#0f172a', fontWeight: 800 }}>
                   {translateText('Ayushman Bharat Digital Mission (ABDM) Health Card')}
                 </h4>
               </div>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ padding: '6px 14px', borderRadius: '12px', background: '#ecfdf5', color: '#059669', fontWeight: 800, fontSize: '11px', border: '1px solid #a7f3d0', fontFamily: 'system-ui, -apple-system, sans-serif', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span style={{ padding: '6px 14px', borderRadius: '12px', background: '#ecfdf5', color: '#059669', fontWeight: 800, fontSize: '11px', border: '1px solid #a7f3d0', display: 'flex', alignItems: 'center', gap: '5px' }}>
                 ✓ {translateText('PM-JAY VERIFIED')}
               </span>
-              <span style={{ padding: '6px 14px', borderRadius: '12px', background: '#eff6ff', color: '#0284c7', fontWeight: 800, fontSize: '11px', border: '1px solid #bae6fd', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+              <span style={{ padding: '6px 14px', borderRadius: '12px', background: '#eff6ff', color: '#0284c7', fontWeight: 800, fontSize: '11px', border: '1px solid #bae6fd' }}>
                 ● {translateText('ACTIVE')}
               </span>
             </div>
@@ -233,7 +231,7 @@ export default function AbhaGenerator({ state }: { state: any }) {
               <div style={{ fontSize: '12px', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>
                 {translateText('Citizen Beneficiary')}
               </div>
-              <h3 style={{ fontSize: '28px', margin: '0 0 8px 0', color: '#0f172a', fontWeight: 900, fontFamily: 'system-ui, -apple-system, sans-serif', letterSpacing: '-0.02em' }}>
+              <h3 style={{ fontSize: '28px', margin: '0 0 8px 0', color: '#0f172a', fontWeight: 900, letterSpacing: '-0.02em' }}>
                 {state.abhaData.name}
               </h3>
 
@@ -268,8 +266,7 @@ export default function AbhaGenerator({ state }: { state: any }) {
                     color: copied ? '#059669' : '#475569',
                     fontSize: '11.5px',
                     fontWeight: 700,
-                    cursor: 'pointer',
-                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                    cursor: 'pointer'
                   }}
                 >
                   {copied ? <Check size={13} /> : <Copy size={13} />}

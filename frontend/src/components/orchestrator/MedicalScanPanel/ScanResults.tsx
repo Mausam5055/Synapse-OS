@@ -15,21 +15,21 @@ export default function ScanResults({ state }: { state: any }) {
       
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-          <span style={{ fontSize: '11px', textTransform: 'uppercase', color: '#64748b', letterSpacing: '0.05em', fontWeight: 800, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+          <span style={{ fontSize: '11px', textTransform: 'uppercase', color: '#64748b', letterSpacing: '0.05em', fontWeight: 800 }}>
             {translateText('Interpretation Summary')}
           </span>
-          <span style={{ fontSize: '11px', fontWeight: 800, color: '#db2777', background: '#fdf2f8', padding: '2px 8px', borderRadius: '4px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+          <span style={{ fontSize: '11px', fontWeight: 800, color: '#0284c7', background: '#f0f9ff', padding: '2px 8px', borderRadius: '4px', border: '1px solid #bae6fd' }}>
             {translateText(state.scanResult?.urgency_badge || 'PENDING')}
           </span>
         </div>
-        <h3 style={{ margin: 0, fontSize: '18px', color: '#0f172a', fontWeight: 800, lineHeight: '1.4', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+        <h3 style={{ margin: 0, fontSize: '18px', color: '#0f172a', fontWeight: 800, lineHeight: '1.4' }}>
           {translateText(state.scanResult?.ai_diagnosis_summary || 'Analyzing Document...')}
         </h3>
       </div>
 
       {/* Plain Language / Patient-Friendly Explanation */}
       <div style={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '16px' }}>
-        <div style={{ fontSize: '11px', fontWeight: 800, color: '#3b82f6', textTransform: 'uppercase', marginBottom: '8px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+        <div style={{ fontSize: '11px', fontWeight: 800, color: '#0284c7', textTransform: 'uppercase', marginBottom: '8px' }}>
           {translateText('Patient-Friendly Explanation')}
         </div>
         <p style={{ margin: 0, fontSize: '13.5px', color: '#334155', lineHeight: '1.6' }}>
@@ -42,7 +42,7 @@ export default function ScanResults({ state }: { state: any }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
           {state.scanResult.remote_result_image && (
             <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '12px' }}>
-              <div style={{ fontSize: '11px', fontWeight: 800, color: '#2563eb', textTransform: 'uppercase', marginBottom: '8px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 800, color: '#0284c7', textTransform: 'uppercase', marginBottom: '8px' }}>
                 🎯 {translateText('YOLOv8 Anomaly Localization')}
               </div>
               <img
@@ -69,7 +69,7 @@ export default function ScanResults({ state }: { state: any }) {
 
       {/* Clinical Observations */}
       <div>
-        <div style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: '10px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+        <div style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: '10px' }}>
           {translateText('Extracted Clinical Observations')} ({state.scanResult?.clinical_findings?.length || 0})
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -85,7 +85,7 @@ export default function ScanResults({ state }: { state: any }) {
       {/* Suggested Doctor Questions */}
       {state.scanResult?.suggested_questions_for_doctor?.length > 0 && (
         <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '16px' }}>
-          <div style={{ fontSize: '11px', fontWeight: 800, color: '#d97706', textTransform: 'uppercase', marginBottom: '10px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+          <div style={{ fontSize: '11px', fontWeight: 800, color: '#d97706', textTransform: 'uppercase', marginBottom: '10px' }}>
             {translateText('Recommended Questions for Your Doctor')}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>

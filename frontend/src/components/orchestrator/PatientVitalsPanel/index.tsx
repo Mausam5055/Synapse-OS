@@ -176,7 +176,7 @@ export default function PatientVitalsPanel({
         display: 'flex',
         flexDirection: 'column',
         gap: '16px',
-        width: '340px',
+        width: '330px',
         flexShrink: 0,
         fontFamily: '"Times New Roman", Times, serif'
       }}
@@ -194,16 +194,16 @@ export default function PatientVitalsPanel({
       <div style={{
         background: '#ffffff',
         borderRadius: '16px',
-        border: '1px solid #bae6fd',
-        padding: '10px 12px',
-        boxShadow: '0 2px 8px rgba(2,132,199,0.06)',
+        border: '1px solid #e2e8f0',
+        padding: '12px 14px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.02), 0 4px 12px rgba(0,0,0,0.03)',
         display: 'flex',
         flexDirection: 'column',
         gap: '8px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#0369a1', display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <ShieldCheck size={13} color="#0284c7" />
+          <span style={{ fontSize: '11px', fontWeight: 700, color: '#0369a1', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <ShieldCheck size={14} color="#0284c7" />
             {translateText('ABDM Sandbox Gateway')}
           </span>
           <button
@@ -213,17 +213,18 @@ export default function PatientVitalsPanel({
               display: 'flex',
               alignItems: 'center',
               gap: '4px',
-              padding: '3px 8px',
-              borderRadius: '6px',
+              padding: '4px 9px',
+              borderRadius: '8px',
               background: '#f0f9ff',
               border: '1px solid #bae6fd',
               color: '#0284c7',
-              fontSize: '10px',
-              fontWeight: 800,
-              cursor: 'pointer'
+              fontSize: '10.5px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: 'all 0.15s ease'
             }}
           >
-            <Upload size={11} /> {translateText('Upload JSON')}
+            <Upload size={12} /> {translateText('Upload JSON')}
           </button>
         </div>
 
@@ -233,15 +234,16 @@ export default function PatientVitalsPanel({
           onChange={(e) => onSelectProfile?.(e.target.value)}
           style={{
             width: '100%',
-            padding: '5px 8px',
-            borderRadius: '8px',
+            padding: '7px 10px',
+            borderRadius: '10px',
             background: '#f8fafc',
             border: '1px solid #cbd5e1',
             color: '#0f172a',
-            fontSize: '11px',
-            fontWeight: 700,
+            fontSize: '11.5px',
+            fontWeight: 600,
             cursor: 'pointer',
-            outline: 'none'
+            outline: 'none',
+            transition: 'border-color 0.15s ease'
           }}
         >
           {MOCK_HEALTH_PROFILES.map((p) => (
@@ -257,17 +259,17 @@ export default function PatientVitalsPanel({
         className="orch-card-interactive"
         style={{
           background: '#ffffff',
-          borderRadius: '20px',
-          border: '1px solid #bae6fd',
-          padding: '20px',
-          boxShadow: '0 4px 14px rgba(2,132,199,0.04)',
+          borderRadius: '18px',
+          border: '1px solid #e2e8f0',
+          padding: '18px 20px',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.02), 0 4px 12px rgba(0,0,0,0.03)',
           position: 'relative'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
           <span style={{
             fontSize: '11px',
-            fontWeight: 800,
+            fontWeight: 700,
             padding: '4px 10px',
             borderRadius: '8px',
             background: isAbhaLinked ? '#e0f2fe' : '#fef2f2',

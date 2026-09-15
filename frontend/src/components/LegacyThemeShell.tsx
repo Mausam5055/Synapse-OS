@@ -134,7 +134,7 @@ export default function LegacyThemeShell({ children }: { children: React.ReactNo
               WebkitBackdropFilter: 'blur(16px)',
               border: '1px solid rgba(0, 0, 0, 0.15)',
               color: '#0f172a',
-              fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+              fontFamily: '"Times New Roman", Times, serif',
               fontSize: '13px',
               fontWeight: 800,
               letterSpacing: '0.08em',

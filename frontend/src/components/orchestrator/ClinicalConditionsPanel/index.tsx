@@ -278,25 +278,25 @@ export default function ClinicalConditionsPanel({
           </div>
         </div>
 
-        {/* Quick Report Actions (Cleanly Spaced) */}
+        {/* Quick Report Actions */}
         <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
           <button
             onClick={onOpenExportModal}
             style={{
               flex: 1,
-              padding: '10px 14px',
-              borderRadius: '12px',
+              padding: '9px 14px',
+              borderRadius: '10px',
               border: 'none',
-              background: '#db2777',
+              background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
               color: '#ffffff',
               fontSize: '12px',
-              fontWeight: 800,
+              fontWeight: 700,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '6px',
-              boxShadow: '0 2px 8px rgba(219, 39, 119,0.3)',
+              boxShadow: '0 2px 6px rgba(2, 132, 199, 0.25)',
               transition: 'all 0.15s ease'
             }}
           >
@@ -307,9 +307,9 @@ export default function ClinicalConditionsPanel({
             onClick={onOpenExportModal}
             title={translateText('Download PDF')}
             style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '12px',
+              width: '38px',
+              height: '38px',
+              borderRadius: '10px',
               border: '1px solid #e2e8f0',
               background: '#f8fafc',
               color: '#475569',
@@ -320,7 +320,7 @@ export default function ClinicalConditionsPanel({
               transition: 'all 0.15s ease'
             }}
           >
-            <Download size={16} />
+            <Download size={15} />
           </button>
         </div>
       </div>
