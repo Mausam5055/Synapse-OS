@@ -522,7 +522,7 @@ async def run_prescription_ocr(
             from backend.app.services.llm_service import call_gemini_vision
             prompt = f"{OCR_SYSTEM_PROMPT}\n\n{JSON_SCHEMA_INSTRUCTION}"
             clean_b64 = image_data_url.split(",")[-1] if "," in image_data_url else image_data_url
-            gemini_model = settings.GEMINI_MODEL or "gemini-2.0-flash"
+            gemini_model = settings.GEMINI_MODEL or "gemini-3.5-flash"
             logger.info(f"Invoking Google Gemini Multimodal Vision: {gemini_model}")
             gemini_raw = await call_gemini_vision(clean_b64, prompt, model=gemini_model)
             if gemini_raw:

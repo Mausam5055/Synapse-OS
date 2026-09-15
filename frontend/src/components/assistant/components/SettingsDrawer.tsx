@@ -169,11 +169,11 @@ export default function SettingsDrawer({
           </label>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             {[
-              { id: 'groq-qwen-27b', name: '⚡ Groq Qwen 3.8 27B', badge: 'Ultra-Fast Bilingual (Hindi + English) • Primary' },
-              { id: 'groq-gpt-oss-120b', name: '🧠 Groq GPT-OSS 120B', badge: 'Deep Clinical Reasoning' },
+              { id: 'gemini-3.5-flash', name: '⚡ Google Gemini 3.5 Flash', badge: 'Hero Layer • Native Multimodal Vision & Reasoning' },
+              { id: 'gemini-2.5-flash', name: '⚡ Google Gemini 2.5 Flash', badge: 'High-Throughput Multimodal Clinical' },
+              { id: 'gemini-3.5-flash-lite', name: '🚀 Gemini 3.5 Flash-Lite', badge: 'Ultra-Fast Sub-Second Triage' },
+              { id: 'groq-qwen-27b', name: '⚡ Groq Qwen 3.8 27B', badge: 'Bilingual (Hindi + English) LPU' },
               { id: 'groq-llama-3.3-70b', name: '⚡ Groq LLaMA 3.3 70B', badge: 'High Performance LPUs' },
-              { id: 'gemini-1.5-flash', name: '⚡ Gemini 1.5 Flash', badge: 'Fast Multimodal Clinical' },
-              { id: 'gemini-1.5-pro', name: '🧠 Gemini 1.5 Pro', badge: 'Deep Longitudinal Diagnostics' }
             ].map(m => (
               <div
                 key={m.id}

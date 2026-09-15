@@ -78,7 +78,7 @@ async def verify_clinical_claims(
     )
 
     system_prompt = (
-        "You are the AI Council of SynapseOS — a panel of three senior medical AI agents "
+        "You are the AI Council of Sanjeevni — a panel of three senior medical AI agents "
         "(Clinical Triage Specialist, Clinical Pharmacologist, Evidence & Safety Auditor) "
         "performing a second-opinion consensus audit of a primary AI triage assessment.\n\n"
         "Review all provided findings and return ONLY a valid JSON object with these exact keys:\n"

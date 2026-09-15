@@ -2,7 +2,7 @@
 ### Official Project Pitch & Technical Defense Dossier — Fund My Crazy 2026 (A Google Gemini Initiative)
 
 [![Initiative](https://img.shields.io/badge/Fund_My_Crazy-2026-4285F4?style=flat-square&logo=google)](https://fundmycrazy.com/)
-[![Built_With](https://img.shields.io/badge/Hero_Layer-Google_Gemini_2.0_Flash-34A853?style=flat-square&logo=google)](https://ai.google.dev/)
+[![Built_With](https://img.shields.io/badge/Hero_Layer-Google_Gemini_3.5_Flash-34A853?style=flat-square&logo=google)](https://ai.google.dev/)
 [![Public_Health](https://img.shields.io/badge/National_Grid-ABDM_%7C_IDSP_%7C_PMBJP-FF9933?style=flat-square)](#)
 
 ---
@@ -15,9 +15,9 @@
 >
 > *We did not build a chatbot.*
 >
-> *We built **Sanjeevni / Synapse-OS: The City Immune System** — an **Autonomous Urban Health Operating Grid** that redesigns how Indian metropolitan municipalities detect, triage, and contain public health crises before emergency departments are overwhelmed.*
+> *We built **Sanjeevni-OS: The City Immune System** — an **Autonomous Urban Health Operating Grid** that redesigns how Indian metropolitan municipalities detect, triage, and contain public health crises before emergency departments are overwhelmed.*
 >
-> *By combining **Google Gemini 2.0 Flash** as our multimodal reasoning hero layer with **deterministic clinical safety gates**, everyday citizen triage events over **WhatsApp and 2G SMS** act as decentralized biological sensors. A cluster of 40 citizens in Karol Bagh reporting high fever and joint pain doesn't just get individual homecare guidance — it dynamically calculates localized effective reproduction numbers ($R_t = 1.84$), flags an outbreak surge 48 hours before hospital OPD registers fill up, and dispatches automated municipal fogging and ASHA worker directives.*
+> *By combining **Google Gemini 3.5 Flash** as our multimodal reasoning hero layer with **deterministic clinical safety gates**, everyday citizen triage events over **WhatsApp and 2G SMS** act as decentralized biological sensors. A cluster of 40 citizens in Karol Bagh reporting high fever and joint pain doesn't just get individual homecare guidance — it dynamically calculates localized effective reproduction numbers ($R_t = 1.84$), flags an outbreak surge 48 hours before hospital OPD registers fill up, and dispatches automated municipal fogging and ASHA worker directives.*
 >
 > *This is not another AI wrapper. It is the operating grid for 1.4 billion citizens."*
 
@@ -35,13 +35,13 @@
 
 1. **Decentralized Citizen Sensory Layer:** Meta WhatsApp Cloud API (11 Indic scripts), 2G SMS, WebRTC Multimodal Voice AI Orb, Apple HealthKit / Google Health Connect.
 2. **Deterministic Clinical Safety Air-Lock:** Emergency 108/112 intercept, pediatric Reye's syndrome intercept, renal AKI / MALA drug safety gates, Tele-MANAS 14416 mental crisis router.
-3. **Google Gemini 2.0 Flash Hero Intelligence Swarm:** Multimodal vision for handwritten Indian doctor prescriptions, native Indic dialect understanding, multi-agent council synthesis, compassionate plain-language care guidance.
+3. **Google Gemini 3.5 Flash Hero Intelligence Swarm:** Multimodal vision for handwritten Indian doctor prescriptions, native Indic dialect understanding, multi-agent council synthesis, compassionate plain-language care guidance.
 4. **Municipal Epidemiological Intelligence Grid:** PIN-code ward geospatial heatmap, real-time effective reproduction number ($R_t$) tracking, and automated municipal early-warning advisories to ASHA workers.
 5. **National Digital Health Integrations:** Ayushman Bharat (ABDM / ABHA 14-digit ID), Pradhan Mantri Jan Aushadhi Generic Savings Engine, Universal Immunization (UIP & U-WIN), and Polygon blockchain cryptographic passport.
 
 ---
 
-## 💎 4. Why Google Gemini 2.0 Flash is Non-Negotiable
+## 💎 4. Why Google Gemini 3.5 Flash is Non-Negotiable
 
 We do not use Gemini as a generic chat completions endpoint. Gemini is the **Hero Multimodal Intelligence Engine** because:
 

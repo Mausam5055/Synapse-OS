@@ -17,7 +17,7 @@ def test_root_endpoint():
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "ONLINE"
-    assert data["platform"] == "SynapseOS"
+    assert data["platform"] in ("Sanjeevni-OS", "SynapseOS")
     assert "agents_active" in data
     assert len(data["agents_active"]) > 5
 

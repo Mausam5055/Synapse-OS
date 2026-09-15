@@ -1,19 +1,19 @@
 import { SiteConfig } from '@/types';
 
 export const siteConfig: SiteConfig = {
-  name: 'SynapseOS',
-  tagline: 'AI-Powered Multi-Agent Health Platform',
+  name: 'Sanjeevni-OS',
+  tagline: 'Autonomous Urban Health Operating Grid — Powered by Google Gemini 3.5 Flash',
   description:
-    'A completely open-source, dual-mode health OS driven by a swarm of specialized AI agents. One backend, two doors in.',
-  email: 'hello@synapseos.com',
-  phone: '+1 800 000 000',
+    'Sanjeevni-OS is India’s Autonomous City Immune System — slashing out-of-pocket drug bills via Jan Aushadhi generics, enforcing deterministic pediatric safety, and predicting urban epidemics at the ward level.',
+  email: 'contact@sanjeevni.in',
+  phone: '108 (National Emergency)',
   address: {
-    street: 'Health Innovation Hub',
-    city: 'San Francisco',
-    province: 'CA',
-    country: 'USA',
+    street: 'Public Health Innovation Grid',
+    city: 'New Delhi',
+    province: 'Delhi',
+    country: 'India',
   },
   socials: {
-    instagram: 'https://github.com/Mausam5055/SynapseOS',
+    instagram: 'https://github.com/Mausam5055/Synapse-OS',
   },
 };

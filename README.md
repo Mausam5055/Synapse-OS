@@ -6,17 +6,17 @@
 
 <img src="./frontend/public/synapseos-icon.svg" alt="SynapseOS Logo" width="80" height="80" />
 
-# Sanjeevni / SynapseOS — Autonomous Urban Health Grid
+# Sanjeevni-OS — Autonomous Urban Health Grid
 
 **Fund My Crazy 2026 | A Google Gemini Initiative**
 
 > **Category:** Our Healthcare — Rethinking the Places We Turn to for Care <br/>
 > **Initiative:** Google Gemini ₹1 Crore Innovation Fund <br/>
-> **Core Architecture:** Google Gemini 2.0 Multimodal Hero Layer + Deterministic Safety Architecture <br/>
+> **Core Architecture:** Google Gemini 3.5 Flash Multimodal Hero Layer + Deterministic Safety Architecture <br/>
 > **Vision:** Reimagining Indian municipal healthcare as an ambient, decentralized intelligence grid accessible to 650+ million citizens over WhatsApp without apps, downloads, or clinical friction.
 
 <!-- AI Stack -->
-[![Google Gemini](https://img.shields.io/badge/Google_Gemini-2.0_Flash_%26_Multimodal-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://deepmind.google/technologies/gemini/)
+[![Google Gemini](https://img.shields.io/badge/Google_Gemini-3.5_Flash_%26_Multimodal-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://deepmind.google/technologies/gemini/)
 [![Meta WhatsApp](https://img.shields.io/badge/Meta_WhatsApp-Cloud_API_v20.0-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://developers.facebook.com/)
 <br />
 <!-- Frontend -->

@@ -38,7 +38,7 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(
-    title="SynapseOS — Multi-Agent Health Platform API",
+    title="Sanjeevni-OS — Multi-Agent Health Platform API",
     version=settings.VERSION,
     description="Autonomous AI-first Health Operating System powering dual-mode health assistants, clinical ML, digital twin, ABDM, and omnichannel care.",
     docs_url="/docs",
@@ -64,7 +64,7 @@ app.include_router(api_router, prefix=settings.API_PREFIX)
 @app.get("/api/health", tags=["Health Check"])
 async def root():
     return {
-        "platform": "SynapseOS",
+        "platform": "Sanjeevni-OS",
         "version": settings.VERSION,
         "status": "ONLINE",
         "agents_active": [

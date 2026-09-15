@@ -35,9 +35,11 @@ async def call_gemini(
         return None
 
     gemini_models = [
-        model or settings.GEMINI_MODEL or "gemini-2.0-flash",
-        "gemini-1.5-flash",
-        "gemini-1.5-pro"
+        model or settings.GEMINI_MODEL or "gemini-3.5-flash",
+        "gemini-3.5-flash",
+        "gemini-2.5-flash",
+        "gemini-3.5-flash-lite",
+        "gemini-flash-lite-latest",
     ]
     # Remove duplicates preserving order
     seen = set()
@@ -108,7 +110,7 @@ async def call_gemini_vision(
         return None
 
     clean_b64 = image_base64.split(",")[-1] if "," in image_base64 else image_base64
-    target_model = model or settings.GEMINI_MODEL or "gemini-2.0-flash"
+    target_model = model or settings.GEMINI_MODEL or "gemini-3.5-flash"
     endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/{target_model}:generateContent?key={settings.GEMINI_API_KEY}"
 
     payload = {

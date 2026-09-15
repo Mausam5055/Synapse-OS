@@ -3,7 +3,7 @@ export const aboutData = {
     subtitle: 'About Us',
     title: 'An Operating System for Global Health',
     intro:
-      'SynapseOS is an open-source health platform powered by a swarm of specialized AI agents. It provides a plain dashboard for everyday tracking, and a voice-driven assistant for automated triage and tasks.',
+      'Sanjeevni-OS is an open-source health operating system powered by Google Gemini 3.5 Flash and a multi-agent swarm. It turns everyday smartphones and WhatsApp into an Autonomous City Immune System for India.',
   },
   philosophy: {
     title: 'Our AI Architecture Philosophy',
@@ -12,13 +12,13 @@ export const aboutData = {
         keyword: 'MULTI-AGENT',
         title: 'Specialized Agent Swarm',
         description:
-          'Unlike simple chatbots, SynapseOS coordinates 18 independent agents. An Orchestrator plans multi-step tasks and delegates them seamlessly to clinical and lifestyle agents.',
+          'Unlike simple chatbots, Sanjeevni-OS coordinates specialized agents led by Google Gemini 3.5 Flash. An Orchestrator plans multi-step tasks and delegates them seamlessly to clinical and lifestyle agents.',
       },
       {
         keyword: 'OPEN DATA',
         title: 'Verifiable & Trustworthy',
         description:
-          'We leverage free, open APIs for real-time outbreak mapping, hospital locations, and FDA drug data. Every critical health record is hashed to a tamper-proof blockchain testnet.',
+          'We leverage open public health datasets, IDSP ward surveillance, and PMBJP Jan Aushadhi pricing. Every critical health record is hashed to a tamper-proof blockchain testnet.',
       },
       {
         keyword: 'DUAL MODE',
@@ -29,10 +29,10 @@ export const aboutData = {
     ],
   },
   history: {
-    title: 'Built For The Hackathon',
-    stat: '100% Free',
+    title: 'Fund My Crazy 2026 (Google Gemini Initiative)',
+    stat: '100% Open Sovereign Grid',
     description:
-      'SynapseOS was conceived to push the boundaries of AI health solutions by implementing robust multi-agent orchestration, local TTS models, and blockchain verification in an entirely open-source stack.',
+      'Sanjeevni-OS was conceived to push the boundaries of AI health solutions in India by implementing robust multi-agent orchestration, native Google Gemini 3.5 Flash reasoning, and Jan Aushadhi generic affordability.',
   },
   values: [
     {

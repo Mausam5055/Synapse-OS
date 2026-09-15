@@ -5,13 +5,13 @@ from dotenv import load_dotenv
 load_dotenv(override=True)  # reloaded with Groq key
 
 class Settings(BaseModel):
-    PROJECT_NAME: str = "SynapseOS"
+    PROJECT_NAME: str = "Sanjeevni-OS"
     VERSION: str = "1.0.0"
     API_PREFIX: str = "/api"
     
-    # LLM API Keys & Model Configurations (Google Gemini Hero Layer)
+    # LLM API Keys & Model Configurations (Google Gemini 3.5 Flash Hero Layer)
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
     DEFAULT_LLM_PROVIDER: str = os.getenv("DEFAULT_LLM_PROVIDER", "gemini")
 
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")

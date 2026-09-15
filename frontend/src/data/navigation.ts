@@ -11,7 +11,7 @@ export const mainNavItems: NavItem[] = [
 export const projectNavItems: NavItem[] = [
   { label: '🗺️ WHO Outbreak & Surveillance Map', href: '/orchestrator-agent?tab=hospital', badge: 'Live GIS Map' },
   { label: '⌚ Google & Apple Health Sync', href: '/orchestrator-agent?tab=sync', badge: 'New' },
-  { label: '⚡ SynapseOS Orchestrator', href: '/orchestrator-agent', badge: 'Active' },
+  { label: '⚡ Sanjeevni-OS Orchestrator', href: '/orchestrator-agent', badge: 'Active' },
   { label: '🩺 Symptom Triage & Analysis', href: '/orchestrator-agent?tab=swarm', badge: 'Active' },
   { label: '🔬 Medical Scan Agent (YOLOv8)', href: '/orchestrator-agent?tab=scan', badge: 'Active' },
   { label: '🫀 3D Body Digital Twin', href: '/vibrant', badge: '3D Live' },

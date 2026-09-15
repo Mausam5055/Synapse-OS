@@ -180,7 +180,7 @@ export default function LegacyThemeShell({ children }: { children: React.ReactNo
       <div suppressHydrationWarning dangerouslySetInnerHTML={{ __html: `<header>
 		<div class="header wrapper">
 			<div class="header__logo logo c-white" style="${isNoLoaderPage ? 'display: none !important;' : ''}" data-url="/">
-				<div class="logo__normal link disabled">Synapse</div>
+				<div class="logo__normal link disabled">Sanjeevni</div>
 				<div class="logo__group">
 					<div class="logo__is">O</div>
 					<div class="logo__boring">S<div class="reg">®</div></div>

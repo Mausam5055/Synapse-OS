@@ -465,7 +465,35 @@ async def classify_medical_image_type(image_base64: Optional[str], caption: Opti
     if any(k in caption_lower for k in ["fracture", "bone", "wrist", "hand", "leg", "arm", "knee", "foot", "ankle", "joint", "ortho"]):
         return "bone_fracture"
 
-    if not image_base64 or not settings.OPENROUTER_API_KEY:
+    if not image_base64:
+        return "bone_fracture"
+
+    if settings.GEMINI_API_KEY:
+        try:
+            from backend.app.services.llm_service import call_gemini_vision
+            clean_b64 = image_base64.split(",")[-1] if "," in image_base64 else image_base64
+            g_prompt = (
+                "Analyze this image and classify it into exactly one of three categories:\n"
+                "1. 'prescription' if it is a doctor's prescription, medical slip, medicine bill, or lab test report.\n"
+                "2. 'chest_xray' if it is a chest radiograph or lung X-ray.\n"
+                "3. 'bone_fracture' if it is an orthopedic bone X-ray, fracture scan, or limb scan.\n\n"
+                "Return JSON only in this exact format: {\"category\": \"prescription\" | \"chest_xray\" | \"bone_fracture\"}"
+            )
+            g_res = await call_gemini_vision(clean_b64, g_prompt, model="gemini-3.5-flash")
+            if g_res:
+                clean_json = g_res.replace("```json", "").replace("```", "").strip()
+                parsed = json.loads(clean_json)
+                cat = parsed.get("category", "").lower().strip()
+                if cat in ("prescription", "lab_report", "report"):
+                    return "prescription"
+                elif cat in ("chest_xray", "chest", "lung"):
+                    return "chest_xray"
+                elif cat in ("bone_fracture", "bone", "fracture", "orthopedic"):
+                    return "bone_fracture"
+        except Exception as exc:
+            logger.warning(f"[Gemini 3.5 Flash Vision Classifier] Fallback triggered: {exc}")
+
+    if not settings.OPENROUTER_API_KEY:
         return "bone_fracture"
 
     try:
@@ -473,8 +501,8 @@ async def classify_medical_image_type(image_base64: Optional[str], caption: Opti
         headers = {
             "Authorization": f"Bearer {settings.OPENROUTER_API_KEY}",
             "Content-Type": "application/json",
-            "HTTP-Referer": settings.OPENROUTER_REFERER or "https://synapseos.health",
-            "X-Title": settings.OPENROUTER_APP_TITLE or "SynapseOS Image Classifier"
+            "HTTP-Referer": settings.OPENROUTER_REFERER or "https://sanjeevni.in",
+            "X-Title": settings.OPENROUTER_APP_TITLE or "Sanjeevni-OS Image Classifier"
         }
         vision_model = settings.OPENROUTER_PRIMARY_MODEL or "google/gemini-2.0-flash-001"
         payload = {

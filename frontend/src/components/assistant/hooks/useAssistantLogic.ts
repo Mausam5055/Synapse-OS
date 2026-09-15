@@ -58,7 +58,7 @@ export function useAssistantLogic() {
   
   // Personas & Model
   const [assistantPersona, setAssistantPersona] = useState<Persona>('copilot');
-  const [selectedModel, setSelectedModel] = useState<ModelChoice>('groq-qwen-27b');
+  const [selectedModel, setSelectedModel] = useState<ModelChoice>('gemini-3.5-flash');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showKeyText, setShowKeyText] = useState(false);
 
@@ -678,16 +678,33 @@ Reference the patient's vitals when relevant. If symptoms suggest an emergency (
     let visualType: any = 'general';
     let visualData: any = null;
 
-    // 1. Real-Time Groq LPU API (Primary Engine)
-    reply = await queryGroqLLM(textToSend, selectedModel, false, messages) || '';
-    if (reply) {
-      trace = [
-        { agent_name: 'Groq LPU Engine', action: 'Real-Time Neural Clinical Reasoning (Qwen-27B)', duration_ms: 64 },
-        { agent_name: 'Patient Context Injector', action: `Bound ABHA Profile: ${activePatient.patient.name}`, duration_ms: 12 }
-      ];
+    // 1. Live Google Gemini 3.5 Flash API (Hero Layer)
+    if (selectedModel.startsWith('gemini') && geminiApiKey) {
+      try {
+        const systemInstructionText = buildSystemInstruction(false);
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${geminiApiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ role: 'user', parts: [{ text: textToSend }] }],
+              systemInstruction: { parts: [{ text: systemInstructionText }] }
+            })
+          }
+        );
+        const data = await response.json();
+        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+          reply = data.candidates[0].content.parts[0].text;
+          trace = [
+            { agent_name: 'Google Gemini 3.5 Flash', action: 'Multimodal Clinical Synthesis & Reasoning', duration_ms: 110 },
+            { agent_name: 'Patient Context Injector', action: `Bound ABHA Profile: ${activePatient.patient.name}`, duration_ms: 10 }
+          ];
+        }
+      } catch (err) {}
     }
 
-    // 2. Try FastAPI Multi-Agent Orchestration backend
+    // 2. Try FastAPI Multi-Agent Orchestration backend (Native Gemini 3.5 Flash backend)
     if (!reply) {
       try {
         const res = await fetch(`${backendUrl || API_BASE}/api/orchestrate`, {
@@ -710,26 +727,16 @@ Reference the patient's vitals when relevant. If symptoms suggest an emergency (
       } catch (e) {}
     }
 
-    // 3. Try Live Gemini API with Multilingual System Prompt
-    if (!reply && geminiApiKey) {
-      try {
-        const systemInstructionText = buildSystemInstruction(false);
-        const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${geminiApiKey}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ role: 'user', parts: [{ text: textToSend }] }],
-              systemInstruction: { parts: [{ text: systemInstructionText }] }
-            })
-          }
-        );
-        const data = await response.json();
-        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-          reply = data.candidates[0].content.parts[0].text;
-        }
-      } catch (err) {}
+    // 3. Fallback to Groq LPU API if Groq model selected or as secondary fallback
+    if (!reply) {
+      const groqFallbackModel = selectedModel.startsWith('groq') ? selectedModel : 'groq-qwen-27b';
+      reply = await queryGroqLLM(textToSend, groqFallbackModel, false, messages) || '';
+      if (reply) {
+        trace = [
+          { agent_name: 'Groq LPU Engine', action: 'Real-Time Neural Clinical Reasoning', duration_ms: 64 },
+          { agent_name: 'Patient Context Injector', action: `Bound ABHA Profile: ${activePatient.patient.name}`, duration_ms: 12 }
+        ];
+      }
     }
 
     // Dynamic Clinical Visual Widget assignment based on conversation context
